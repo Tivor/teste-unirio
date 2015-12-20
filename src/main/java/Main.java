@@ -7,6 +7,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Vector;
 
 /**
  * Created by Poliana on 19/12/2015.
@@ -18,11 +19,11 @@ public class Main {
         int initCap = 10;
         int alternativeToEvaluate = 0;
 
-        List allAlternatives = new ArrayList(initCap);
+        Vector<Alternative> allAlternatives = new Vector(initCap);
 
         for (int i = 0; i < initCap; i++) {
 
-            List currentAlternatives = new ArrayList(initCap - 1);
+            Vector<Alternative> currentAlternatives = new Vector(initCap - 1);
             currentAlternatives.addAll(allAlternatives);
             currentAlternatives.remove(alternativeToEvaluate);
 
@@ -40,10 +41,15 @@ public class Main {
 
     }
 
-    private static Hierarchy getHierarchyExample(List<Alternative> alternatives) {
-        // build a tested hierarchy H={G,A1,A2}
+    private static Hierarchy getHierarchyExample(Vector<Alternative> alternatives, List<Criterium> criteriumList, List<Criterium> features) {
+
         Hierarchy h = new Hierarchy();
-        //System.out.println("\t \t Hierarchy h:\n"+h.toString());
+
+        for (Criterium criterium : criteriumList) {
+
+            h.addSubcriterium();
+
+        }
 
         //build and add a third  alternative A3
         Alternative alt=new Alternative();
