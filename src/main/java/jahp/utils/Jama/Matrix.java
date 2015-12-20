@@ -114,9 +114,15 @@ public class Matrix implements Cloneable, java.io.Serializable {
         A = new double[m][m];
         for (int i = 0; i < m; i++) {
             for (int j = i; j < m; j++) {
-                double ratio = weights[i] / weights[j];
-                A[i][j] = ratio;
-                A[j][i] = 1/ratio;
+
+                if (i == j) {
+                    A[i][j] = 1.0;
+                } else {
+                    double ratio = weights[i] / weights[j];
+                    A[i][j] = ratio;
+                    A[j][i] = 1/ratio;
+                }
+
             }
         }
     }

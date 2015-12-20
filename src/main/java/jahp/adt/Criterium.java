@@ -44,21 +44,21 @@ public class Criterium extends Activity implements Serializable, Cloneable {
     }
 
     /**
-     * Get the value of sons.
+     * Get the value of sons
      *
-     * @return value of sons.
+     * @return value of sons
      */
     public Vector<Criterium> getSons() {
-        return this.sons;
+        return (Vector<Criterium>) this.sons;
     }
 
     /**
-     * Get the value of sons.
+     * Get the value of sons
      *
-     * @return value of sons.
+     * @return value of sons
      */
     public Vector<Alternative> getAlternatives() {
-        return this.sons;
+        return (Vector<Alternative>) this.sons;
     }
 
     /**
@@ -117,7 +117,7 @@ public class Criterium extends Activity implements Serializable, Cloneable {
     public int getIndexOfSubcriterium(Criterium c) {
         if (this.isLowestLevel())
             throw new IllegalArgumentException("The ith subcriterium of a criterium in the least level can not be found");
-        return sons.indexOf(c);
+        return getSons().indexOf(c);
     }
 
     /**
@@ -143,20 +143,33 @@ public class Criterium extends Activity implements Serializable, Cloneable {
     public int getIndexOfAlternative(Alternative a) {
         if (this.isLowestLevel())
             throw new IllegalArgumentException("The ith alternative of a criterium not in the least level can not be found");
-        return sons.indexOf(a);
+        return getAlternatives().indexOf(a);
     }
 
 
     /**
      * Creates a new  <code>Criterium</code> instance.
      */
-    public Criterium(String name, boolean goal, boolean lowestLevel, Criterium father) {
+    public Criterium(String name, boolean lowestLevel, Criterium father) {
         this.name = name;
-        this.goal = goal;
+        this.goal = false;
         this.lowestLevel = lowestLevel;
         this.father = father;
     }
 
+    /**
+     * Creates a new  <code>Criterium</code> instance.
+     */
+    public Criterium() {
+        this.name = "Best choice";
+        this.goal = true;
+        this.lowestLevel = false;
+        this.father = null;
+    }
+
+    public void createPCM(int criteriaSize) {
+        this.p = new PairwiseComparisonMatrix(criteriaSize);
+    }
 
     /**
      * <code>addSubcriterium</code> method here.
@@ -164,10 +177,10 @@ public class Criterium extends Activity implements Serializable, Cloneable {
      * @param Criterium c which is the father
      * @param Criterium subc which should be added
      */
-    public void addSubcriteriumList(Vector subcs, double[] weights) {
+    public void addCriteria(Vector<? extends Activity> criteria, double[] weights) {
 
-        sons = subcs;
-        p = new PairwiseComparisonMatrix(weights);
+        this.sons = criteria;
+        this.p = new PairwiseComparisonMatrix(weights);
 
     }
 
@@ -232,7 +245,7 @@ public class Criterium extends Activity implements Serializable, Cloneable {
         }
         double sum = 0.0;
         for (int i = 0; i < getSonsSize(); i++) {
-            Criterium son = (Criterium) sons.get(i);
+            Criterium son = getSons().get(i);
             sum += p.getWeight(i) * son.I(c);
         }
         return (sum);

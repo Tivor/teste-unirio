@@ -57,10 +57,13 @@ public class Hierarchy implements Cloneable, Serializable {
     public Hierarchy(Vector<Alternative> alternatives) {
 
         this.alternatives = alternatives;
-        goal = new Criterium("Best product", true, false, null);
+        this.goal = new Criterium();
 
     }
 
+    public void setAlternatives(Vector<Alternative> alternatives) {
+        this.alternatives = alternatives;
+    }
 
     /**
      * <code>print</code> Returns a string representation of this Hierarchy, containing the String representation of each elements to debug.

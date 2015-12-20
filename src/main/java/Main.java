@@ -1,12 +1,11 @@
 import jahp.adt.Alternative;
 import jahp.adt.Criterium;
 import jahp.adt.Hierarchy;
-import model.Product;
 
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.Vector;
 
 /**
@@ -14,24 +13,45 @@ import java.util.Vector;
  */
 public class Main {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
 
-        int initCap = 10;
-        int alternativeToEvaluate = 0;
+        String featuresFile = "Features.dat";
+        String alternativesFile = "Alternatives.dat";
 
-        Vector<Alternative> allAlternatives = new Vector(initCap);
+        FileReader fileAlt = new FileReader(new File(alternativesFile));
+        BufferedReader brAlt = new BufferedReader(fileAlt);
+        String tempAlt = brAlt.readLine();
 
-        for (int i = 0; i < initCap; i++) {
+        Vector<Alternative> alternatives = readAlternatives(tempAlt);
 
-            Vector<Alternative> currentAlternatives = new Vector(initCap - 1);
-            currentAlternatives.addAll(allAlternatives);
-            currentAlternatives.remove(alternativeToEvaluate);
+        FileReader file = new FileReader(new File(featuresFile));
+        BufferedReader brCriteria = new BufferedReader(file);
+        String tempCrit = brCriteria.readLine();
 
-            Hierarchy h = getHierarchyExample(currentAlternatives);
+        Hierarchy h = new Hierarchy(alternatives);
+
+        Vector<Criterium> criteria = readCriteria(tempCrit, h);
+        h.getGoal().createPCM(criteria.size());
+
+        populateAHP(brAlt, alternatives, brCriteria, criteria);
 
 
-            alternativeToEvaluate++;
-        }
+//        int initCap = 10;
+//        int alternativeToEvaluate = 0;
+//
+//        Vector<Alternative> allAlternatives = new Vector(initCap);
+//
+//        for (int i = 0; i < initCap; i++) {
+//
+//            Vector<Alternative> currentAlternatives = new Vector(initCap - 1);
+//            currentAlternatives.addAll(allAlternatives);
+//            currentAlternatives.remove(alternativeToEvaluate);
+//
+//            Hierarchy h = getHierarchyExample(currentAlternatives);
+//
+//
+//            alternativeToEvaluate++;
+//        }
 
 
 
@@ -41,150 +61,66 @@ public class Main {
 
     }
 
-    private static Hierarchy getHierarchyExample(Vector<Alternative> alternatives, List<Criterium> criteriumList, List<Criterium> features) {
+    private static void populateAHP(BufferedReader brAlt, Vector<Alternative> alternatives, BufferedReader brCrits, Vector<Criterium> criteria) throws IOException {
+        String tempCrit;
 
-        Hierarchy h = new Hierarchy();
+        for (Criterium criterium : criteria) {
+            tempCrit = brCrits.readLine();
 
-        for (Criterium criterium : criteriumList) {
+            String[] featuresStr = tempCrit.split(",");
+            int length = featuresStr.length;
+            Vector<Criterium> features = new Vector(length);
+            double[] weights = new double[length];
+            for (int i = 0; i < length; i++) {
+                createFeaturesWithAlternativesWeights(brAlt, alternatives, criterium, featuresStr[i], features, weights, i);
+            }
 
-            h.addSubcriterium();
+            criterium.addCriteria(features, weights);
 
         }
+    }
 
-        //build and add a third  alternative A3
-        Alternative alt=new Alternative();
-        alt.setName("Alternative 3");
-        //alt.setComment("The third alternative");
-        try{
-            alt.setUrl(new URL("http://messel.emse.fr/~mmorge/3alternative.html"));}
-        catch(MalformedURLException e){
-            System.err.println("Error : MalformedURLException"+e);
-            System.exit(-1);
-        }
-        //System.out.println("\t \t Alternative alt:\n"+alt.toString());
-        h.addAlternative(alt);
-        //System.out.println("Hierarchy h + Alternative alt:\n"+h.toString());
-        //build and add subcriteria C1,C2,C3,C4,C5,C7
-        Criterium c1=new Criterium();
-        //c1.setName("Criterium 1");
-        //c1.setComment("The first criterium");
-        try{
-            c1.setUrl(new URL("http://messel.emse.fr/~mmorge/1criterium.html"));}
-        catch(MalformedURLException e){
-            System.err.println("Error : MalformedURLException"+e);
-            System.exit(-1);
-        }
-        //Every criterium should contain alternatives...
-        //It's easier to addSubcriterium
-        //and to calculate J(a_i|c_j); J* I I* \pi
-        //I()
-        h.addSubcriterium(h.getGoal(),c1,h.getAlternatives(),h.getNb_alternatives());
-        //h.addCriterium(c) ;
-        //System.out.println("\t \t Hierarchy h + alt +c1:\n"+h.toString());
-        //System.out.println("************************************************************************************************\n");
-        Criterium c2=new Criterium();
-        c2.setName("Criterium 2");
-        //c2.setComment("The second criterium");
-        try{
-            c2.setUrl(new URL("http://messel.emse.fr/~mmorge/2criterium.html"));}
-        catch(MalformedURLException e){
-            System.err.println("Error : MalformedURLException"+e);
-            System.exit(-1);
-        }
-        //Every criterium should contain alternatives...
-        //It's easier to addSubcriterium
-        //and to calculate J(a_i|c_j); J* I I* \pi
-        //I()
-        h.addSubcriterium(h.getGoal(),c2,h.getAlternatives(),h.getNb_alternatives());
-        //h.addCriterium(c) ;
-        //System.out.println("\t \t Hierarchy h + alt +c1+c2:\n"+h.toString());
-        //System.out.println("************************************************************************************************\n");
-        Criterium c3=new Criterium();
-        c3.setName("Criterium 3");
-        //c3.setComment("The third criterium");
-        try{
-            c3.setUrl(new URL("http://messel.emse.fr/~mmorge/3criterium.html"));}
-        catch(MalformedURLException e){
-            System.err.println("Error : MalformedURLException"+e);
-            System.exit(-1);
-        }
-        //Every criterium should contain alternatives...
-        //It's easier to addSubcriterium
-        //and to calculate J(a_i|c_j); J* I I* \pi
-        //I()
-        h.addSubcriterium(c1,c3,h.getAlternatives(),h.getNb_alternatives());
-        //h.addCriterium(c) ;
-        //System.out.println("\t \t Hierarchy h + alt +c1+c2+c3:\n"+h.toString());
-        //System.out.println("************************************************************************************************\n");
-        Criterium c4=new Criterium();
-        //c4.setName("Criterium 4");
-        //c4.setComment("The fourth criterium");
-        try{
-            c4.setUrl(new URL("http://messel.emse.fr/~mmorge/4criterium.html"));}
-        catch(MalformedURLException e){
-            System.err.println("Error : MalformedURLException"+e);
-            System.exit(-1);
-        }
-        //Every criterium should contain alternatives...
-        //It's easier to addSubcriterium
-        //and to calculate J(a_i|c_j); J* I I* \pi
-        //I()
-        h.addSubcriterium(c1,c4,h.getAlternatives(),h.getNb_alternatives());
-        //h.addCriterium(c) ;
-        //System.out.println("\t \t Hierarchy h + alt +c1+c2+c3+c4:\n"+h.toString());
-        //System.out.println("************************************************************************************************\n");
-        Criterium c5=new Criterium();
-        c5.setName("Criterium 5");
-        //c5.setComment("The fifth criterium");
-        try{
-            c5.setUrl(new URL("http://messel.emse.fr/~mmorge/5criterium.html"));}
-        catch(MalformedURLException e){
-            System.err.println("Error : MalformedURLException"+e);
-            System.exit(-1);
-        }
-        //Every criterium should contain alternatives...
-        //It's easier to addSubcriterium
-        //and to calculate J(a_i|c_j); J* I I* \pi
-        //I()
-        h.addSubcriterium(c1,c5,h.getAlternatives(),h.getNb_alternatives());
-        //h.addCriterium(c) ;
-        //System.out.println("\t \t Hierarchy h + alt +c1+c2+c3+c4+c5:\n"+h.toString());
-        //System.out.println("************************************************************************************************\n");
-        Criterium c6=new Criterium();
-        c6.setName("Criterium 6");
-        //c6.setComment("The sixth criterium");
-        try{
-            c6.setUrl(new URL("http://messel.emse.fr/~mmorge/6criterium.html"));}
-        catch(MalformedURLException e){
-            System.err.println("Error : MalformedURLException"+e);
-            System.exit(-1);
-        }
-        //Every criterium should contain alternatives...
-        //It's easier to addSubcriterium
-        //and to calculate J(a_i|c_j); J* I I* \pi
-        //I()
-        h.addSubcriterium(c2,c6,h.getAlternatives(),h.getNb_alternatives());
-        //h.addCriterium(c) ;
-        //System.out.println("\t \t Hierarchy h + alt +c1+c2+c3+c4+c5+c6:\n"+h.toString());
-        //System.out.println("************************************************************************************************\n");
-        Criterium c7=new Criterium();
-        c7.setName("Criterium 7");
-        //c7.setComment("The seventh criterium");
-        try{
-            c7.setUrl(new URL("http://messel.emse.fr/~mmorge/7criterium.html"));}
-        catch(MalformedURLException e){
-            System.err.println("Error : MalformedURLException"+e);
-            System.exit(-1);
-        }
-        //Every criterium should contain alternatives...
-        //It's easier to addSubcriterium
-        //and to calculate J(a_i|c_j); J* I I* \pi
-        //I()
-        h.addSubcriterium(c2,c7,h.getAlternatives(),h.getNb_alternatives());
-        //h.addCriterium(c) ;
-        //System.out.println("\t \t Hierarchy h + alt +c1+c2+c3+c4+c5+c6+c7:\n"+h.toString());
-        return h;
+    private static void createFeaturesWithAlternativesWeights(BufferedReader brAlt, Vector<Alternative> alternatives, Criterium criterium, String s, Vector<Criterium> features, double[] weights, int i) throws IOException {
+        String tempAlt;
+        String[] featureAndWeight = s.split(",");
+        Criterium feature = new Criterium(featureAndWeight[0], true, criterium);
+        features.add(feature);
+        weights[i] = Double.parseDouble(featureAndWeight[1]);
 
+        tempAlt = brAlt.readLine();
+        String[] alternativeWeightsStr = tempAlt.split(",");
+        int lengthWeights = alternativeWeightsStr.length;
+        double[] alternativeWeights = new double[lengthWeights];
+
+        for (int j = 0; j < lengthWeights; j++) {
+            alternativeWeights[j] = Double.parseDouble(alternativeWeightsStr[j]);
+        }
+
+        feature.addCriteria(alternatives, alternativeWeights);
+    }
+
+    private static Vector<Alternative> readAlternatives(String tempAlt) {
+        String[] altStr = tempAlt.split(",");
+        int altLength = altStr.length;
+        Vector<Alternative> alternatives = new Vector(altLength);
+        for (int i = 0; i < altLength; i++) {
+            Alternative alternative = new Alternative(altStr[i]);
+            alternatives.add(alternative);
+        }
+        return alternatives;
+    }
+
+    private static Vector<Criterium> readCriteria(String tempCrit, Hierarchy h) {
+        String[] critStr = tempCrit.split(",");
+        int critLength = critStr.length;
+
+        Vector<Criterium> criteria = new Vector(critLength);
+        for (int i = 0; i < critLength; i++) {
+            Criterium criterium = new Criterium(critStr[i], false, h.getGoal());
+            criteria.add(criterium);
+        }
+
+        return criteria;
     }
 
 }

@@ -123,14 +123,14 @@ public class PairwiseComparisonMatrix implements Serializable, Cloneable {
     /**
      * Init a new  <code>Matrix</code> instance.
      */
-    public void InitMatrix() {
+    private void InitMatrix() {
         A = new Matrix(size, size, 1.0);
     }
 
     /**
      * Init a new  <code>Matrix</code> instance.
      */
-    public void InitMatrix(double[] weights) {
+    private void InitMatrix(double[] weights) {
         A = new Matrix(size, weights);
     }
 
