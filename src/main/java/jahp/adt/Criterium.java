@@ -165,8 +165,10 @@ public class Criterium extends Activity implements Serializable, Cloneable {
      * @param Criterium subc which should be added
      */
     public void addSubcriteriumList(Vector subcs, double[] weights) {
-        sons.addAll(subcs);
+
+        sons = subcs;
         p = new PairwiseComparisonMatrix(weights);
+
     }
 
     /**

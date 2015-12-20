@@ -54,8 +54,9 @@ public class Hierarchy implements Cloneable, Serializable {
      * Creates a new  <code>Hierarchy</code> instance.
      * a minimal hierarchy is composed by 1 goal : "My goal" and 2 alternatives : "Alternative 1" and "Alternative 2"
      */
-    public Hierarchy() {
+    public Hierarchy(Vector<Alternative> alternatives) {
 
+        this.alternatives = alternatives;
         goal = new Criterium("Best product", true, false, null);
 
     }
