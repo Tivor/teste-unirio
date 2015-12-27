@@ -167,8 +167,9 @@ public class Criterium extends Activity implements Serializable, Cloneable {
         this.father = null;
     }
 
-    public void createPCM(int criteriaSize) {
-        this.p = new PairwiseComparisonMatrix(criteriaSize);
+    public void createPCM(Vector<? extends Activity> criteria) {
+        this.sons = criteria;
+        this.p = new PairwiseComparisonMatrix(criteria.size());
     }
 
     /**
@@ -177,7 +178,7 @@ public class Criterium extends Activity implements Serializable, Cloneable {
      * @param Criterium c which is the father
      * @param Criterium subc which should be added
      */
-    public void addCriteria(Vector<? extends Activity> criteria, double[] weights) {
+    public void createPCM(Vector<? extends Activity> criteria, double[] weights) {
 
         this.sons = criteria;
         this.p = new PairwiseComparisonMatrix(weights);
