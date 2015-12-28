@@ -4,7 +4,11 @@ import jahp.adt.Hierarchy;
 import jgap.AHPConfiguration;
 import org.jgap.*;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.Arrays;
 import java.util.Vector;
 
 /**
@@ -13,10 +17,11 @@ import java.util.Vector;
 public class Main {
 
 
-    private static final int MAX_ALLOWED_EVOLUTIONS = 5000;
+    private static final int MAX_ALLOWED_EVOLUTIONS = 500;
+    public static final int RANDOM_CROMO = 0;
 
-    public static Genotype createChromosome(int chromosomeSize) throws InvalidConfigurationException {
-        Configuration conf = new AHPConfiguration(chromosomeSize, "ahp", "AHP");
+    public static Genotype createChromosome(int chromosomeSize, double[] originalData, Hierarchy h) throws InvalidConfigurationException {
+        Configuration conf = new AHPConfiguration(chromosomeSize, "ahp", "AHP", originalData, h);
 
         // Create random initial population of Chromosomes.
         // Here we try to read in a previous run via XMLManager.readFile(..)
@@ -44,13 +49,13 @@ public class Main {
 
         Vector<Alternative> alternatives = readAlternatives(tempAlt);
 
+        double[] originalRank = readOriginalRank(brAlt, alternatives);
+
         FileReader file = new FileReader(new File(featuresFile));
         BufferedReader brCriteria = new BufferedReader(file);
 
         String featuresStr = brCriteria.readLine();
         int chromosomeSize = featuresStr.split(",").length;
-
-        Genotype initialGenotype = createChromosome(chromosomeSize);
 
         String tempCrit = brCriteria.readLine();
 
@@ -59,24 +64,73 @@ public class Main {
         Vector<Criterium> criteria = readCriteria(tempCrit, h);
         h.getGoal().createPCM(criteria);
 
-        populateAHP(brAlt, alternatives, brCriteria, criteria, true, initialGenotype);
+        Genotype population = createChromosome(chromosomeSize, originalRank, h);
+
+        populateAHP(brAlt, alternatives, brCriteria, criteria, true, population);
 
         /*
         LOOP:
+        */
 
-        //        for (int i = 0; i < MAX_ALLOWED_EVOLUTIONS; i++) {
+        int alternativesSize = h.getAlternativesSize();
+        double[] newAhpResult = new double[alternativesSize];
+        double[] rescaled = new double[alternativesSize];
+        double[] ano_rescaled = new double[alternativesSize];
+
+        int last = alternativesSize - 1;
+        double majorPi = h.Pi(last);
+        double domain0 = h.Pi(0) / majorPi;
+        Rescale r = new Rescale(0, 1, originalRank[0], originalRank[last]);
+
+        double sum = 0.0d;
+
+        for (int i = 0; i < alternativesSize; i++) {
+
+            sum += originalRank[i];
+
+            newAhpResult[i] = h.Pi(i);
+            rescaled[i] = r.rescale(newAhpResult[i]);
+        }
+
+
+        for (int i = 0; i < alternativesSize; i++) {
+
+            ano_rescaled[i] = originalRank[i]/sum;
+        }
+
+        System.out.println(Arrays.toString(originalRank));
+        System.out.println(Arrays.toString(newAhpResult));
+        System.out.println(Arrays.toString(ano_rescaled));
+//        System.out.println(h.print());
+
+
+//        for (int i = 0; i < MAX_ALLOWED_EVOLUTIONS; i++) {
 //            population.evolve();
 //        }
 //
-//        IChromosome fittestChromosome = population.getFittestChromosome();
-//        Gene[] genes = fittestChromosome.getGenes();
+//        alternativesSize = h.getAlternativesSize();
+//        newAhpResult = new double[alternativesSize];
+//        for (int i = 0; i < alternativesSize; i++) {
+//            newAhpResult[i] = h.Pi(i)/h.Pi(alternativesSize - 1);
+//        }
+//
+//        System.out.println(Arrays.toString(newAhpResult));
 
 
-         */
 
 
-        int best = h.bestAlternative();
+    }
 
+    private static double[] readOriginalRank(BufferedReader brAlt, Vector<Alternative> alternatives) throws IOException {
+        String tempAlt;
+        tempAlt = brAlt.readLine();
+        double[] originalData = new double[alternatives.size()];
+        String[] originalDataStr = tempAlt.split(",");
+        for (int i = 0; i < alternatives.size(); i++) {
+            originalData[i] = Double.parseDouble(originalDataStr[i]);
+        }
+
+        return originalData;
     }
 
     private static void populateAHP(BufferedReader brAlt, Vector<Alternative> alternatives, BufferedReader brCrits, Vector<Criterium> criteria, boolean gaWeight, Genotype initialGenotype) throws IOException {
@@ -93,7 +147,7 @@ public class Main {
             double[] weights = new double[length];
 
             if (gaWeight) {
-                setRandomGaWeights(weights, initialGenotype, geneIndex);
+                setGaWeights(weights, initialGenotype, geneIndex);
                 geneIndex += length;
             }
 
@@ -106,12 +160,12 @@ public class Main {
         }
     }
 
-    private static void setRandomGaWeights(double[] weights, Genotype initialGenotype, int geneIndex) {
+    private static void setGaWeights(double[] weights, Genotype initialGenotype, int geneIndex) {
 
-        IChromosome chromosome = initialGenotype.getFittestChromosome();
+        IChromosome chromosome = initialGenotype.getPopulation().getChromosome(RANDOM_CROMO);
 
-        for(int i = 0; i< weights.length; i++) {
-            weights[i] = ((Double)chromosome.getGene(geneIndex + i).getAllele()).doubleValue();
+        for (int i = 0; i < weights.length; i++) {
+            weights[i] = ((Double) chromosome.getGene(geneIndex + i).getAllele()).doubleValue();
 
         }
     }

@@ -186,6 +186,16 @@ public class Criterium extends Activity implements Serializable, Cloneable {
     }
 
     /**
+     * <code>addSubcriterium</code> method here.
+     *
+     * @param Criterium c which is the father
+     * @param Criterium subc which should be added
+     */
+    public void updatePCM(double[] weights) {
+        this.p = new PairwiseComparisonMatrix(weights);
+    }
+
+    /**
      * <code>equals</code> method here.
      *
      * @param Criterium c

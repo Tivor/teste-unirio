@@ -9,8 +9,11 @@
  */
 package jgap;
 
+import jahp.adt.Criterium;
+import jahp.adt.Hierarchy;
 import org.apache.commons.math3.exception.*;
 import org.apache.commons.math3.linear.*;
+import org.apache.commons.math3.stat.correlation.PearsonsCorrelation;
 import org.apache.commons.math3.stat.correlation.SpearmansCorrelation;
 import org.jgap.FitnessFunction;
 import org.jgap.Gene;
@@ -27,9 +30,12 @@ public class SpearmansFitnessFunction extends FitnessFunction {
 
     private double[] original;
 
-    public void setOriginal(double[] originalData) {
+    private Hierarchy h;
 
-        this.original = original;
+    public SpearmansFitnessFunction(double[] originalData, Hierarchy h) {
+
+        this.original = originalData;
+        this.h = h;
 
     }
 
@@ -50,23 +56,31 @@ public class SpearmansFitnessFunction extends FitnessFunction {
      */
     public double evaluate(IChromosome a_subject) {
 
-        double fitness = 0.0d;
+        int geneIndex = 0;
+        for (Criterium criterium : h.getGoal().getSons()) {
 
+            int featureSize = criterium.getSonsSize();
+            double[] weights = new double[featureSize];
 
+            for (int i = 0; i < weights.length; i++) {
+                weights[i] = ((Double) a_subject.getGene(geneIndex + i).getAllele()).doubleValue();
+            }
 
-        Gene[] genes = a_subject.getGenes();
-
-        int length = genes.length;
-        double[] generated = new double[length];
-
-        for (int i = 0; i < length; i++) {
-
+            geneIndex += featureSize;
+            criterium.updatePCM(weights);
         }
 
-        new SpearmansCorrelation().correlation(original,englishList);
+        int alternativesSize = h.getAlternativesSize();
+        double[] newAhpResult = new double[alternativesSize];
+        for (int i = 0; i < alternativesSize; i++) {
+            newAhpResult[i] = h.Pi(i)/this.original[alternativesSize - 1];
+        }
 
+//        double correlation = new SpearmansCorrelation().correlation(this.original, newAhpResult);
+        double correlation = new PearsonsCorrelation().correlation(this.original, newAhpResult);
+//        System.out.println(correlation);
+        return correlation < 0.0d ? (correlation * -1) : correlation;
 
-        return fitness;
     }
 
 }

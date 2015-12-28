@@ -9,6 +9,7 @@
  */
 package jgap;
 
+import jahp.adt.Hierarchy;
 import org.jgap.*;
 import org.jgap.event.EventManager;
 import org.jgap.impl.*;
@@ -40,7 +41,7 @@ public class AHPConfiguration extends Configuration implements ICloneable {
      * @author Klaus Meffert
      * @since 1.0
      */
-    public AHPConfiguration(int chromosomeSize, String a_id, String a_name) {
+    public AHPConfiguration(int chromosomeSize, String a_id, String a_name, double[] originalData, Hierarchy h) {
         super(a_id, a_name);
         try {
             setBreeder(new GABreeder());
@@ -71,7 +72,7 @@ public class AHPConfiguration extends Configuration implements ICloneable {
             // MinimizingMakeChangeFitnessFunction. We construct it with
             // the target amount of change passed in to this method.
             // ---------------------------------------------------------
-            FitnessFunction myFunc = new SpearmansFitnessFunction();
+            FitnessFunction myFunc = new SpearmansFitnessFunction(originalData, h);
             setFitnessFunction(myFunc);
 
             // Now we need to tell the Configuration object how we want our
