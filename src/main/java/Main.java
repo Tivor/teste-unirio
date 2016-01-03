@@ -17,7 +17,7 @@ import java.util.Vector;
 public class Main {
 
 
-    private static final int MAX_ALLOWED_EVOLUTIONS = 500;
+    private static final int MAX_ALLOWED_EVOLUTIONS = 90000;
     public static final int RANDOM_CROMO = 0;
 
     public static Genotype createChromosome(int chromosomeSize, double[] originalData, Hierarchy h) throws InvalidConfigurationException {
@@ -74,48 +74,53 @@ public class Main {
 
         int alternativesSize = h.getAlternativesSize();
         double[] newAhpResult = new double[alternativesSize];
-        double[] rescaled = new double[alternativesSize];
-        double[] ano_rescaled = new double[alternativesSize];
-
-        int last = alternativesSize - 1;
-        double majorPi = h.Pi(last);
-        double domain0 = h.Pi(0) / majorPi;
-        Rescale r = new Rescale(0, 1, originalRank[0], originalRank[last]);
-
-        double sum = 0.0d;
 
         for (int i = 0; i < alternativesSize; i++) {
-
-            sum += originalRank[i];
-
             newAhpResult[i] = h.Pi(i);
-            rescaled[i] = r.rescale(newAhpResult[i]);
         }
 
-
-        for (int i = 0; i < alternativesSize; i++) {
-
-            ano_rescaled[i] = originalRank[i]/sum;
-        }
 
         System.out.println(Arrays.toString(originalRank));
         System.out.println(Arrays.toString(newAhpResult));
-        System.out.println(Arrays.toString(ano_rescaled));
 //        System.out.println(h.print());
 
+        alternativesSize = h.getAlternativesSize();
 
-//        for (int i = 0; i < MAX_ALLOWED_EVOLUTIONS; i++) {
-//            population.evolve();
-//        }
-//
-//        alternativesSize = h.getAlternativesSize();
-//        newAhpResult = new double[alternativesSize];
-//        for (int i = 0; i < alternativesSize; i++) {
-//            newAhpResult[i] = h.Pi(i)/h.Pi(alternativesSize - 1);
-//        }
-//
-//        System.out.println(Arrays.toString(newAhpResult));
+        for (int i = 0; i < MAX_ALLOWED_EVOLUTIONS; i++) {
+            population.evolve();
 
+//            newAhpResult = new double[alternativesSize];
+//            for (int j = 0; j < alternativesSize; j++) {
+//                newAhpResult[j] = h.Pi(j);
+//            }
+
+//            System.out.println(Arrays.toString(newAhpResult));
+
+        }
+
+
+        IChromosome a_subject = population.getFittestChromosome();
+        int geneIndex = 0;
+
+        for (Criterium criterium : h.getGoal().getSons()) {
+
+            int featureSize = criterium.getSonsSize();
+            double[] weights = new double[featureSize];
+
+            for (int i = 0; i < weights.length; i++) {
+                weights[i] = ((Double) a_subject.getGene(geneIndex + i).getAllele()).doubleValue();
+            }
+
+            geneIndex += featureSize;
+            criterium.updatePCM(weights);
+        }
+
+        newAhpResult = new double[alternativesSize];
+        for (int j = 0; j < alternativesSize; j++) {
+            newAhpResult[j] = h.Pi(j);
+        }
+
+        System.out.println(Arrays.toString(newAhpResult));
 
 
 
@@ -126,8 +131,16 @@ public class Main {
         tempAlt = brAlt.readLine();
         double[] originalData = new double[alternatives.size()];
         String[] originalDataStr = tempAlt.split(",");
+
+        double sum = 0.0d;
         for (int i = 0; i < alternatives.size(); i++) {
-            originalData[i] = Double.parseDouble(originalDataStr[i]);
+            double parseDouble = Double.parseDouble(originalDataStr[i]);
+            sum += parseDouble;
+            originalData[i] = parseDouble;
+        }
+
+        for (int i = 0; i < alternatives.size(); i++) {
+            originalData[i] = originalData[i]/sum;
         }
 
         return originalData;

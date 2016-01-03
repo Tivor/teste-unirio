@@ -9,6 +9,7 @@
  */
 package jgap;
 
+import cluster.validationIndices.RandIndex;
 import jahp.adt.Hierarchy;
 import org.jgap.*;
 import org.jgap.event.EventManager;
@@ -44,6 +45,8 @@ public class AHPConfiguration extends Configuration implements ICloneable {
     public AHPConfiguration(int chromosomeSize, String a_id, String a_name, double[] originalData, Hierarchy h) {
         super(a_id, a_name);
         try {
+
+
             setBreeder(new GABreeder());
             setRandomGenerator(new GaussianRandomGenerator());
             setEventManager(new EventManager());
@@ -58,7 +61,7 @@ public class AHPConfiguration extends Configuration implements ICloneable {
             setFitnessEvaluator(new DefaultFitnessEvaluator());
             setChromosomePool(new ChromosomePool());
             addGeneticOperator(new CrossoverOperator(this, 0.35d));
-            addGeneticOperator(new GaussianMutationOperator(this, 12));
+            addGeneticOperator(new MutationOperator(this, 12));
 
 
             // Care that the fittest individual of the current population is
@@ -72,7 +75,8 @@ public class AHPConfiguration extends Configuration implements ICloneable {
             // MinimizingMakeChangeFitnessFunction. We construct it with
             // the target amount of change passed in to this method.
             // ---------------------------------------------------------
-            FitnessFunction myFunc = new SpearmansFitnessFunction(originalData, h);
+            FitnessFunction myFunc = new ClusterIndexFitnessFunction(originalData, h);
+            ((ClusterIndexFitnessFunction)myFunc).setValidationAlgorithm(new RandIndex());
             setFitnessFunction(myFunc);
 
             // Now we need to tell the Configuration object how we want our
