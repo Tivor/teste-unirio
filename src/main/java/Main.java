@@ -2,13 +2,20 @@ import jahp.adt.Alternative;
 import jahp.adt.Criterium;
 import jahp.adt.Hierarchy;
 import jgap.AHPConfiguration;
-import org.jgap.*;
+import jgap.AHPGenotype;
+import jgap.FitnessValueMonitor;
+import org.jgap.Configuration;
+import org.jgap.Genotype;
+import org.jgap.IChromosome;
+import org.jgap.InvalidConfigurationException;
+import org.jgap.audit.IEvolutionMonitor;
 
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Vector;
 
 /**
@@ -17,7 +24,7 @@ import java.util.Vector;
 public class Main {
 
 
-    private static final int MAX_ALLOWED_EVOLUTIONS = 90000;
+    private static final int MAX_ALLOWED_EVOLUTIONS = 9000000;
     public static final int RANDOM_CROMO = 0;
 
     public static Genotype createChromosome(int chromosomeSize, double[] originalData, Hierarchy h) throws InvalidConfigurationException {
@@ -31,7 +38,7 @@ public class Main {
         // Now we initialize the population randomly, anyway (as an example only)!
         // If you want to load previous results from file, remove the next line!
         // -----------------------------------------------------------------------
-        population = Genotype.randomInitialGenotype(conf);
+        population = AHPGenotype.randomInitialGenotype(conf);
 
         return population;
 
@@ -86,19 +93,25 @@ public class Main {
 
         alternativesSize = h.getAlternativesSize();
 
-        for (int i = 0; i < MAX_ALLOWED_EVOLUTIONS; i++) {
-            population.evolve();
+        IEvolutionMonitor monitor = new FitnessValueMonitor(0.01d);
+
+        ((AHPGenotype) population).evolve(monitor, MAX_ALLOWED_EVOLUTIONS);
 
 //            newAhpResult = new double[alternativesSize];
 //            for (int j = 0; j < alternativesSize; j++) {
 //                newAhpResult[j] = h.Pi(j);
 //            }
-
+//
 //            System.out.println(Arrays.toString(newAhpResult));
 
-        }
+
+        printFittestResult(h, population, alternativesSize);
 
 
+    }
+
+    private static void printFittestResult(Hierarchy h, Genotype population, int alternativesSize) {
+        double[] newAhpResult;
         IChromosome a_subject = population.getFittestChromosome();
         int geneIndex = 0;
 
@@ -121,9 +134,6 @@ public class Main {
         }
 
         System.out.println(Arrays.toString(newAhpResult));
-
-
-
     }
 
     private static double[] readOriginalRank(BufferedReader brAlt, Vector<Alternative> alternatives) throws IOException {
@@ -140,7 +150,7 @@ public class Main {
         }
 
         for (int i = 0; i < alternatives.size(); i++) {
-            originalData[i] = originalData[i]/sum;
+            originalData[i] = originalData[i] / sum;
         }
 
         return originalData;

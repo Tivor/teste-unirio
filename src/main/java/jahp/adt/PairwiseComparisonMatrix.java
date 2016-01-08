@@ -297,8 +297,7 @@ public class PairwiseComparisonMatrix implements Serializable, Cloneable {
      * @return double value
      */
     public double getWeight(int i) {
-        Matrix W = new Matrix(getSize(), 1);
-        W = getWeight();
+        Matrix W = getWeight();
         return W.get(i, 0);
     }
 

@@ -70,13 +70,13 @@ public class AHPConfiguration extends Configuration implements ICloneable {
             // size by one sometimes!
             // -------------------------------------------------------------
             setPreservFittestIndividual(true);
+            setPopulationSize(50);
             setKeepPopulationSizeConstant(false);
             // Set the fitness function we want to use, which is our
             // MinimizingMakeChangeFitnessFunction. We construct it with
             // the target amount of change passed in to this method.
             // ---------------------------------------------------------
-            FitnessFunction myFunc = new ClusterIndexFitnessFunction(originalData, h);
-            ((ClusterIndexFitnessFunction)myFunc).setValidationAlgorithm(new RandIndex());
+            FitnessFunction myFunc = new EuclideanFitnessFunction(originalData, h);
             setFitnessFunction(myFunc);
 
             // Now we need to tell the Configuration object how we want our
@@ -104,8 +104,7 @@ public class AHPConfiguration extends Configuration implements ICloneable {
             // finding the answer), but the longer it will take to evolve
             // the population (which could be seen as bad).
             // ------------------------------------------------------------
-            setPopulationSize(50);
-            setPreservFittestIndividual(true);
+
 
         } catch (InvalidConfigurationException e) {
             throw new RuntimeException(

@@ -118,9 +118,16 @@ public class Matrix implements Cloneable, java.io.Serializable {
                 if (i == j) {
                     A[i][j] = 1.0;
                 } else {
-                    double ratio = weights[i] / weights[j];
-                    A[i][j] = ratio;
-                    A[j][i] = 1/ratio;
+
+                    if ((weights[i] == 0) || (weights[j] == 0)) {
+                        A[i][j] = 0.0d;
+                        A[j][i] = 0.0d;
+                    } else {
+                        double ratio = weights[i] / weights[j];
+                        A[i][j] = ratio;
+                        A[j][i] = 1/ratio;
+                    }
+
                 }
 
             }
@@ -788,7 +795,7 @@ public class Matrix implements Cloneable, java.io.Serializable {
 
    /** LU Decomposition
    @return     LUDecomposition
-   @see LUDecomposition
+   @see jahp.utils.Jama.LUDecomposition
    */
 
    public LUDecomposition lu () {
@@ -797,7 +804,7 @@ public class Matrix implements Cloneable, java.io.Serializable {
 
    /** QR Decomposition
    @return     QRDecomposition
-   @see QRDecomposition
+   @see jahp.utils.Jama.QRDecomposition
    */
 
    public QRDecomposition qr () {
@@ -806,7 +813,7 @@ public class Matrix implements Cloneable, java.io.Serializable {
 
    /** Cholesky Decomposition
    @return     CholeskyDecomposition
-   @see CholeskyDecomposition
+   @see jahp.utils.Jama.CholeskyDecomposition
    */
 
    public CholeskyDecomposition chol () {
@@ -815,7 +822,7 @@ public class Matrix implements Cloneable, java.io.Serializable {
 
    /** Singular Value Decomposition
    @return     SingularValueDecomposition
-   @see SingularValueDecomposition
+   @see jahp.utils.Jama.SingularValueDecomposition
    */
 
    public SingularValueDecomposition svd () {
@@ -824,7 +831,7 @@ public class Matrix implements Cloneable, java.io.Serializable {
 
    /** Eigenvalue Decomposition
    @return     EigenvalueDecomposition
-   @see EigenvalueDecomposition
+   @see jahp.utils.Jama.EigenvalueDecomposition
    */
 
    public EigenvalueDecomposition eig () {
