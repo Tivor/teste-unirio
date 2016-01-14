@@ -4,6 +4,7 @@ package jahp.adt;
 //imports
 
 import java.io.Serializable;
+import java.util.List;
 import java.util.Vector;
 
 //import com.sun.java.swing.*; //Used by JDK 1.2 Beta 4 and all
@@ -227,6 +228,18 @@ public class Criterium extends Activity implements Serializable, Cloneable {
             sum += son.Jstar(index) * p.getWeight(i);
         }
         return sum;
+    }
+
+    /**
+     * <code>Jstar</code> method here.
+     *
+     * @param index the index of the alternative
+     * @return double the global importance of the alternative according to the criterium
+     */
+    public double Jstar(int index, int c) {
+        if (isLowestLevel()) return J(index);
+        Criterium son = getSons().get(c);
+        return son.Jstar(index) * p.getWeight(c);
     }
 
     /**

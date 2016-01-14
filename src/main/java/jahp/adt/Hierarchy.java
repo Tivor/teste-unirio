@@ -135,6 +135,16 @@ public class Hierarchy implements Cloneable, Serializable {
     }
 
     /**
+     * <code>Pi</code> method here.
+     *
+     * @param i :  the index of the alternative
+     * @return double  : the value of the alternative according to the hierarchy
+     */
+    public double Pi(int i, int c) {
+        return goal.Jstar(i);
+    }
+
+    /**
      * <code>V</code> method here.
      *
      * @param Criterium c according to the hierarchy is evaluated
