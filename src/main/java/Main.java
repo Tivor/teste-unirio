@@ -77,6 +77,8 @@ public class Main {
         //TODO: ainda falta ler!
         double[][] individualRanks = new double[criteria.size()][alternatives.size()];
 
+
+
         Genotype population = createChromosome(chromosomeSize, originalRank, h);
 
         populateAHP(brAlt, alternatives, brCriteria, criteria, true, population);

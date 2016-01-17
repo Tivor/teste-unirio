@@ -1,5 +1,7 @@
-A1,A2,A3,A4,A5
-2.4,4.1,5.6,7.8,8.7
+Microsoft Surface,Apple iPad Air,Amazon Kindle Fire HDX,Samsung Galaxy Tab S2,Apple iPad Pro,Apple iPad Mini,Google Nexus,Asus ZenPad,Lenovo Yoga Tablet,Amazon Kindle Fire HD 10,Acer Iconia Tab,Amazon Fire
+8.53,8.18,8.13,8.10,8.07,7.70,7.63,7.48,7.23,7.13,6.05,5.90
+
+//Para cada feature (linha, o valor de cada produto
 0,2,3,4,5
 2,3,4,5,6
 3,4,5,6,7
