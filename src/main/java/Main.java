@@ -74,9 +74,6 @@ public class Main {
         Vector<Criterium> criteria = readCriteria(tempCrit, h);
         h.getGoal().createPCM(criteria);
 
-        //TODO: ainda falta ler!
-        double[][] individualRanks = new double[criteria.size()][alternatives.size()];
-
 
 
         Genotype population = createChromosome(chromosomeSize, originalRank, h);
@@ -84,7 +81,7 @@ public class Main {
         populateAHP(brAlt, alternatives, brCriteria, criteria, true, population);
 
         int alternativesSize = h.getAlternativesSize();
-
+        double[][] individualRanks = readIndividualRanks(alternatives, brCriteria, criteria);
         System.out.println(Arrays.toString(originalRank));
 //        System.out.println(h.print());
 
@@ -110,6 +107,27 @@ public class Main {
 
         }
 
+    }
+
+    private static double[][] readIndividualRanks(Vector<Alternative> alternatives, BufferedReader brCriteria, Vector<Criterium> criteria) throws IOException {
+        double[][] individualRanks = new double[criteria.size()][alternatives.size()];
+
+        for (int i = 0; i < criteria.size(); i++) {
+            String[] tempRatings = brCriteria.readLine().split(",");
+            double sum = 0.0d;
+            for (int j = 0; j < alternatives.size(); j++) {
+                double parseDouble = Double.parseDouble(tempRatings[j]);
+                sum += parseDouble;
+                individualRanks[i][j] = parseDouble;
+            }
+
+            for (int j = 0; j < alternatives.size(); j++) {
+                individualRanks[i][j] = individualRanks[i][j] / sum;
+            }
+
+        }
+
+        return individualRanks;
     }
 
     private static double[] printFittestResult(Hierarchy h, Genotype population, int alternativesSize) {

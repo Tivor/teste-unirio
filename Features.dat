@@ -1,13 +1,10 @@
-Processor Speed,Number of Cores,L1 Cache,L2 Cache,Word length,Battery Life,4G Capable,Storage (GB),Base Cloud Storage (GB),Weight (pounds),Dimensions (inches),Screen Size (inches),Screen Resolution,Front Camera Resolution (MP),Rear Camera Resolution (MP),Video Recording Resolution,Warranty,Phone,Live Chat,Social Media,Online Support,In-Store Support
-
+Processor Speed,Geekbench 3,3D Mark IceStorm,Battery Life,Storage (GB),Weight (pounds),Dimensions (inches),4G Capable,Removable Storage (GB),Screen Size (inches),Screen Resolution,Front Camera Resolution (MP),Rear Camera Resolution (MP),Warranty,Phone,Live Chat,Social Media,Online Support,In-Store Support
 Performance,Portability,Display,Camera,Help&Support
-
-Processor Speed,1@Number of Cores,1@L1 Cache,1@L2 Cache,1@Word length,1
-Battery Life,1@4G Capable,1@Storage (GB),1@{}ase Cloud Storage (GB),1@Weight (pounds),1@Dimensions (inches),1
+Processor Speed,1@Geekbench 3,1@3D Mark IceStorm,1
+Battery Life,1@Storage (GB),1@Weight (pounds),1@Dimensions (inches),1@4G Capable,1@Removable Storage (GB),1
 Screen Size (inches),1@Screen Resolution,1
-Front Camera Resolution (MP),1@Rear Camera Resolution (MP),1@Video Recording Resolution,1
+Front Camera Resolution (MP),1@Rear Camera Resolution (MP),1
 Warranty,1@Phone,1@Live Chat,1@Social Media,1@Online Support,1@In-Store Support,1
-
 10.00,7.75,6.25,7.25,8.75,6.25,6.75,5.75,3.75,5.00,4.00,5.50
 5.25,8.75,8.75,8.00,6.25,8.13,7.75,8.00,10.00,8.75,6.00,3.75
 10.00,8.00,9.38,8.25,9.75,8.75,8.25,7.00,5.50,6.50,6.50,10.00
