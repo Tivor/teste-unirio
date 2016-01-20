@@ -1,9 +1,10 @@
 import jahp.adt.Alternative;
 import jahp.adt.Criterium;
 import jahp.adt.Hierarchy;
-import jgap.*;
+import jgap.AHPConfigurator;
+import jgap.AHPGenotype;
+import jgap.FitnessValueMonitor;
 import model.NormalizedDiscountedCumulativeGain;
-import org.jgap.Configuration;
 import org.jgap.Genotype;
 import org.jgap.IChromosome;
 import org.jgap.InvalidConfigurationException;
@@ -14,7 +15,8 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.Arrays;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Vector;
 
 /**
@@ -38,6 +40,7 @@ public class Main {
         Vector<Alternative> alternatives = readAlternatives(tempAlt);
 
         double[] originalRank = readOriginalRank(brAlt, alternatives);
+        System.out.println(Arrays.toString(originalRank));
 
         FileReader file = new FileReader(new File(featuresFile));
         BufferedReader brCriteria = new BufferedReader(file);
@@ -52,32 +55,56 @@ public class Main {
         AHPConfigurator ahpConfigurator = new AHPConfigurator();
         ahpConfigurator.createConfiguration(chromosomeSize, originalRank);
 
+
+        Map<String, String> mapeamento = new HashMap();
+        Map<String, String> valoresFeatures = new HashMap();
+
+
+        Hierarchy hierarchyTest = new Hierarchy(alternatives);
+        boolean testCreated = false;
+
         for (int i = 0; i < alternatives.size(); i++) {
 
-            Vector<Alternative> crossValidationAlternatives = (Vector)alternatives.clone();
-            crossValidationAlternatives.remove(i);
-
-            Hierarchy h = new Hierarchy(crossValidationAlternatives);
-
-            Vector<Criterium> criteria = readCriteria(tempCrit, h);
-            h.getGoal().createPCM(criteria);
-
-            ahpConfigurator.getFitnessFunction().setCrossValidationAlternative(i);
-            ahpConfigurator.getFitnessFunction().setH(h);
-
-            Genotype population = ahpConfigurator.createPopulation();
-            populateAHP(brAlt, crossValidationAlternatives, brCriteria, criteria, true, population, i);
-            System.out.println(Arrays.toString(originalRank));
-
-            IEvolutionMonitor monitor = new FitnessValueMonitor(0.01d);
-
-            ((AHPGenotype) population).evolve(monitor, MAX_ALLOWED_EVOLUTIONS);
-
-            double[] bestAhpResult = printFittestResult(h, population, crossValidationAlternatives.size());
+            executeCrossValidation(brAlt, alternatives, brCriteria, tempCrit, ahpConfigurator, i, hierarchyTest, testCreated, mapeamento, valoresFeatures);
+            testCreated = true;
 
         }
 
 
+    }
+
+    private static void executeCrossValidation(BufferedReader brAlt, Vector<Alternative> alternatives, BufferedReader brCriteria, String[] tempCrit, AHPConfigurator ahpConfigurator, int i, Hierarchy hierarchyTest, boolean testCreated, Map<String, String> mapeamento, Map<String, String> valoresFeatures) throws InvalidConfigurationException, IOException {
+        Vector<Alternative> crossValidationAlternatives = (Vector)alternatives.clone();
+        crossValidationAlternatives.remove(i);
+
+        Hierarchy h = new Hierarchy(crossValidationAlternatives);
+
+        Vector<Criterium> criteria = new Vector<Criterium>(tempCrit.length);
+
+
+        Vector<Criterium> criteriaTest = null;
+        if (!testCreated) {
+            criteriaTest = new Vector<Criterium>(tempCrit.length);
+        }
+        readCriteria(tempCrit, h, hierarchyTest, criteria, criteriaTest, testCreated);
+
+        h.getGoal().createPCM(criteria);
+
+        if (!testCreated) {
+            hierarchyTest.getGoal().createPCM(criteriaTest);
+        }
+
+        ahpConfigurator.getFitnessFunction().setCrossValidationAlternative(i);
+        ahpConfigurator.getFitnessFunction().setH(h);
+
+        Genotype population = ahpConfigurator.createPopulation();
+        populateAHP(brAlt, crossValidationAlternatives, alternatives, brCriteria, criteria, criteriaTest, testCreated, true, population, i, mapeamento, valoresFeatures);
+
+        IEvolutionMonitor monitor = new FitnessValueMonitor(0.01d);
+        ((AHPGenotype) population).evolve(monitor, MAX_ALLOWED_EVOLUTIONS);
+
+        double[] bestAhpResult = printFittestResult(h, population);
+        double[] bestAhpResultComplete = printFittestResult(hierarchyTest, population);
     }
 
     private static void nDCG(double[] originalRank, Hierarchy h, int alternativesSize, double[][] individualRanks, double[] bestAhpResult) {
@@ -130,7 +157,7 @@ public class Main {
         return individualRanks;
     }
 
-    private static double[] printFittestResult(Hierarchy h, Genotype population, int alternativesSize) {
+    private static double[] printFittestResult(Hierarchy h, Genotype population) {
         double[] newAhpResult;
         IChromosome a_subject = population.getFittestChromosome();
         int geneIndex = 0;
@@ -148,8 +175,8 @@ public class Main {
             criterium.updatePCM(weights);
         }
 
-        newAhpResult = new double[alternativesSize];
-        for (int j = 0; j < alternativesSize; j++) {
+        newAhpResult = new double[h.getAlternativesSize()];
+        for (int j = 0; j < h.getAlternativesSize(); j++) {
             newAhpResult[j] = h.Pi(j);
         }
 
@@ -178,17 +205,27 @@ public class Main {
         return originalData;
     }
 
-    private static void populateAHP(BufferedReader brAlt, Vector<Alternative> alternatives, BufferedReader brCrits, Vector<Criterium> criteria, boolean gaWeight, Genotype initialGenotype, int crossValidationAlternative) throws IOException {
+    private static void populateAHP(BufferedReader brAlt, Vector<Alternative> alternatives, Vector<Alternative> allAlternatives, BufferedReader brCrits, Vector<Criterium> criteria, Vector<Criterium> criteriaTest, boolean testCreated, boolean gaWeight, Genotype initialGenotype, int crossValidationAlternative, Map<String, String> mapeamento, Map<String, String> valoresFeatures) throws IOException {
         String tempCrit;
 
         int geneIndex = 0;
 
-        for (Criterium criterium : criteria) {
-            tempCrit = brCrits.readLine();
+        for (int critIndex = 0; critIndex < criteria.size(); critIndex++) {
+
+            Criterium criterium = criteria.get(critIndex);
+
+            if (testCreated) {
+                tempCrit = mapeamento.get(criterium.getName());
+            } else {
+                tempCrit = brCrits.readLine();
+                mapeamento.put(criterium.getName(), tempCrit);
+            }
 
             String[] featuresStr = tempCrit.split(",");
             int length = featuresStr.length;
             Vector<Criterium> features = new Vector(length);
+            Vector<Criterium> featuresTest = new Vector(length);
+
             double[] weights = new double[length];
 
             if (gaWeight) {
@@ -197,10 +234,16 @@ public class Main {
             }
 
             for (int i = 0; i < length; i++) {
-                createFeaturesWithAlternativesWeights(brAlt, alternatives, criterium, featuresStr[i], features, weights, gaWeight, i, crossValidationAlternative);
+                Criterium criteriumTest = testCreated ? null : criteriaTest.get(critIndex);
+                createFeaturesWithAlternativesWeights(brAlt, alternatives, allAlternatives, criteria.get(critIndex), criteriumTest, featuresStr[i], features, featuresTest, testCreated, weights, gaWeight, i, crossValidationAlternative, valoresFeatures);
             }
 
             criterium.createPCM(features, weights);
+
+            if (!testCreated) {
+                Criterium criteriumTest = criteriaTest.get(critIndex);
+                criteriumTest.createPCM(featuresTest, weights);
+            }
 
         }
     }
@@ -215,7 +258,7 @@ public class Main {
         }
     }
 
-    private static void createFeaturesWithAlternativesWeights(BufferedReader brAlt, Vector<Alternative> alternatives, Criterium criterium, String featureStr, Vector<Criterium> features, double[] weights, boolean gaWeight, int i, int crossValidationAlternative) throws IOException {
+    private static void createFeaturesWithAlternativesWeights(BufferedReader brAlt, Vector<Alternative> alternatives,  Vector<Alternative> allAlternatives, Criterium criterium, Criterium criteriumTest, String featureStr, Vector<Criterium> features, Vector<Criterium> featuresTest, boolean testCreated, double[] weights, boolean gaWeight, int i, int crossValidationAlternative, Map<String, String> valoresFeatures) throws IOException {
 
         if (!gaWeight) {
             String[] featureAndWeight = featureStr.split("@");
@@ -226,19 +269,45 @@ public class Main {
         Criterium feature = new Criterium(featureStr, true, criterium);
         features.add(feature);
 
-        String tempAlt = brAlt.readLine();
+        String tempAlt;
+
+        if (testCreated) {
+            tempAlt = valoresFeatures.get(featureStr);
+        } else {
+            tempAlt = brAlt.readLine();
+            valoresFeatures.put(featureStr, tempAlt);
+        }
+
+
         String[] alternativeWeightsStr = tempAlt.split(",");
         int lengthWeights = alternativeWeightsStr.length;
         double[] alternativeWeights = new double[lengthWeights - 1];
 
+        double[] allAlternativeWeights = new double[lengthWeights];
+
         int correctIndex = 0;
         for (int j = 0; j < lengthWeights; j++) {
+
+            double v = Double.parseDouble(alternativeWeightsStr[j]);
+
+            if (!testCreated) {
+                allAlternativeWeights[j] = v;
+            }
+
             if (j != crossValidationAlternative) {
-                alternativeWeights[correctIndex++] = Double.parseDouble(alternativeWeightsStr[j]);
+
+                alternativeWeights[correctIndex++] = v;
             }
         }
 
         feature.createPCM(alternatives, alternativeWeights);
+
+        if (!testCreated) {
+            Criterium featureTest = new Criterium(featureStr, true, criteriumTest);
+            featuresTest.add(featureTest);
+            featureTest.createPCM(allAlternatives, allAlternativeWeights);
+        }
+
     }
 
     private static Vector<Alternative> readAlternatives(String tempAlt) {
@@ -252,17 +321,19 @@ public class Main {
         return alternatives;
     }
 
-    private static Vector<Criterium> readCriteria(String[] critStr, Hierarchy h) {
+    private static void readCriteria(String[] critStr, Hierarchy h, Hierarchy hierarchyTest, Vector<Criterium> criteria, Vector<Criterium> criteriaTest, boolean testCreated) {
 
-        int critLength = critStr.length;
+        for (int i = 0; i < critStr.length; i++) {
 
-        Vector<Criterium> criteria = new Vector(critLength);
-        for (int i = 0; i < critLength; i++) {
             Criterium criterium = new Criterium(critStr[i], false, h.getGoal());
             criteria.add(criterium);
+
+            if (!testCreated) {
+                Criterium criteriumTest = new Criterium(critStr[i], false, hierarchyTest.getGoal());
+                criteriaTest.add(criteriumTest);
+            }
         }
 
-        return criteria;
     }
 
 }
