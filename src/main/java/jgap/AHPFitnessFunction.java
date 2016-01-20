@@ -12,16 +12,23 @@ public abstract class AHPFitnessFunction extends FitnessFunction {
 
     protected double[] original;
 
+    protected int crossValidationAlternative = -1;
+
     protected Hierarchy h;
 
-    public AHPFitnessFunction(double[] originalData, Hierarchy h) {
+    public AHPFitnessFunction(double[] originalData) {
 
         this.original = originalData;
-        this.h = h;
 
     }
 
-    private final double m_targetValue = 1.0d;
+    public void setCrossValidationAlternative(int crossValidationAlternative) {
+        this.crossValidationAlternative = crossValidationAlternative;
+    }
+
+    public void setH(Hierarchy h) {
+        this.h = h;
+    }
 
     protected double[] runAHP(IChromosome a_subject) {
         int geneIndex = 0;

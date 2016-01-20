@@ -30,7 +30,7 @@ public class SpearmansFitnessFunction extends AHPFitnessFunction {
 
     public SpearmansFitnessFunction(double[] originalData, Hierarchy h) {
 
-        super(originalData,h);
+        super(originalData);
 
     }
 

@@ -17,21 +17,15 @@ package model;
  */
 public class NormalizedDiscountedCumulativeGain {
 
-  int documentsRetrieved;
-
-  public NormalizedDiscountedCumulativeGain(int documentsRetrieved) {
-    this.documentsRetrieved = documentsRetrieved;
-  }
-
-  public double evaluate(double[] documentJudgments, double[] idealJudgments) {
+  public double evaluate(double[] documentJudgments, double[] idealJudgments, Integer[] indexes) {
     // compute dcg:
-    double dcg = computeDCG(documentJudgments);
+    double dcg = computeDCG(documentJudgments, indexes);
     
     // the normalizer represents the highest possible DCG score
     // that could possibly be attained.  we compute this by taking the relevance
     // judgments, ordering them by relevance value (highly relevant documents first)
     // then calling that the ranked list, and computing its DCG value.
-    double normalizer = computeDCG(idealJudgments);
+    double normalizer = computeDCG(idealJudgments, indexes);
 
     if(normalizer != 0){
       return dcg / normalizer;
@@ -47,10 +41,10 @@ public class NormalizedDiscountedCumulativeGain {
    * Computes dcg @ documentsRetrieved
    *  
    */
-  private double computeDCG(double[] gains) {
+  private double computeDCG(double[] gains, Integer[] indexes) {
     double dcg = 0.0;
-    for (int i = 0; i < Math.min(gains.length, this.documentsRetrieved); i++) {
-      dcg += (Math.pow(2, gains[i]) - 1.0) / Math.log(i + 2);
+    for (int i = 0; i < gains.length; i++) {
+      dcg += (Math.pow(2, gains[indexes[i]]) - 1.0) / Math.log(i + 2);
     }
     return dcg;
   }
