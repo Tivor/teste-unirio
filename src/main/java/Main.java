@@ -5,6 +5,8 @@ import jgap.AHPConfigurator;
 import jgap.AHPGenotype;
 import jgap.FitnessValueMonitor;
 import model.NormalizedDiscountedCumulativeGain;
+import org.apache.commons.math3.ml.distance.EuclideanDistance;
+import org.apache.commons.math3.stat.correlation.SpearmansCorrelation;
 import org.jgap.Genotype;
 import org.jgap.IChromosome;
 import org.jgap.InvalidConfigurationException;
@@ -25,8 +27,11 @@ import java.util.Vector;
 public class Main {
 
 
-    private static final int MAX_ALLOWED_EVOLUTIONS = 9;
+    private static final int MAX_ALLOWED_EVOLUTIONS = 900;
     public static final int RANDOM_CROMO = 0;
+
+    private static AHPConfigurator ahpConfigurator = new AHPConfigurator();
+    private static double[][] individualRanks;
 
     public static void main(String[] args) throws IOException, InvalidConfigurationException {
 
@@ -50,11 +55,9 @@ public class Main {
 
         String[] tempCrit = brCriteria.readLine().split(",");;
 
-        double[][] individualRanks = readIndividualRanks(alternatives.size(), brCriteria, tempCrit.length);
+        individualRanks = readIndividualRanks(alternatives.size(), brCriteria, tempCrit.length);
 
-        AHPConfigurator ahpConfigurator = new AHPConfigurator();
         ahpConfigurator.createConfiguration(chromosomeSize, originalRank);
-
 
         Map<String, String> mapeamento = new HashMap();
         Map<String, String> valoresFeatures = new HashMap();
@@ -103,8 +106,23 @@ public class Main {
         IEvolutionMonitor monitor = new FitnessValueMonitor(0.01d);
         ((AHPGenotype) population).evolve(monitor, MAX_ALLOWED_EVOLUTIONS);
 
-        double[] bestAhpResult = printFittestResult(h, population);
         double[] bestAhpResultComplete = printFittestResult(hierarchyTest, population);
+
+        System.out.println("SPEARMANS: " + new SpearmansCorrelation().correlation(bestAhpResultComplete, ahpConfigurator.getOriginalRank()));
+        System.out.println("EUCLIDEAN: " + new EuclideanDistance().compute(bestAhpResultComplete, ahpConfigurator.getOriginalRank()));
+
+        for (int k = 0; k < hierarchyTest.getGoal().getSonsSize(); k++) {
+
+            double[] newAhpResult = new double[hierarchyTest.getAlternativesSize()];
+            for (int j = 0; j < hierarchyTest.getAlternativesSize(); j++) {
+                newAhpResult[j] = hierarchyTest.Pi(j, k);
+            }
+
+            System.out.println(">>>SPEARMANS [" + k + "]: " + new SpearmansCorrelation().correlation(newAhpResult, individualRanks[k]));
+            System.out.println(">>>EUCLIDEAN [" + k + "]: " + new EuclideanDistance().compute(newAhpResult, individualRanks[k]));
+
+        }
+
     }
 
     private static void nDCG(double[] originalRank, Hierarchy h, int alternativesSize, double[][] individualRanks, double[] bestAhpResult) {

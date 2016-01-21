@@ -11,9 +11,14 @@ import org.jgap.InvalidConfigurationException;
 public class AHPConfigurator {
 
     private Configuration configuration;
+    private double[] originalRank;
 
     public AHPFitnessFunction getFitnessFunction() {
         return (AHPFitnessFunction)this.configuration.getFitnessFunction();
+    }
+
+    public double[] getOriginalRank() {
+        return originalRank;
     }
 
     public Configuration getConfiguration() {
@@ -23,6 +28,7 @@ public class AHPConfigurator {
     public void createConfiguration(int chromosomeSize, double[] originalData)  {
         Configuration conf = new AHPConfiguration(chromosomeSize, "ahp", "AHP", originalData);
         this.configuration = conf;
+        this.originalRank = originalData;
         // Create random initial population of Chromosomes.
         // Here we try to read in a previous run via XMLManager.readFile(..)
         // for demonstration purpose only!

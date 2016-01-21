@@ -51,7 +51,7 @@ public class FitnessValueMonitor implements IEvolutionMonitor {
             double value = 1 / Math.abs(best.getFitnessValue());
             if (m_lastFitness != value) {
                 m_lastFitness = value;
-                System.out.println(value);
+//                System.out.println(value);
             }
 
             if (value < m_FitnessEnough) {
