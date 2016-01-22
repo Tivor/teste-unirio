@@ -27,7 +27,7 @@ import java.util.Vector;
 public class Main {
 
 
-    private static final int MAX_ALLOWED_EVOLUTIONS = 900;
+    private static final int MAX_ALLOWED_EVOLUTIONS = 5000;
     public static final int RANDOM_CROMO = 0;
 
     private static AHPConfigurator ahpConfigurator = new AHPConfigurator();
@@ -67,6 +67,9 @@ public class Main {
         boolean testCreated = false;
 
         for (int i = 0; i < alternatives.size(); i++) {
+
+            System.out.println("------------------------------------------------------------------------------------------------------------------------");
+            System.out.println("--------------------------------Produto: " + alternatives.get(i).getName() + "------------------------------------------");
 
             executeCrossValidation(brAlt, alternatives, brCriteria, tempCrit, ahpConfigurator, i, hierarchyTest, testCreated, mapeamento, valoresFeatures);
             testCreated = true;
