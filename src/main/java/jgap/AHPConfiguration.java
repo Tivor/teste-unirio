@@ -57,6 +57,7 @@ public class AHPConfiguration extends Configuration implements ICloneable {
             //
             setSelectFromPrevGen(1.0d);
             setKeepPopulationSizeConstant(true);
+
             setFitnessEvaluator(new DefaultFitnessEvaluator());
             setChromosomePool(new ChromosomePool());
             addGeneticOperator(new CrossoverOperator(this, 0.35d));

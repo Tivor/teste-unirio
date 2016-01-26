@@ -5,6 +5,7 @@ import jgap.AHPConfigurator;
 import jgap.AHPGenotype;
 import jgap.FitnessValueMonitor;
 import model.NormalizedDiscountedCumulativeGain;
+import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.math3.ml.distance.EuclideanDistance;
 import org.apache.commons.math3.stat.correlation.SpearmansCorrelation;
 import org.jgap.Genotype;
@@ -27,7 +28,7 @@ import java.util.Vector;
 public class Main {
 
 
-    private static final int MAX_ALLOWED_EVOLUTIONS = 5000;
+    private static final int MAX_ALLOWED_EVOLUTIONS = 10000;
     public static final int RANDOM_CROMO = 0;
 
     private static AHPConfigurator ahpConfigurator = new AHPConfigurator();
@@ -35,48 +36,70 @@ public class Main {
 
     public static void main(String[] args) throws IOException, InvalidConfigurationException {
 
-        String featuresFile = "Features.dat";
-        String alternativesFile = "Alternatives.dat";
+        boolean miss;
+        int fileIndex = 1;
 
-        FileReader fileAlt = new FileReader(new File(alternativesFile));
-        BufferedReader brAlt = new BufferedReader(fileAlt);
-        String tempAlt = brAlt.readLine();
+//        do {
 
-        Vector<Alternative> alternatives = readAlternatives(tempAlt);
+            String featuresFile = "input/Features" + fileIndex + ".dat";
+            String alternativesFile = "input/Alternatives" + fileIndex + ".dat";
 
-        double[] originalRank = readOriginalRank(brAlt, alternatives);
-        System.out.println(Arrays.toString(originalRank));
+            miss = execute(featuresFile, alternativesFile);
+//            Configuration.reset();
+//            fileIndex++;
 
-        FileReader file = new FileReader(new File(featuresFile));
-        BufferedReader brCriteria = new BufferedReader(file);
+//        } while (!miss);
 
-        String featuresStr = brCriteria.readLine();
-        int chromosomeSize = featuresStr.split(",").length;
+    }
 
-        String[] tempCrit = brCriteria.readLine().split(",");;
+    private static boolean execute(String featuresFile, String alternativesFile) throws IOException, InvalidConfigurationException {
+        File fileTest = new File(alternativesFile);
 
-        individualRanks = readIndividualRanks(alternatives.size(), brCriteria, tempCrit.length);
+        if (fileTest.exists()) {
 
-        ahpConfigurator.createConfiguration(chromosomeSize, originalRank);
+            FileReader fileAlt = new FileReader(fileTest);
+            BufferedReader brAlt = new BufferedReader(fileAlt);
+            String tempAlt = brAlt.readLine();
 
-        Map<String, String> mapeamento = new HashMap();
-        Map<String, String> valoresFeatures = new HashMap();
+            Vector<Alternative> alternatives = readAlternatives(tempAlt);
+
+            double[] originalRank = readOriginalRank(brAlt, alternatives);
+            System.out.println(Arrays.toString(originalRank));
+
+            FileReader file = new FileReader(new File(featuresFile));
+            BufferedReader brCriteria = new BufferedReader(file);
+
+            String featuresStr = brCriteria.readLine();
+            int chromosomeSize = featuresStr.split(",").length;
+
+            String[] tempCrit = brCriteria.readLine().split(",");
+
+            individualRanks = readIndividualRanks(alternatives.size(), brCriteria, tempCrit.length);
+
+            ahpConfigurator.createConfiguration(chromosomeSize, originalRank);
+
+            Map<String, String> mapeamento = new HashMap();
+            Map<String, String> valoresFeatures = new HashMap();
 
 
-        Hierarchy hierarchyTest = new Hierarchy(alternatives);
-        boolean testCreated = false;
+            Hierarchy hierarchyTest = new Hierarchy(alternatives);
+            boolean testCreated = false;
 
-        for (int i = 0; i < alternatives.size(); i++) {
+            for (int i = 0; i < alternatives.size(); i++) {
 
-            System.out.println("------------------------------------------------------------------------------------------------------------------------");
-            System.out.println("--------------------------------Produto: " + alternatives.get(i).getName() + "------------------------------------------");
+                System.out.println("------------------------------------------------------------------------------------------------------------------------");
+                System.out.println("--------------------------------Produto: " + alternatives.get(i).getName() + "------------------------------------------");
 
-            executeCrossValidation(brAlt, alternatives, brCriteria, tempCrit, ahpConfigurator, i, hierarchyTest, testCreated, mapeamento, valoresFeatures);
-            testCreated = true;
+                executeCrossValidation(brAlt, alternatives, brCriteria, tempCrit, ahpConfigurator, i, hierarchyTest, testCreated, mapeamento, valoresFeatures);
+                testCreated = true;
 
+            }
+
+            return false;
+
+        } else {
+            return true;
         }
-
-
     }
 
     private static void executeCrossValidation(BufferedReader brAlt, Vector<Alternative> alternatives, BufferedReader brCriteria, String[] tempCrit, AHPConfigurator ahpConfigurator, int i, Hierarchy hierarchyTest, boolean testCreated, Map<String, String> mapeamento, Map<String, String> valoresFeatures) throws InvalidConfigurationException, IOException {
@@ -109,6 +132,7 @@ public class Main {
         IEvolutionMonitor monitor = new FitnessValueMonitor(0.01d);
         ((AHPGenotype) population).evolve(monitor, MAX_ALLOWED_EVOLUTIONS);
 
+//        System.out.println(h.print());
         double[] bestAhpResultComplete = printFittestResult(hierarchyTest, population);
 
         System.out.println("SPEARMANS: " + new SpearmansCorrelation().correlation(bestAhpResultComplete, ahpConfigurator.getOriginalRank()));
@@ -121,6 +145,7 @@ public class Main {
                 newAhpResult[j] = hierarchyTest.Pi(j, k);
             }
 
+            System.out.println(">>>RESULT [" + k + "]: " + ArrayUtils.toString(newAhpResult));
             System.out.println(">>>SPEARMANS [" + k + "]: " + new SpearmansCorrelation().correlation(newAhpResult, individualRanks[k]));
             System.out.println(">>>EUCLIDEAN [" + k + "]: " + new EuclideanDistance().compute(newAhpResult, individualRanks[k]));
 
