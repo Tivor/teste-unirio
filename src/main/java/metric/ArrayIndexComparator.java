@@ -1,3 +1,5 @@
+package metric;
+
 import java.util.Comparator;
 
 public class ArrayIndexComparator implements Comparator<Integer>

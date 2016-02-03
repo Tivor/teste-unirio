@@ -1,3 +1,5 @@
+package metric;
+
 public class Rescale {
     private final double range0,range1,domain0,domain1;
 
