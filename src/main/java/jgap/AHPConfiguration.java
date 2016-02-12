@@ -92,7 +92,8 @@ public class AHPConfiguration extends Configuration implements ICloneable {
             Gene[] sampleGenes = new Gene[chromosomeSize];
 
             for (int i = 0; i < chromosomeSize; i++) {
-                sampleGenes[i] = new DoubleGene(this, 0, Double.MAX_VALUE);
+//                sampleGenes[i] = new DoubleGene(this, 0, Double.MAX_VALUE);
+                sampleGenes[i] = new DoubleGene(this, 0, Double.valueOf(1000d));
             }
 
             IChromosome sampleChromosome = new Chromosome(this, sampleGenes);

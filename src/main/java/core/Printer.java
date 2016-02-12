@@ -3,6 +3,7 @@ package core;
 import jahp.adt.Criterium;
 import jahp.adt.Hierarchy;
 import jgap.AHPConfigurator;
+import metric.PrecisionAtK;
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.math3.ml.distance.EuclideanDistance;
 import org.apache.commons.math3.stat.correlation.SpearmansCorrelation;
@@ -51,8 +52,9 @@ public class Printer {
     }
 
     public void printCompleteResult(AHPConfigurator ahpConfigurator, double[] bestAhpResultComplete) {
-        System.out.println("SPEARMANS: " + new SpearmansCorrelation().correlation(bestAhpResultComplete, ahpConfigurator.getOriginalRank()));
         System.out.println("EUCLIDEAN: " + new EuclideanDistance().compute(bestAhpResultComplete, ahpConfigurator.getOriginalRank()));
+        System.out.println("SPEARMANS: " + new SpearmansCorrelation().correlation(bestAhpResultComplete, ahpConfigurator.getOriginalRank()));
+        System.out.println("P@k: " + new PrecisionAtK().calculate(bestAhpResultComplete, ahpConfigurator.getOriginalRank()));
     }
 
     public void printIndividualResult(int k, double[] newAhpResult) {

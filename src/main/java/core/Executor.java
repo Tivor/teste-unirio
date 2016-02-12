@@ -21,7 +21,7 @@ import java.util.Vector;
 
 public class Executor {
 
-    private static final int MAX_ALLOWED_EVOLUTIONS = 10;
+    private static final int MAX_ALLOWED_EVOLUTIONS = 5000;
 
     private AHPConfigurator ahpConfigurator = new AHPConfigurator();
     private Reader reader = new Reader();
@@ -58,7 +58,6 @@ public class Executor {
             Map<String, String> mapeamento = new HashMap();
             Map<String, String> valoresFeatures = new HashMap();
 
-
             Hierarchy hierarchyTest = new Hierarchy(alternatives);
             boolean testCreated = false;
 
@@ -87,7 +86,6 @@ public class Executor {
 
         Vector<Criterium> criteria = new Vector<Criterium>(tempCrit.length);
 
-
         Vector<Criterium> criteriaTest = null;
         if (!testCreated) {
             criteriaTest = new Vector<Criterium>(tempCrit.length);
@@ -114,16 +112,16 @@ public class Executor {
 
         printer.printCompleteResult(ahpConfigurator, bestAhpResultComplete);
 
-        for (int k = 0; k < hierarchyTest.getGoal().getSonsSize(); k++) {
-
-            double[] newAhpResult = new double[hierarchyTest.getAlternativesSize()];
-            for (int j = 0; j < hierarchyTest.getAlternativesSize(); j++) {
-                newAhpResult[j] = hierarchyTest.Pi(j, k);
-            }
-
-            printer.printIndividualResult(k, newAhpResult);
-
-        }
+//        for (int k = 0; k < hierarchyTest.getGoal().getSonsSize(); k++) {
+//
+//            double[] newAhpResult = new double[hierarchyTest.getAlternativesSize()];
+//            for (int j = 0; j < hierarchyTest.getAlternativesSize(); j++) {
+//                newAhpResult[j] = hierarchyTest.Pi(j, k);
+//            }
+//
+//            printer.printIndividualResult(k, newAhpResult);
+//
+//        }
 
     }
 
