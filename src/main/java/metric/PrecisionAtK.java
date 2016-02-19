@@ -7,15 +7,12 @@ import java.util.List;
 /**
  * Created by igor.custodio on 02/02/2016.
  */
-public class Executor {
+public class PrecisionAtK {
 
     private List<LabelValue> ideal = new ArrayList();
     private List<LabelValue> calculated = new ArrayList();
 
-    public double calculate() {
-
-        double[] idealRank = {9.8d, 8.9d, 7.6d, 6.4d, 5.5d, 4.3d, 3.2d, 2.9d, 2.2d, 1.5d};
-        double[] calculatedRank = {9.8d, 0d, 7.6d, 6.4d, 5.5d, 4.3d, 3.2d, 0d, 2.2d, 0d};
+    public double calculate(double[] calculatedRank, double[] idealRank) {
 
         for (int i = 0; i < idealRank.length; i++) {
 
@@ -25,17 +22,17 @@ public class Executor {
 
         }
 
-
         Collections.sort(calculated);
 
         double sum = 0.0d;
-        for (int k = 1; k <= idealRank.length; k++) {
+        int half = idealRank.length / 2 + ((idealRank.length % 2 == 0) ? 0 : 1);
+        for (int k = 1; k <= half; k++) {
             double v = precisionAt(k);
             sum += v;
-            System.out.println("P@"+ k + " =" + v);
+//            System.out.println("P@"+ k + " =" + v);
         }
 
-        return sum / idealRank.length;
+        return sum / half;
 
     }
 

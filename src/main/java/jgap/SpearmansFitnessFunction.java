@@ -28,9 +28,9 @@ import org.jgap.IChromosome;
  */
 public class SpearmansFitnessFunction extends AHPFitnessFunction {
 
-    public SpearmansFitnessFunction(double[] originalData, Hierarchy h) {
+    public SpearmansFitnessFunction(double[][] originalIndividualData, Hierarchy h) {
 
-        super(originalData);
+        super(originalIndividualData);
 
     }
 

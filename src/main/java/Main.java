@@ -12,7 +12,7 @@ public class Main {
     public static void main(String[] args) throws IOException, InvalidConfigurationException {
 
         boolean miss;
-        int fileIndex = 1;
+        int fileIndex = 3;
 
 //        do {
 

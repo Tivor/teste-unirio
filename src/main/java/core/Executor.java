@@ -21,7 +21,7 @@ import java.util.Vector;
 
 public class Executor {
 
-    private static final int MAX_ALLOWED_EVOLUTIONS = 10;
+    private static final int MAX_ALLOWED_EVOLUTIONS = 5000;
 
     private AHPConfigurator ahpConfigurator = new AHPConfigurator();
     private Reader reader = new Reader();
@@ -53,11 +53,14 @@ public class Executor {
 
             printer = new Printer(reader.readIndividualRanks(alternatives.size(), brCriteria, tempCrit.length));
 
-            ahpConfigurator.createConfiguration(chromosomeSize, originalRank);
+            double[][] originalIndividualData = printer.individualRanks();
+
+//            originalRank = calculateAvg(originalIndividualData);
+            ahpConfigurator.createConfiguration(chromosomeSize, originalRank, originalIndividualData);
+//            ahpConfigurator.createConfiguration(chromosomeSize, originalRank);
 
             Map<String, String> mapeamento = new HashMap();
             Map<String, String> valoresFeatures = new HashMap();
-
 
             Hierarchy hierarchyTest = new Hierarchy(alternatives);
             boolean testCreated = false;
@@ -79,6 +82,23 @@ public class Executor {
         }
     }
 
+    private double[] calculateAvg(double[][] originalIndividualData) {
+
+        double[] result = new double[originalIndividualData[0].length];
+
+        for (int i = 0; i < originalIndividualData[0].length; i++) {
+
+            for (int k = 0; k < originalIndividualData.length; k++) {
+                result[i] += originalIndividualData[k][i];
+            }
+
+            result[i] = result[i]/originalIndividualData.length;
+
+        }
+
+        return result;
+    }
+
     public void executeCrossValidation(BufferedReader brAlt, Vector<Alternative> alternatives, BufferedReader brCriteria, String[] tempCrit, AHPConfigurator ahpConfigurator, int i, Hierarchy hierarchyTest, boolean testCreated, Map<String, String> mapeamento, Map<String, String> valoresFeatures) throws InvalidConfigurationException, IOException {
         Vector<Alternative> crossValidationAlternatives = (Vector) alternatives.clone();
         crossValidationAlternatives.remove(i);
@@ -86,7 +106,6 @@ public class Executor {
         Hierarchy h = new Hierarchy(crossValidationAlternatives);
 
         Vector<Criterium> criteria = new Vector<Criterium>(tempCrit.length);
-
 
         Vector<Criterium> criteriaTest = null;
         if (!testCreated) {
@@ -106,8 +125,9 @@ public class Executor {
         Genotype population = ahpConfigurator.createPopulation();
         ahpFiller.populateAHP(brAlt, crossValidationAlternatives, alternatives, brCriteria, criteria, criteriaTest, testCreated, true, population, i, mapeamento, valoresFeatures);
 
-        IEvolutionMonitor monitor = new FitnessValueMonitor(0.01d);
-        ((AHPGenotype) population).evolve(monitor, MAX_ALLOWED_EVOLUTIONS);
+//        IEvolutionMonitor monitor = new FitnessValueMonitor(0.01d);
+//        ((AHPGenotype) population).evolve(monitor, MAX_ALLOWED_EVOLUTIONS);
+        population.evolve(MAX_ALLOWED_EVOLUTIONS);
 
 //        System.out.println(h.print());
         double[] bestAhpResultComplete = printer.printFittestResult(hierarchyTest, population);
@@ -116,9 +136,17 @@ public class Executor {
 
         for (int k = 0; k < hierarchyTest.getGoal().getSonsSize(); k++) {
 
-            double[] newAhpResult = new double[hierarchyTest.getAlternativesSize()];
-            for (int j = 0; j < hierarchyTest.getAlternativesSize(); j++) {
-                newAhpResult[j] = hierarchyTest.Pi(j, k);
+            int alternativesSize = hierarchyTest.getAlternativesSize();
+            double[] newAhpResult = new double[alternativesSize];
+            double interSum = 0.0d;
+            for (int j = 0; j < alternativesSize; j++) {
+                double pi = hierarchyTest.Pi(j, k);
+                newAhpResult[j] = pi;
+                interSum += pi;
+            }
+
+            for (int j = 0; j < alternativesSize; j++) {
+                newAhpResult[j] = newAhpResult[j] / interSum;
             }
 
             printer.printIndividualResult(k, newAhpResult);

@@ -2,6 +2,7 @@ package jgap;
 
 import jahp.adt.Criterium;
 import jahp.adt.Hierarchy;
+import org.jgap.CachedFitnessFunction;
 import org.jgap.FitnessFunction;
 import org.jgap.IChromosome;
 
@@ -12,14 +13,18 @@ public abstract class AHPFitnessFunction extends FitnessFunction {
 
     protected double[] original;
 
+    protected double[][] individualOriginal;
+
     protected int crossValidationAlternative = -1;
 
     protected Hierarchy h;
 
     public AHPFitnessFunction(double[] originalData) {
-
         this.original = originalData;
+    }
 
+    public AHPFitnessFunction(double[][] individualOriginal) {
+        this.individualOriginal = individualOriginal;
     }
 
     public void setCrossValidationAlternative(int crossValidationAlternative) {
@@ -31,6 +36,15 @@ public abstract class AHPFitnessFunction extends FitnessFunction {
     }
 
     protected double[] runAHP(IChromosome a_subject) {
+        int alternativesSize = populateAHP(a_subject);
+        double[] newAhpResult = new double[alternativesSize];
+        for (int i = 0; i < alternativesSize; i++) {
+            newAhpResult[i] = h.Pi(i);
+        }
+        return newAhpResult;
+    }
+
+    private int populateAHP(IChromosome a_subject) {
         int geneIndex = 0;
         for (Criterium criterium : h.getGoal().getSons()) {
 
@@ -45,12 +59,32 @@ public abstract class AHPFitnessFunction extends FitnessFunction {
             criterium.updatePCM(weights);
         }
 
-        int alternativesSize = h.getAlternativesSize();
-        double[] newAhpResult = new double[alternativesSize];
-        for (int i = 0; i < alternativesSize; i++) {
-            newAhpResult[i] = h.Pi(i);
+        return h.getAlternativesSize();
+    }
+
+    protected double[][] runCriteriaAHP(IChromosome a_subject) {
+        int alternativesSize = populateAHP(a_subject);
+        int sonsSize = h.getGoal().getSonsSize();
+
+        double[][] newFullAhpResult = new double[sonsSize][alternativesSize];
+
+        for (int k = 0; k < sonsSize; k++) {
+
+            double interSum = 0.0d;
+            for (int j = 0; j < alternativesSize; j++) {
+                double pi = h.Pi(j, k);
+                newFullAhpResult[k][j] = pi;
+                interSum += pi;
+            }
+
+            for (int j = 0; j < alternativesSize; j++) {
+                newFullAhpResult[k][j] = newFullAhpResult[k][j] / interSum;
+            }
+
         }
-        return newAhpResult;
+
+        return newFullAhpResult;
+
     }
 
 }

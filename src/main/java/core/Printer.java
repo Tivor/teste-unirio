@@ -3,6 +3,7 @@ package core;
 import jahp.adt.Criterium;
 import jahp.adt.Hierarchy;
 import jgap.AHPConfigurator;
+import metric.PrecisionAtK;
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.math3.ml.distance.EuclideanDistance;
 import org.apache.commons.math3.stat.correlation.SpearmansCorrelation;
@@ -20,6 +21,10 @@ public class Printer {
 
     public Printer(double[][] individualRanks) {
         this.individualRanks = individualRanks;
+    }
+
+    public double[][] individualRanks() {
+        return individualRanks;
     }
 
     public double[] printFittestResult(Hierarchy h, Genotype population) {
@@ -51,14 +56,18 @@ public class Printer {
     }
 
     public void printCompleteResult(AHPConfigurator ahpConfigurator, double[] bestAhpResultComplete) {
-        System.out.println("SPEARMANS: " + new SpearmansCorrelation().correlation(bestAhpResultComplete, ahpConfigurator.getOriginalRank()));
         System.out.println("EUCLIDEAN: " + new EuclideanDistance().compute(bestAhpResultComplete, ahpConfigurator.getOriginalRank()));
+        System.out.println("SPEARMANS: " + new SpearmansCorrelation().correlation(bestAhpResultComplete, ahpConfigurator.getOriginalRank()));
+        System.out.println("P@k: " + new PrecisionAtK().calculate(bestAhpResultComplete, ahpConfigurator.getOriginalRank()));
+        System.out.println("%%%%%%%%%%%%%%%%%%%%%%%%%%%");
     }
 
     public void printIndividualResult(int k, double[] newAhpResult) {
-        System.out.println(">>>RESULT [" + k + "]: " + ArrayUtils.toString(newAhpResult));
-        System.out.println(">>>SPEARMANS [" + k + "]: " + new SpearmansCorrelation().correlation(newAhpResult, individualRanks[k]));
+//        System.out.println(">>>RESULT [" + k + "]: " + ArrayUtils.toString(newAhpResult));
         System.out.println(">>>EUCLIDEAN [" + k + "]: " + new EuclideanDistance().compute(newAhpResult, individualRanks[k]));
+        System.out.println(">>>SPEARMANS [" + k + "]: " + new SpearmansCorrelation().correlation(newAhpResult, individualRanks[k]));
+        System.out.println("P@k: " + new PrecisionAtK().calculate(newAhpResult, individualRanks[k]));
+        System.out.println("===========================");
     }
 
 }
