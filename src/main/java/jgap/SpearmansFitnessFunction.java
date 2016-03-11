@@ -9,14 +9,10 @@
  */
 package jgap;
 
-import jahp.adt.Criterium;
 import jahp.adt.Hierarchy;
 import org.apache.commons.math3.exception.*;
 import org.apache.commons.math3.linear.*;
 import org.apache.commons.math3.stat.correlation.PearsonsCorrelation;
-import org.apache.commons.math3.stat.correlation.SpearmansCorrelation;
-import org.jgap.FitnessFunction;
-import org.jgap.Gene;
 import org.jgap.IChromosome;
 
 /**

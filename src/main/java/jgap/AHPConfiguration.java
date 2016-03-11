@@ -9,7 +9,6 @@
  */
 package jgap;
 
-import jahp.adt.Hierarchy;
 import org.jgap.*;
 import org.jgap.event.EventManager;
 import org.jgap.impl.*;

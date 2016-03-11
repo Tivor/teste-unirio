@@ -4,11 +4,8 @@ import jahp.adt.Alternative;
 import jahp.adt.Criterium;
 import jahp.adt.Hierarchy;
 import jgap.AHPConfigurator;
-import jgap.AHPGenotype;
-import jgap.FitnessValueMonitor;
 import org.jgap.Genotype;
 import org.jgap.InvalidConfigurationException;
-import org.jgap.audit.IEvolutionMonitor;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -70,7 +67,7 @@ public class Executor {
                 System.out.println("------------------------------------------------------------------------------------------------------------------------");
                 System.out.println("--------------------------------Produto: " + alternatives.get(i).getName() + "------------------------------------------");
 
-                executeCrossValidation(brAlt, alternatives, brCriteria, tempCrit, ahpConfigurator, i, hierarchyTest, testCreated, mapeamento, valoresFeatures);
+                executeCrossValidation(brAlt, alternatives, brCriteria, tempCrit, ahpConfigurator, i, hierarchyTest, testCreated, mapeamento, valoresFeatures, chromosomeSize);
                 testCreated = true;
 
             }
@@ -99,7 +96,7 @@ public class Executor {
         return result;
     }
 
-    public void executeCrossValidation(BufferedReader brAlt, Vector<Alternative> alternatives, BufferedReader brCriteria, String[] tempCrit, AHPConfigurator ahpConfigurator, int i, Hierarchy hierarchyTest, boolean testCreated, Map<String, String> mapeamento, Map<String, String> valoresFeatures) throws InvalidConfigurationException, IOException {
+    public void executeCrossValidation(BufferedReader brAlt, Vector<Alternative> alternatives, BufferedReader brCriteria, String[] tempCrit, AHPConfigurator ahpConfigurator, int i, Hierarchy hierarchyTest, boolean testCreated, Map<String, String> mapeamento, Map<String, String> valoresFeatures, int featuresSize) throws InvalidConfigurationException, IOException {
         Vector<Alternative> crossValidationAlternatives = (Vector) alternatives.clone();
         crossValidationAlternatives.remove(i);
 
@@ -123,7 +120,10 @@ public class Executor {
         ahpConfigurator.getFitnessFunction().setH(h);
 
         Genotype population = ahpConfigurator.createPopulation();
-        ahpFiller.populateAHP(brAlt, crossValidationAlternatives, alternatives, brCriteria, criteria, criteriaTest, testCreated, true, population, i, mapeamento, valoresFeatures);
+        int[][] matrixRepresenta = ahpFiller.populateAHP(brAlt, crossValidationAlternatives, alternatives, brCriteria, criteria, criteriaTest, testCreated, true, population, i, mapeamento, valoresFeatures, featuresSize);
+
+        h.getGoal().setFeatValues(matrixRepresenta);
+        hierarchyTest.getGoal().setFeatValues(matrixRepresenta);
 
 //        IEvolutionMonitor monitor = new FitnessValueMonitor(0.01d);
 //        ((AHPGenotype) population).evolve(monitor, MAX_ALLOWED_EVOLUTIONS);

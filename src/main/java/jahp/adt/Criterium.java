@@ -4,7 +4,6 @@ package jahp.adt;
 //imports
 
 import java.io.Serializable;
-import java.util.List;
 import java.util.Vector;
 
 //import com.sun.java.swing.*; //Used by JDK 1.2 Beta 4 and all
@@ -27,7 +26,17 @@ public class Criterium extends Activity implements Serializable, Cloneable {
     // The associated PairwiseComparisonMatrix
     private PairwiseComparisonMatrix p;
 
+    /**
+     *
+     * As duas proximas variaveis resolvem o problema de feature zero-value
+     *
+     */
+
     private int pos;
+    private int[][] featValues;
+    public void setFeatValues(int[][] featValues) {
+        this.featValues = featValues;
+    }
 
     /**
      * Gets the value of p
@@ -96,59 +105,6 @@ public class Criterium extends Activity implements Serializable, Cloneable {
         }
         return s;
     }
-
-    /**
-     * <code>getSubcriteriumAt</code> Returns the ith subcriterium
-     *
-     * @param a <code>int</code> value : the index
-     * @return a <code>Criterium</code> value
-     * @throws IllegalArgumentException e "not found..."
-     */
-    public Criterium getSubcriteriumAt(int i) {
-        if (this.isLowestLevel())
-            throw new IllegalArgumentException("The ith subcriterium of a criterium in the least level can not be found");
-        return getSons().elementAt(i);
-    }
-
-    /**
-     * <code>getSubcriteriumAt</code> Returns the ith subcriterium
-     *
-     * @param a <code>Criterium</code> value
-     * @return a <code>int</code> value : the index
-     * @throws IllegalArgumentException e  "not found..."
-     */
-    public int getIndexOfSubcriterium(Criterium c) {
-        if (this.isLowestLevel())
-            throw new IllegalArgumentException("The ith subcriterium of a criterium in the least level can not be found");
-        return getSons().indexOf(c);
-    }
-
-    /**
-     * <code>getAlternativeAt</code> Returns the ith Alternative
-     *
-     * @param a <code>int</code> value : the index
-     * @return a <code>Alternative</code> value
-     * @throws IllegalArgumentException e  "nt found..."
-     */
-    public Alternative getAlternativeAt(int i) {
-        if (!this.isLowestLevel())
-            throw new IllegalArgumentException("The ith alternative of a criterium not in the least level can not be found");
-        return getAlternatives().elementAt(i);
-    }
-
-    /**
-     * <code>getAlternativeAt</code> Returns the ith subcriterium
-     *
-     * @param a <code>Alternative</code> value
-     * @return a <code>int</code> value : the index
-     * @throws IllegalArgumentException e "not found..."
-     */
-    public int getIndexOfAlternative(Alternative a) {
-        if (this.isLowestLevel())
-            throw new IllegalArgumentException("The ith alternative of a criterium not in the least level can not be found");
-        return getAlternatives().indexOf(a);
-    }
-
 
     /**
      * Creates a new  <code>Criterium</code> instance.
@@ -253,12 +209,17 @@ public class Criterium extends Activity implements Serializable, Cloneable {
      * @throws IllegalArgumentException
      */
     public double J(int index) {
-        if (!isLowestLevel())
-            throw new IllegalArgumentException("J can not be calculated for a criterium which is not in the lowest level");
 
-        double[][] values = {{1,1,1},{1,1,1},{1,1,1},{1,0,1},{0,1,1}};
+        int[][] actualFeatValues = getFather().getFather().featValues;
 
-        return (values[this.pos][index] == 0) ? 0 : p.getWeight(index);
+        int realIndex = actualFeatValues[this.pos][index];
+
+        try{
+
+            return (realIndex < 0) ? 0.0d : p.getWeight(realIndex);
+        } catch (ArrayIndexOutOfBoundsException e) {
+            return 0;
+        }
     }
 
     /**

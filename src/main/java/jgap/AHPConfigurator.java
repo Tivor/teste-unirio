@@ -1,6 +1,5 @@
 package jgap;
 
-import jahp.adt.Hierarchy;
 import org.jgap.Configuration;
 import org.jgap.Genotype;
 import org.jgap.InvalidConfigurationException;

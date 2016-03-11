@@ -1,7 +1,5 @@
 package jgap;
 
-import jahp.adt.Hierarchy;
-import org.apache.commons.math3.ml.distance.EuclideanDistance;
 import org.apache.commons.math3.util.FastMath;
 import org.jgap.IChromosome;
 

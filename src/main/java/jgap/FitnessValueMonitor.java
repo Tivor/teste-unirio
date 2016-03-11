@@ -1,9 +1,9 @@
 package jgap;
 
-import java.util.*;
-
 import org.jgap.*;
 import org.jgap.audit.IEvolutionMonitor;
+
+import java.util.List;
 
 /**
  * Monitors the evolution and stops it if evolution does not make a progress

@@ -17,10 +17,13 @@ public class AhpFiller {
 
     public static final int RANDOM_CROMO = 0;
 
-    public void populateAHP(BufferedReader brAlt, Vector<Alternative> alternatives, Vector<Alternative> allAlternatives, BufferedReader brCrits, Vector<Criterium> criteria, Vector<Criterium> criteriaTest, boolean testCreated, boolean gaWeight, Genotype initialGenotype, int crossValidationAlternative, Map<String, String> mapeamento, Map<String, String> valoresFeatures) throws IOException {
+    public int[][] populateAHP(BufferedReader brAlt, Vector<Alternative> alternatives, Vector<Alternative> allAlternatives, BufferedReader brCrits, Vector<Criterium> criteria, Vector<Criterium> criteriaTest, boolean testCreated, boolean gaWeight, Genotype initialGenotype, int crossValidationAlternative, Map<String, String> mapeamento, Map<String, String> valoresFeatures, int featuresSize) throws IOException {
         String tempCrit;
 
         int geneIndex = 0;
+        int[][] matrizRepresenta = new int[featuresSize][allAlternatives.size()];
+
+        int matrizRepresentaFeat = 0;
 
         for (int critIndex = 0; critIndex < criteria.size(); critIndex++) {
 
@@ -45,9 +48,10 @@ public class AhpFiller {
                 geneIndex += length;
             }
 
+
             for (int i = 0; i < length; i++) {
                 Criterium criteriumTest = testCreated ? null : criteriaTest.get(critIndex);
-                createFeaturesWithAlternativesWeights(brAlt, alternatives, allAlternatives, criteria.get(critIndex), criteriumTest, featuresStr[i], features, featuresTest, testCreated, weights, gaWeight, i, crossValidationAlternative, valoresFeatures);
+                matrizRepresenta[matrizRepresentaFeat++] = createFeaturesWithAlternativesWeights(brAlt, alternatives, allAlternatives, criteria.get(critIndex), criteriumTest, featuresStr[i], features, featuresTest, testCreated, weights, gaWeight, i, crossValidationAlternative, valoresFeatures, matrizRepresentaFeat);
             }
 
             criterium.createPCM(features, weights);
@@ -58,6 +62,8 @@ public class AhpFiller {
             }
 
         }
+
+        return matrizRepresenta;
     }
 
     public void setGaWeights(double[] weights, Genotype initialGenotype, int geneIndex) {
@@ -70,7 +76,7 @@ public class AhpFiller {
         }
     }
 
-    public void createFeaturesWithAlternativesWeights(BufferedReader brAlt, Vector<Alternative> alternatives,  Vector<Alternative> allAlternatives, Criterium criterium, Criterium criteriumTest, String featureStr, Vector<Criterium> features, Vector<Criterium> featuresTest, boolean testCreated, double[] weights, boolean gaWeight, int i, int crossValidationAlternative, Map<String, String> valoresFeatures) throws IOException {
+    public int[] createFeaturesWithAlternativesWeights(BufferedReader brAlt, Vector<Alternative> alternatives,  Vector<Alternative> allAlternatives, Criterium criterium, Criterium criteriumTest, String featureStr, Vector<Criterium> features, Vector<Criterium> featuresTest, boolean testCreated, double[] weights, boolean gaWeight, int i, int crossValidationAlternative, Map<String, String> valoresFeatures, int pos) throws IOException {
 
         if (!gaWeight) {
             String[] featureAndWeight = featureStr.split("@");
@@ -78,7 +84,7 @@ public class AhpFiller {
             weights[i] = Double.parseDouble(featureAndWeight[1]);
         }
 
-        Criterium feature = new Criterium(featureStr, true, criterium, i);
+        Criterium feature = new Criterium(featureStr, true, criterium, pos-1);
         features.add(feature);
 
         String tempAlt;
@@ -90,22 +96,27 @@ public class AhpFiller {
             valoresFeatures.put(featureStr, tempAlt);
         }
 
-
         String[] alternativeWeightsStr = tempAlt.split(",");
         int lengthWeights = alternativeWeightsStr.length;
-
 
         Vector<Alternative> alternativesClean = (Vector) alternatives.clone();
         Vector<Alternative> allAlternativesClean = (Vector) allAlternatives.clone();
 
         int countZeros = 0;
         int countZerosAll = 0;
+
+        int[] vetorRepresenta = new int[lengthWeights];
+
         double[] parsedWeights = new double[lengthWeights];
+        int countRepresenta = 0;
         for (int j = 0; j < lengthWeights; j++) {
             parsedWeights[j] = Double.parseDouble(alternativeWeightsStr[j]);
             if (parsedWeights[j] == 0.0d) {
+                vetorRepresenta[j] = -1;
                 countZerosAll++;
                 if (j != crossValidationAlternative) countZeros++;
+            } else {
+                vetorRepresenta[j] = (j != crossValidationAlternative) ? countRepresenta++ : -2;
             }
         }
 
@@ -137,10 +148,12 @@ public class AhpFiller {
         feature.createPCM(alternativesClean, alternativeWeights);
 
         if (!testCreated) {
-            Criterium featureTest = new Criterium(featureStr, true, criteriumTest, i);
+            Criterium featureTest = new Criterium(featureStr, true, criteriumTest, pos-1);
             featuresTest.add(featureTest);
             featureTest.createPCM(allAlternativesClean, allAlternativeWeights);
         }
+
+        return vetorRepresenta;
 
     }
 

@@ -8,7 +8,6 @@ import jahp.utils.Jama.EigenvalueDecomposition;
 import jahp.utils.Jama.Matrix;
 
 import java.io.Serializable;
-import java.util.List;
 
 //import com.sun.java.swing.*; //Used by JDK 1.2 Beta 4 and all
 //Swing releases before Swing 1.1 Beta 3.
@@ -238,7 +237,7 @@ public class PairwiseComparisonMatrix implements Serializable, Cloneable {
      *
      * @return Matrix
      */
-    public Matrix getWeight() {
+    public Matrix createWeightMatrix() {
 //        Matrix Ab = new Matrix(getSize(), getSize());
         Matrix W = new Matrix(getSize(), 1, 1.0);
         double sum = 0.00;
@@ -298,10 +297,9 @@ public class PairwiseComparisonMatrix implements Serializable, Cloneable {
      * @return double value
      */
     public double getWeight(int i) {
-        Matrix W = getWeight();
+        Matrix W = createWeightMatrix();
         return W.get(i, 0);
     }
-
 
     /**
      * <code>toString</code> Returns a string representation of this PairwiseComparisonMatrix, containing the String representation of each weight.
@@ -323,76 +321,6 @@ public class PairwiseComparisonMatrix implements Serializable, Cloneable {
         s = s + "Inconsistency Ratio      : " + getInconsistencyRatio() + "\n";
         return s;
     }
-
-    /**
-     * <code>addAlternative</code> method here.
-     */
-    public void addElement() {
-        setSize(getSize() + 1);
-        InitMatrix();
-
-    }
-
-    /**
-     * <code>delElement</code> method here.
-     *
-     * @param int :  the index of the alternative which should be deleted
-     */
-    public void delElement(int index) {
-        Matrix B = new Matrix((size - 1), (size - 1), 1.0);
-
-        for (int i = 0; i < size; i++) {
-            for (int j = 0; j < size; j++) {
-                if (i < index && j < index) {
-                    B.set(i, j, A.get(i, j));
-                }
-                if (i < index && index < j) {
-                    B.set(i, j - 1, A.get(i, j));
-                }
-                if (index < i && j < index) {
-                    B.set(i - 1, j, A.get(i, j));
-                }
-                if (index < i && index < j) {
-                    //Systemerr.println("size : "+size+"\n");
-                    //Systemerr.println("i : "+i+"   j : "+j+"\n");
-
-                    B.set(i - 1, j - 1, A.get(i, j));
-                }
-            }
-        }
-
-        B = A;
-        ;
-        size--;
-    }
-
-    /**
-     * <code>main</code> method here to test.
-     *
-     * @param args[] a <code>String</code> value
-     */
-    public static void main(String args[]) {
-
-        PairwiseComparisonMatrix P = new PairwiseComparisonMatrix(3);
-        //Systemout.println("Print the matrix A");
-        P.print();
-        //P.getMaxEigenValue();
-
-
-        //Systemout.println("");
-
-        //Systemout.println("getMaxEigenValue() : "+ P.getMaxEigenValue());
-        //Systemout.println("getInconsistencyIndex() : "+ P.getInconsistencyIndex());
-        //Systemout.println("getRandomInconsistency() : "+ P.getRandomInconsistency());
-        //Systemout.println("getInconsistencyRatio() : " +P.getInconsistencyRatio());
-        //Systemout.println("PairwiseComparisonMatrix is consistency : "+P.isConsistency());
-
-
-        Matrix W = P.getWeight();
-        W.print(P.getSize(), 1);
-
-    }
-
 
 }
 

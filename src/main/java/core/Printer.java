@@ -1,11 +1,9 @@
 package core;
 
-import com.sun.scenario.effect.impl.sw.sse.SSEBlend_SRC_OUTPeer;
 import jahp.adt.Criterium;
 import jahp.adt.Hierarchy;
 import jgap.AHPConfigurator;
 import metric.PrecisionAtK;
-import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.math3.ml.distance.EuclideanDistance;
 import org.apache.commons.math3.stat.correlation.SpearmansCorrelation;
 import org.jgap.Genotype;

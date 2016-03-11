@@ -2,7 +2,6 @@ package jgap;
 
 import jahp.adt.Criterium;
 import jahp.adt.Hierarchy;
-import org.jgap.CachedFitnessFunction;
 import org.jgap.FitnessFunction;
 import org.jgap.IChromosome;
 
