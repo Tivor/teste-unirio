@@ -27,6 +27,8 @@ public class Criterium extends Activity implements Serializable, Cloneable {
     // The associated PairwiseComparisonMatrix
     private PairwiseComparisonMatrix p;
 
+    private int pos;
+
     /**
      * Gets the value of p
      *
@@ -151,11 +153,12 @@ public class Criterium extends Activity implements Serializable, Cloneable {
     /**
      * Creates a new  <code>Criterium</code> instance.
      */
-    public Criterium(String name, boolean lowestLevel, Criterium father) {
+    public Criterium(String name, boolean lowestLevel, Criterium father, int pos) {
         this.name = name;
         this.goal = false;
         this.lowestLevel = lowestLevel;
         this.father = father;
+        this.pos = pos;
     }
 
     /**
@@ -252,7 +255,10 @@ public class Criterium extends Activity implements Serializable, Cloneable {
     public double J(int index) {
         if (!isLowestLevel())
             throw new IllegalArgumentException("J can not be calculated for a criterium which is not in the lowest level");
-        return p.getWeight(index);
+
+        double[][] values = {{1,1,1},{1,1,1},{1,1,1},{1,0,1},{0,1,1}};
+
+        return (values[this.pos][index] == 0) ? 0 : p.getWeight(index);
     }
 
     /**

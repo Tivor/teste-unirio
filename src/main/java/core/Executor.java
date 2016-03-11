@@ -56,8 +56,8 @@ public class Executor {
             double[][] originalIndividualData = printer.individualRanks();
 
 //            originalRank = calculateAvg(originalIndividualData);
-            ahpConfigurator.createConfiguration(chromosomeSize, originalRank, originalIndividualData);
-//            ahpConfigurator.createConfiguration(chromosomeSize, originalRank);
+//            ahpConfigurator.createConfiguration(chromosomeSize, originalRank, originalIndividualData);
+            ahpConfigurator.createConfiguration(chromosomeSize, originalRank);
 
             Map<String, String> mapeamento = new HashMap();
             Map<String, String> valoresFeatures = new HashMap();

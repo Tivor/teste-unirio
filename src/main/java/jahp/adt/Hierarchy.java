@@ -131,7 +131,7 @@ public class Hierarchy implements Cloneable, Serializable {
      * @return double  : the value of the alternative according to the hierarchy
      */
     public double Pi(int i) {
-        return goal.Jstar(i, 0, false);
+        return goal.Jstar(i);
     }
 
     /**
@@ -141,7 +141,7 @@ public class Hierarchy implements Cloneable, Serializable {
      * @return double  : the value of the alternative according to the hierarchy
      */
     public double Pi(int i, int c) {
-        return goal.Jstar(i, c, true);
+        return goal.Jstar(i, c);
     }
 
     /**

@@ -119,14 +119,14 @@ public class Matrix implements Cloneable, java.io.Serializable {
                     A[i][j] = 1.0;
                 } else {
 
-                    if ((weights[i] == 0) || (weights[j] == 0)) {
-                        A[i][j] = 0.0d;
-                        A[j][i] = 0.0d;
-                    } else {
+//                    if ((weights[i] == 0) || (weights[j] == 0)) {
+//                        A[i][j] = 0.0d;
+//                        A[j][i] = 0.0d;
+//                    } else {
                         double ratio = weights[i] / weights[j];
                         A[i][j] = ratio;
                         A[j][i] = 1/ratio;
-                    }
+//                    }
 
                 }
 
