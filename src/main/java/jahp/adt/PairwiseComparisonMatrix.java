@@ -36,6 +36,8 @@ public class PairwiseComparisonMatrix implements Serializable, Cloneable {
     private Matrix A;
     private int size;
 
+    private Matrix weightCache;
+
     /**
      * Set the value of the pairwise comparison aij between w_i and w_j
      *
@@ -238,55 +240,45 @@ public class PairwiseComparisonMatrix implements Serializable, Cloneable {
      * @return Matrix
      */
     public Matrix createWeightMatrix() {
-//        Matrix Ab = new Matrix(getSize(), getSize());
-        Matrix W = new Matrix(getSize(), 1, 1.0);
-        double sum = 0.00;
-//        // normalization
-//        for (int j = 0; j < getSize(); j++) {
-//            sum = 0.00;
-//            for (int i = 0; i < getSize(); i++) {
-//                sum += A.get(i, j);
-//            }
-//            for (int i = 0; i < getSize(); i++) {
-//                try {
-//                    Ab.set(i, j, A.get(i, j) / sum);
-//                } catch (ArrayIndexOutOfBoundsException e) {
-//                    System.err.println("Error in setting Ab : ArrayIndexOutOfBoundsException" + e);
-//                }
-//            }
-//        }
 
-        //sum on each line
-        for (int i = 0; i < getSize(); i++) {
+        if (this.weightCache == null) {
+
+            Matrix W = new Matrix(getSize(), 1, 1.0);
+            double sum = 0.00;
+
+            for (int i = 0; i < getSize(); i++) {
+                sum = 0.00;
+                for (int j = 0; j < getSize(); j++) {
+                    sum += A.get(i, j);
+                }
+                try {
+                    W.set(i, 0, sum);
+                } catch (ArrayIndexOutOfBoundsException e) {
+                    System.err.println("Error in setting W : ArrayIndexOutOfBoundsException" + e);
+                }
+
+            }
+            //normalization vector
             sum = 0.00;
-            for (int j = 0; j < getSize(); j++) {
-                sum += A.get(i, j);
+            for (int i = 0; i < getSize(); i++) {
+                try {
+                    sum += W.get(i, 0);
+                } catch (ArrayIndexOutOfBoundsException e) {
+                    System.err.println("Error in setting W : ArrayIndexOutOfBoundsException" + e);
+                }
             }
-            try {
-                W.set(i, 0, sum);
-            } catch (ArrayIndexOutOfBoundsException e) {
-                System.err.println("Error in setting W : ArrayIndexOutOfBoundsException" + e);
-            }
+            for (int i = 0; i < getSize(); i++) {
 
-        }
-        //normalization vector
-        sum = 0.00;
-        for (int i = 0; i < getSize(); i++) {
-            try {
-                sum += W.get(i, 0);
-            } catch (ArrayIndexOutOfBoundsException e) {
-                System.err.println("Error in setting W : ArrayIndexOutOfBoundsException" + e);
+                try {
+                    W.set(i, 0, W.get(i, 0) / sum);
+                } catch (ArrayIndexOutOfBoundsException e) {
+                    System.err.println("Error in setting W : ArrayIndexOutOfBoundsException" + e);
+                }
             }
+            this.weightCache = W;
         }
-        for (int i = 0; i < getSize(); i++) {
 
-            try {
-                W.set(i, 0, W.get(i, 0) / sum);
-            } catch (ArrayIndexOutOfBoundsException e) {
-                System.err.println("Error in setting W : ArrayIndexOutOfBoundsException" + e);
-            }
-        }
-        return W;
+        return this.weightCache;
 
     }
 

@@ -214,12 +214,7 @@ public class Criterium extends Activity implements Serializable, Cloneable {
 
         int realIndex = actualFeatValues[this.pos][index];
 
-        try{
-
-            return (realIndex < 0) ? 0.0d : p.getWeight(realIndex);
-        } catch (ArrayIndexOutOfBoundsException e) {
-            return 0;
-        }
+        return (realIndex < 0) ? 0.0d : p.getWeight(realIndex);
     }
 
     /**
