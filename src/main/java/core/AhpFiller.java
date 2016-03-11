@@ -78,7 +78,7 @@ public class AhpFiller {
             weights[i] = Double.parseDouble(featureAndWeight[1]);
         }
 
-        Criterium feature = new Criterium(featureStr, true, criterium);
+        Criterium feature = new Criterium(featureStr, true, criterium, i);
         features.add(feature);
 
         String tempAlt;
@@ -93,31 +93,53 @@ public class AhpFiller {
 
         String[] alternativeWeightsStr = tempAlt.split(",");
         int lengthWeights = alternativeWeightsStr.length;
-        double[] alternativeWeights = new double[lengthWeights - 1];
 
-        double[] allAlternativeWeights = new double[lengthWeights];
 
-        int correctIndex = 0;
+        Vector<Alternative> alternativesClean = (Vector) alternatives.clone();
+        Vector<Alternative> allAlternativesClean = (Vector) allAlternatives.clone();
+
+        int countZeros = 0;
+        int countZerosAll = 0;
+        double[] parsedWeights = new double[lengthWeights];
         for (int j = 0; j < lengthWeights; j++) {
-
-            double v = Double.parseDouble(alternativeWeightsStr[j]);
-
-            if (!testCreated) {
-                allAlternativeWeights[j] = v;
-            }
-
-            if (j != crossValidationAlternative) {
-
-                alternativeWeights[correctIndex++] = v;
+            parsedWeights[j] = Double.parseDouble(alternativeWeightsStr[j]);
+            if (parsedWeights[j] == 0.0d) {
+                countZerosAll++;
+                if (j != crossValidationAlternative) countZeros++;
             }
         }
 
-        feature.createPCM(alternatives, alternativeWeights);
+        double[] alternativeWeights = new double[lengthWeights - 1 - countZeros];
+        double[] allAlternativeWeights = new double[lengthWeights - countZerosAll];
+
+        int correctIndex = 0;
+        int correctIndexAll = 0;
+        for (int j = 0; j < lengthWeights; j++) {
+
+            if (parsedWeights[j] > 0.0d) {
+                if (!testCreated) {
+                    allAlternativeWeights[correctIndexAll++] = parsedWeights[j];
+                }
+
+                if (j != crossValidationAlternative) {
+
+                    alternativeWeights[correctIndex++] = parsedWeights[j];
+                }
+            } else {
+                if (j != crossValidationAlternative) {
+                    alternativesClean.remove(correctIndex);
+                }
+
+                allAlternativesClean.remove(correctIndexAll);
+            }
+        }
+
+        feature.createPCM(alternativesClean, alternativeWeights);
 
         if (!testCreated) {
-            Criterium featureTest = new Criterium(featureStr, true, criteriumTest);
+            Criterium featureTest = new Criterium(featureStr, true, criteriumTest, i);
             featuresTest.add(featureTest);
-            featureTest.createPCM(allAlternatives, allAlternativeWeights);
+            featureTest.createPCM(allAlternativesClean, allAlternativeWeights);
         }
 
     }

@@ -69,11 +69,11 @@ public class Reader {
 
         for (int i = 0; i < critStr.length; i++) {
 
-            Criterium criterium = new Criterium(critStr[i], false, h.getGoal());
+            Criterium criterium = new Criterium(critStr[i], false, h.getGoal(), 0);
             criteria.add(criterium);
 
             if (!testCreated) {
-                Criterium criteriumTest = new Criterium(critStr[i], false, hierarchyTest.getGoal());
+                Criterium criteriumTest = new Criterium(critStr[i], false, hierarchyTest.getGoal(), 0);
                 criteriaTest.add(criteriumTest);
             }
         }

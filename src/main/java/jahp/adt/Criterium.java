@@ -24,6 +24,8 @@ public class Criterium extends Activity implements Serializable, Cloneable {
 
     private Vector sons;
 
+    private int pos;
+
     // The associated PairwiseComparisonMatrix
     private PairwiseComparisonMatrix p;
 
@@ -151,11 +153,12 @@ public class Criterium extends Activity implements Serializable, Cloneable {
     /**
      * Creates a new  <code>Criterium</code> instance.
      */
-    public Criterium(String name, boolean lowestLevel, Criterium father) {
+    public Criterium(String name, boolean lowestLevel, Criterium father, int pos) {
         this.name = name;
         this.goal = false;
         this.lowestLevel = lowestLevel;
         this.father = father;
+        this.pos = pos;
     }
 
     /**
@@ -213,33 +216,38 @@ public class Criterium extends Activity implements Serializable, Cloneable {
     //
     //*************************************
 
-
     /**
      * <code>Jstar</code> method here.
      *
      * @param index the index of the alternative
      * @return double the global importance of the alternative according to the criterium
      */
-    public double Jstar(int index) {
-        if (isLowestLevel()) return J(index);
-        double sum = 0.0;
-        for (int i = 0; i < getSonsSize(); i++) {
-            Criterium son = getSons().get(i);
-            sum += son.Jstar(index) * p.getWeight(i);
+    public double Jstar(int index, int c, boolean individual) {
+
+        if (isLowestLevel()) {
+
+            double[][] featValAlts = {{1,1,1},{1,1,1},{1,1,1},{1,1,1},{0,1,1}};
+
+            try{
+                return (featValAlts[this.pos][index] == 0) ? 0 : J(index, c);
+            } catch (ArrayIndexOutOfBoundsException e) {
+                return 0;
+            }
+
         }
-        return sum;
-    }
 
-    /**
-     * <code>Jstar</code> method here.
-     *
-     * @param index the index of the alternative
-     * @return double the global importance of the alternative according to the criterium
-     */
-    public double Jstar(int index, int c) {
-        if (isLowestLevel()) return J(index);
-        Criterium son = getSons().get(c);
-        return son.Jstar(index) * p.getWeight(c);
+        if (individual) {
+            Criterium son = getSons().get(c);
+            return son.Jstar(index, c, individual) * p.getWeight(c);
+        } else {
+            double sum = 0.0;
+            for (int i = 0; i < getSonsSize(); i++) {
+                Criterium son = getSons().get(i);
+                sum += son.Jstar(index, i, individual) * p.getWeight(i);
+            }
+            return sum;
+        }
+
     }
 
     /**
@@ -249,7 +257,7 @@ public class Criterium extends Activity implements Serializable, Cloneable {
      * @return double the global importance of the alternative according to the criterium in the lowest level
      * @throws IllegalArgumentException
      */
-    public double J(int index) {
+    public double J(int index, int c) {
         if (!isLowestLevel())
             throw new IllegalArgumentException("J can not be calculated for a criterium which is not in the lowest level");
         return p.getWeight(index);

@@ -239,23 +239,23 @@ public class PairwiseComparisonMatrix implements Serializable, Cloneable {
      * @return Matrix
      */
     public Matrix getWeight() {
-        Matrix Ab = new Matrix(getSize(), getSize());
+//        Matrix Ab = new Matrix(getSize(), getSize());
         Matrix W = new Matrix(getSize(), 1, 1.0);
         double sum = 0.00;
-        // normalization
-        for (int j = 0; j < getSize(); j++) {
-            sum = 0.00;
-            for (int i = 0; i < getSize(); i++) {
-                sum += A.get(i, j);
-            }
-            for (int i = 0; i < getSize(); i++) {
-                try {
-                    Ab.set(i, j, A.get(i, j) / sum);
-                } catch (ArrayIndexOutOfBoundsException e) {
-                    System.err.println("Error in setting Ab : ArrayIndexOutOfBoundsException" + e);
-                }
-            }
-        }
+//        // normalization
+//        for (int j = 0; j < getSize(); j++) {
+//            sum = 0.00;
+//            for (int i = 0; i < getSize(); i++) {
+//                sum += A.get(i, j);
+//            }
+//            for (int i = 0; i < getSize(); i++) {
+//                try {
+//                    Ab.set(i, j, A.get(i, j) / sum);
+//                } catch (ArrayIndexOutOfBoundsException e) {
+//                    System.err.println("Error in setting Ab : ArrayIndexOutOfBoundsException" + e);
+//                }
+//            }
+//        }
 
         //sum on each line
         for (int i = 0; i < getSize(); i++) {

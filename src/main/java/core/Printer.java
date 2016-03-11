@@ -1,5 +1,6 @@
 package core;
 
+import com.sun.scenario.effect.impl.sw.sse.SSEBlend_SRC_OUTPeer;
 import jahp.adt.Criterium;
 import jahp.adt.Hierarchy;
 import jgap.AHPConfigurator;
@@ -30,6 +31,9 @@ public class Printer {
     public double[] printFittestResult(Hierarchy h, Genotype population) {
         double[] newAhpResult;
         IChromosome a_subject = population.getFittestChromosome();
+
+        System.out.println(a_subject);
+
         int geneIndex = 0;
 
         for (Criterium criterium : h.getGoal().getSons()) {
@@ -45,6 +49,8 @@ public class Printer {
             criterium.updatePCM(weights);
         }
 
+        System.out.println(h.print());
+
         newAhpResult = new double[h.getAlternativesSize()];
         for (int j = 0; j < h.getAlternativesSize(); j++) {
             newAhpResult[j] = h.Pi(j);
@@ -56,6 +62,7 @@ public class Printer {
     }
 
     public void printCompleteResult(AHPConfigurator ahpConfigurator, double[] bestAhpResultComplete) {
+//        System.out.println(">>>BEST GA RESULT: " + ArrayUtils.toString(bestAhpResultComplete));
         System.out.println("EUCLIDEAN: " + new EuclideanDistance().compute(bestAhpResultComplete, ahpConfigurator.getOriginalRank()));
         System.out.println("SPEARMANS: " + new SpearmansCorrelation().correlation(bestAhpResultComplete, ahpConfigurator.getOriginalRank()));
         System.out.println("P@k: " + new PrecisionAtK().calculate(bestAhpResultComplete, ahpConfigurator.getOriginalRank()));

@@ -44,25 +44,25 @@ public class Alternative extends Activity implements Serializable, Cloneable {
     //
     //*************************************
 
-    /**
-     * <code>S</code> method here.
-     *
-     * @param Criterium c :  the index of the alternative
-     * @param Hierarchy h :  the reference hierarchy
-     * @return double  : the influence of the criterium on the alternative according to the hierarchy
-     * @throws IllegalArgumentException
-     */
-    public double S(Criterium c, Hierarchy h) {
-        if (c.equals(h.getGoal()))
-            throw new IllegalArgumentException("the influence of the goal on the alternative according to the hierarchy can not be calculated");
-        int index_alt = 0;
-        Vector alts = h.getAlternatives();
-        for (int i = 0; i < h.getAlternativesSize(); i++) {
-            Alternative alt = (Alternative) alts.get(i);
-            if (this.equals(alt)) index_alt = i;
-        }
-        return (c.Jstar(index_alt) * h.V(c) / h.Pi(index_alt));
-    }
+//    /**
+//     * <code>S</code> method here.
+//     *
+//     * @param Criterium c :  the index of the alternative
+//     * @param Hierarchy h :  the reference hierarchy
+//     * @return double  : the influence of the criterium on the alternative according to the hierarchy
+//     * @throws IllegalArgumentException
+//     */
+//    public double S(Criterium c, Hierarchy h) {
+//        if (c.equals(h.getGoal()))
+//            throw new IllegalArgumentException("the influence of the goal on the alternative according to the hierarchy can not be calculated");
+//        int index_alt = 0;
+//        Vector alts = h.getAlternatives();
+//        for (int i = 0; i < h.getAlternativesSize(); i++) {
+//            Alternative alt = (Alternative) alts.get(i);
+//            if (this.equals(alt)) index_alt = i;
+//        }
+//        return (c.Jstar(index_alt) * h.V(c) / h.Pi(index_alt));
+//    }
 
 }
 
