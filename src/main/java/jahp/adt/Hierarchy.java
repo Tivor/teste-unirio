@@ -98,32 +98,6 @@ public class Hierarchy implements Cloneable, Serializable {
         return s;
     }
 
-
-    //************************************
-    //
-    //Method to calculate solutions
-    //
-    //
-    //*************************************
-
-    /**
-     * <code>best_alternative</code> method here.
-     *
-     * @return an int : the index of the best alternative
-     */
-    public int bestAlternative() {
-        int index = 0;
-        double value = 0.0;
-        for (int i = 0; i < getAlternativesSize(); i++) {
-            if (Pi(i) > value) {
-                index = i;
-                value = Pi(i);
-            }
-        }
-        return index;
-    }
-
-
     /**
      * <code>Pi</code> method here.
      *
