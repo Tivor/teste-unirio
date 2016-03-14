@@ -51,7 +51,7 @@ public class Printer {
 
         newAhpResult = new double[h.getAlternativesSize()];
         for (int j = 0; j < h.getAlternativesSize(); j++) {
-            newAhpResult[j] = h.Pi(j);
+            newAhpResult[j] = h.PiFull(j);
         }
 
         System.out.println(Arrays.toString(newAhpResult));

@@ -105,7 +105,7 @@ public class AhpFiller {
         int countZeros = 0;
         int countZerosAll = 0;
 
-        int[] vetorRepresenta = new int[lengthWeights];
+        int[] vetorRepresenta = new int[lengthWeights + 1];
 
         double[] parsedWeights = new double[lengthWeights];
         int countRepresenta = 0;
@@ -114,9 +114,16 @@ public class AhpFiller {
             if (parsedWeights[j] == 0.0d) {
                 vetorRepresenta[j] = -1;
                 countZerosAll++;
-                if (j != crossValidationAlternative) countZeros++;
+                if (j != crossValidationAlternative) {
+                    countZeros++;
+                } else {
+                    vetorRepresenta[lengthWeights] = -3;
+                }
+            } else if (j == crossValidationAlternative) {
+                vetorRepresenta[j] = -2;
+                vetorRepresenta[lengthWeights] = countRepresenta;
             } else {
-                vetorRepresenta[j] = (j != crossValidationAlternative) ? countRepresenta++ : -2;
+                vetorRepresenta[j] = countRepresenta++;
             }
         }
 

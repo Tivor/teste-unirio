@@ -47,8 +47,7 @@ public class EuclideanFitnessFunction extends AHPFitnessFunction {
             sum += distance[i];
         }
 
-//        return distance(d
-// istance);
+//        return distance(distance);
         double v = 1 / sum;
         return v;
 

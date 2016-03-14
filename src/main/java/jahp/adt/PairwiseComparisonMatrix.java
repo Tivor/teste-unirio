@@ -241,7 +241,7 @@ public class PairwiseComparisonMatrix implements Serializable, Cloneable {
      */
     public Matrix createWeightMatrix() {
 
-        if (this.weightCache == null) {
+//        if (this.weightCache == null) {
 
             Matrix W = new Matrix(getSize(), 1, 1.0);
             double sum = 0.00;
@@ -276,8 +276,8 @@ public class PairwiseComparisonMatrix implements Serializable, Cloneable {
                 }
             }
             this.weightCache = W;
-        }
-
+//        }
+//
         return this.weightCache;
 
     }

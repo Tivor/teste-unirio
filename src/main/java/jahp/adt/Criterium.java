@@ -195,6 +195,23 @@ public class Criterium extends Activity implements Serializable, Cloneable {
      * @param index the index of the alternative
      * @return double the global importance of the alternative according to the criterium
      */
+    public double JstarFull(int index) {
+        if (isLowestLevel()) return JFull(index);
+
+        double sum = 0.0;
+        for (int i = 0; i < getSonsSize(); i++) {
+            Criterium son = getSons().get(i);
+            sum += son.JstarFull(index) * p.getWeight(i);
+        }
+        return sum;
+    }
+
+    /**
+     * <code>Jstar</code> method here.
+     *
+     * @param index the index of the alternative
+     * @return double the global importance of the alternative according to the criterium
+     */
     public double Jstar(int index, int c) {
         if (isLowestLevel()) return J(index);
         Criterium son = getSons().get(c);
@@ -215,6 +232,46 @@ public class Criterium extends Activity implements Serializable, Cloneable {
         int realIndex = actualFeatValues[this.pos][index];
 
         return (realIndex < 0) ? 0.0d : p.getWeight(realIndex);
+    }
+
+    /**
+     * <code>J</code> method here.
+     *
+     * @param index the index of the alternative
+     * @return double the global importance of the alternative according to the criterium in the lowest level
+     * @throws IllegalArgumentException
+     */
+    public double JFull(int index) {
+
+//        System.out.println("Para feature " + (this.pos + 1) + ", na alternativa " + index + " estou usando:");
+
+        int[][] actualFeatValues = getFather().getFather().featValues;
+        int realIndex = actualFeatValues[this.pos][index];
+
+        if (realIndex == -1) {
+//            System.out.println("zero pois realindex == -1");
+            return 0.0d;
+        } else {
+            int dummyIndex = actualFeatValues[this.pos][actualFeatValues[this.pos].length - 1];
+
+            if ((realIndex == -2) || (index == dummyIndex)) {
+//                System.out.println("dummy = " + dummyIndex + " realindex == " + realIndex);
+                return dummyIndex >= 0 ? p.getWeight(dummyIndex) : 0.0d;
+            } else {
+                if ((index < dummyIndex) || (dummyIndex == -3)) {
+//                    System.out.println("realIndex = " + realIndex + ", pois dummyIndex == " + dummyIndex);
+                    return p.getWeight(realIndex);
+                } else {
+                    try {
+//                        System.out.println("realIndex + 1 = " + (realIndex + 1));
+                        return p.getWeight(realIndex + 1);
+                    }catch (ArrayIndexOutOfBoundsException e) {
+//                        System.out.println(">>>>>>" + pos + "<<<<>>>>" + index);
+                        return 0.0d;
+                    }
+                }
+            }
+        }
     }
 
     /**
