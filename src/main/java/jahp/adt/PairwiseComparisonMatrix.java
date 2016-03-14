@@ -36,7 +36,7 @@ public class PairwiseComparisonMatrix implements Serializable, Cloneable {
     private Matrix A;
     private int size;
 
-    private Matrix weightCache;
+    private Matrix weightCache = null;
 
     /**
      * Set the value of the pairwise comparison aij between w_i and w_j
@@ -241,44 +241,41 @@ public class PairwiseComparisonMatrix implements Serializable, Cloneable {
      */
     public Matrix createWeightMatrix() {
 
-//        if (this.weightCache == null) {
 
-            Matrix W = new Matrix(getSize(), 1, 1.0);
-            double sum = 0.00;
+        Matrix W = new Matrix(getSize(), 1, 1.0);
+        double sum = 0.00;
 
-            for (int i = 0; i < getSize(); i++) {
-                sum = 0.00;
-                for (int j = 0; j < getSize(); j++) {
-                    sum += A.get(i, j);
-                }
-                try {
-                    W.set(i, 0, sum);
-                } catch (ArrayIndexOutOfBoundsException e) {
-                    System.err.println("Error in setting W : ArrayIndexOutOfBoundsException" + e);
-                }
-
-            }
-            //normalization vector
+        for (int i = 0; i < getSize(); i++) {
             sum = 0.00;
-            for (int i = 0; i < getSize(); i++) {
-                try {
-                    sum += W.get(i, 0);
-                } catch (ArrayIndexOutOfBoundsException e) {
-                    System.err.println("Error in setting W : ArrayIndexOutOfBoundsException" + e);
-                }
+            for (int j = 0; j < getSize(); j++) {
+                sum += A.get(i, j);
             }
-            for (int i = 0; i < getSize(); i++) {
+            try {
+                W.set(i, 0, sum);
+            } catch (ArrayIndexOutOfBoundsException e) {
+                System.err.println("Error in setting W : ArrayIndexOutOfBoundsException" + e);
+            }
 
-                try {
-                    W.set(i, 0, W.get(i, 0) / sum);
-                } catch (ArrayIndexOutOfBoundsException e) {
-                    System.err.println("Error in setting W : ArrayIndexOutOfBoundsException" + e);
-                }
+        }
+        //normalization vector
+        sum = 0.00;
+        for (int i = 0; i < getSize(); i++) {
+            try {
+                sum += W.get(i, 0);
+            } catch (ArrayIndexOutOfBoundsException e) {
+                System.err.println("Error in setting W : ArrayIndexOutOfBoundsException" + e);
             }
-            this.weightCache = W;
-//        }
-//
-        return this.weightCache;
+        }
+        for (int i = 0; i < getSize(); i++) {
+
+            try {
+                W.set(i, 0, W.get(i, 0) / sum);
+            } catch (ArrayIndexOutOfBoundsException e) {
+                System.err.println("Error in setting W : ArrayIndexOutOfBoundsException" + e);
+            }
+        }
+
+        return W;
 
     }
 
@@ -289,8 +286,12 @@ public class PairwiseComparisonMatrix implements Serializable, Cloneable {
      * @return double value
      */
     public double getWeight(int i) {
-        Matrix W = createWeightMatrix();
-        return W.get(i, 0);
+
+        if (this.weightCache == null) {
+            this.weightCache = createWeightMatrix();
+        }
+
+        return this.weightCache.get(i, 0);
     }
 
     /**

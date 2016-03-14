@@ -18,7 +18,7 @@ import java.util.Vector;
 
 public class Executor {
 
-    private static final int MAX_ALLOWED_EVOLUTIONS = 5;
+    private static final int MAX_ALLOWED_EVOLUTIONS = 500;
 
     private AHPConfigurator ahpConfigurator = new AHPConfigurator();
     private Reader reader = new Reader();
