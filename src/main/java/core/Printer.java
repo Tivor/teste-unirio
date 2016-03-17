@@ -47,7 +47,7 @@ public class Printer {
             criterium.updatePCM(weights);
         }
 
-        System.out.println(h.print());
+//        System.out.println(h.print());
 
         newAhpResult = new double[h.getAlternativesSize()];
         for (int j = 0; j < h.getAlternativesSize(); j++) {

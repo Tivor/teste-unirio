@@ -35,7 +35,7 @@ public class EuclideanFitnessFunction extends AHPFitnessFunction {
 
     private double evaluateExt(IChromosome iChromosome) {
 
-        double[][] newFullAhpResult = runCriteriaAHP(iChromosome);
+        double[][] newFullAhpResult = runCriteriaAHP(iChromosome, this.crossValidationAlternative);
 
         double sum = 0.0d;
 
@@ -58,7 +58,7 @@ public class EuclideanFitnessFunction extends AHPFitnessFunction {
         double sum = 0.0D;
 
         int correctIndex = 0;
-        for(int i = 0; i < p1.length; ++i) {
+        for(int i = 0; i < p2.length; ++i) {
 
             if (i != crossValidationAlternative) {
                 double dp = p1[i] - p2[correctIndex++];

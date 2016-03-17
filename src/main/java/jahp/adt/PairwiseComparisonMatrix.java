@@ -311,7 +311,7 @@ public class PairwiseComparisonMatrix implements Serializable, Cloneable {
         s += "Weights                   : \n";
         for (int i = 0; i < getSize(); i++) s += " " + getWeight(i) + " ";
         s = s + "\n";
-        s = s + "Inconsistency Ratio      : " + getInconsistencyRatio() + "\n";
+//        s = s + "Inconsistency Ratio      : " + getInconsistencyRatio() + "\n";
         return s;
     }
 

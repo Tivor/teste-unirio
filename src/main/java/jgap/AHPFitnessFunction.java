@@ -61,7 +61,7 @@ public abstract class AHPFitnessFunction extends FitnessFunction {
         return h.getAlternativesSize();
     }
 
-    protected double[][] runCriteriaAHP(IChromosome a_subject) {
+    protected double[][] runCriteriaAHP(IChromosome a_subject, int crossValidationAlternative) {
         int alternativesSize = populateAHP(a_subject);
         int sonsSize = h.getGoal().getSonsSize();
 
@@ -70,14 +70,23 @@ public abstract class AHPFitnessFunction extends FitnessFunction {
         for (int k = 0; k < sonsSize; k++) {
 
             double interSum = 0.0d;
-            for (int j = 0; j < alternativesSize; j++) {
-                double pi = h.Pi(j, k);
-                newFullAhpResult[k][j] = pi;
-                interSum += pi;
+            int correctIndex = 0;
+            for (int j = 0; j <= alternativesSize; j++) {
+
+                if (j != crossValidationAlternative) {
+                    double pi = h.Pi(j, k);
+                    newFullAhpResult[k][correctIndex++] = pi;
+                    interSum += pi;
+                }
+
             }
 
-            for (int j = 0; j < alternativesSize; j++) {
-                newFullAhpResult[k][j] = newFullAhpResult[k][j] / interSum;
+            correctIndex = 0;
+            for (int j = 0; j <= alternativesSize; j++) {
+                if (j != crossValidationAlternative) {
+                    newFullAhpResult[k][correctIndex] = newFullAhpResult[k][correctIndex] / interSum;
+                    correctIndex++;
+                }
             }
 
         }

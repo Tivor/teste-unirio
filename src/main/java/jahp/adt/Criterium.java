@@ -212,6 +212,21 @@ public class Criterium extends Activity implements Serializable, Cloneable {
      * @param index the index of the alternative
      * @return double the global importance of the alternative according to the criterium
      */
+    public double JstarFull(int index, int c) {
+        if (isLowestLevel()) return JFull(index);
+
+        double sum = 0.0;
+        Criterium son = getSons().get(c);
+        sum += son.JstarFull(index) * p.getWeight(c);
+        return sum;
+    }
+
+    /**
+     * <code>Jstar</code> method here.
+     *
+     * @param index the index of the alternative
+     * @return double the global importance of the alternative according to the criterium
+     */
     public double Jstar(int index, int c) {
         if (isLowestLevel()) return J(index);
         Criterium son = getSons().get(c);

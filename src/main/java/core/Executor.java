@@ -18,7 +18,7 @@ import java.util.Vector;
 
 public class Executor {
 
-    private static final int MAX_ALLOWED_EVOLUTIONS = 500;
+    private static final int MAX_ALLOWED_EVOLUTIONS = 9000;
 
     private AHPConfigurator ahpConfigurator = new AHPConfigurator();
     private Reader reader = new Reader();
@@ -50,7 +50,7 @@ public class Executor {
 
             printer = new Printer(reader.readIndividualRanks(alternatives.size(), brCriteria, tempCrit.length));
 
-            double[][] originalIndividualData = printer.individualRanks();
+//            double[][] originalIndividualData = printer.individualRanks();
 
 //            originalRank = calculateAvg(originalIndividualData);
 //            ahpConfigurator.createConfiguration(chromosomeSize, originalRank, originalIndividualData);
@@ -134,13 +134,18 @@ public class Executor {
 
         printer.printCompleteResult(ahpConfigurator, bestAhpResultComplete);
 
+        calculateIndividualResult(hierarchyTest);
+
+    }
+
+    private void calculateIndividualResult(Hierarchy hierarchyTest) {
         for (int k = 0; k < hierarchyTest.getGoal().getSonsSize(); k++) {
 
             int alternativesSize = hierarchyTest.getAlternativesSize();
             double[] newAhpResult = new double[alternativesSize];
             double interSum = 0.0d;
             for (int j = 0; j < alternativesSize; j++) {
-                double pi = hierarchyTest.Pi(j, k);
+                double pi = hierarchyTest.PiFull(j, k);
                 newAhpResult[j] = pi;
                 interSum += pi;
             }
@@ -152,7 +157,6 @@ public class Executor {
             printer.printIndividualResult(k, newAhpResult);
 
         }
-
     }
 
 }
