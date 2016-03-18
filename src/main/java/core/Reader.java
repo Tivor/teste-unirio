@@ -13,7 +13,7 @@ import java.util.Vector;
  */
 public class Reader {
 
-    public double[][] readIndividualRanks(int alternativesSize, BufferedReader brCriteria, int criteriaSize) throws IOException {
+    public double[][] readIndividualRanks(int alternativesSize, BufferedReader brCriteria, int criteriaSize, double[][] originalIndividual) throws IOException {
         double[][] individualRanks = new double[criteriaSize][alternativesSize];
 
         for (int i = 0; i < criteriaSize; i++) {
@@ -23,6 +23,7 @@ public class Reader {
                 double parseDouble = Double.parseDouble(tempRatings[j]);
                 sum += parseDouble;
                 individualRanks[i][j] = parseDouble;
+                originalIndividual[i][j] = parseDouble;
             }
 
             for (int j = 0; j < alternativesSize; j++) {
@@ -34,10 +35,11 @@ public class Reader {
         return individualRanks;
     }
 
-    public double[] readOriginalRank(BufferedReader brAlt, Vector<Alternative> alternatives) throws IOException {
+    public double[] readOriginalRank(BufferedReader brAlt, Vector<Alternative> alternatives, double[] originalData) throws IOException {
         String tempAlt;
         tempAlt = brAlt.readLine();
-        double[] originalData = new double[alternatives.size()];
+        double[] originalDataCalculated = new double[alternatives.size()];
+
         String[] originalDataStr = tempAlt.split(",");
 
         double sum = 0.0d;
@@ -45,13 +47,14 @@ public class Reader {
             double parseDouble = Double.parseDouble(originalDataStr[i]);
             sum += parseDouble;
             originalData[i] = parseDouble;
+            originalDataCalculated[i] = parseDouble;
         }
 
         for (int i = 0; i < alternatives.size(); i++) {
-            originalData[i] = originalData[i] / sum;
+            originalDataCalculated[i] = originalDataCalculated[i] / sum;
         }
 
-        return originalData;
+        return originalDataCalculated;
     }
 
     public Vector<Alternative> readAlternatives(String tempAlt) {

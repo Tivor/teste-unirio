@@ -36,11 +36,21 @@ public abstract class AHPFitnessFunction extends FitnessFunction {
 
     protected double[] runAHP(IChromosome a_subject) {
         int alternativesSize = populateAHP(a_subject);
+
         double[] newAhpResult = new double[alternativesSize];
-        for (int i = 0; i < alternativesSize; i++) {
-            newAhpResult[i] = h.Pi(i);
+
+        int correctIndex = 0;
+        for (int j = 0; j <= alternativesSize; j++) {
+
+            if (j != crossValidationAlternative) {
+                double pi = h.Pi(j);
+                newAhpResult[correctIndex++] = pi;
+            }
+
         }
+
         return newAhpResult;
+
     }
 
     private int populateAHP(IChromosome a_subject) {

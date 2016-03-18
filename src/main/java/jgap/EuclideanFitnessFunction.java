@@ -1,7 +1,13 @@
 package jgap;
 
+import org.apache.commons.math3.ml.distance.EuclideanDistance;
 import org.apache.commons.math3.util.FastMath;
 import org.jgap.IChromosome;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Created by igor.custodio on 06/01/2016.
@@ -10,14 +16,29 @@ public class EuclideanFitnessFunction extends AHPFitnessFunction {
 
     boolean extended = false;
 
+    private List<double[][]> cacheIndividualOriginalCalculated = new ArrayList();
+
+    private List<double[]> cacheOriginalCalculated = new ArrayList();
+
+    EuclideanDistance euclideanDistance = new EuclideanDistance();
+
     public EuclideanFitnessFunction(double[] originalData) {
 
         super(originalData);
+
+        for (int i = 0; i < originalData.length; i++) {
+            cacheOriginalCalculated.add(clean(this.original, i));
+        }
 
     }
 
     public EuclideanFitnessFunction(double[][] originalIndividualData) {
         super(originalIndividualData);
+
+        for (int i = 0; i < h.getAlternativesSize(); i++) {
+            cacheIndividualOriginalCalculated.add(clean(this.individualOriginal, i));
+        }
+
         this.extended = true;
     }
 
@@ -28,14 +49,67 @@ public class EuclideanFitnessFunction extends AHPFitnessFunction {
 
     private double evaluateSimple(IChromosome iChromosome) {
 
+        double[] originalCleaned = cacheOriginalCalculated.get(this.crossValidationAlternative);
+
         double[] newAhpResult = runAHP(iChromosome);
-        double distance = distance(this.original, newAhpResult, this.crossValidationAlternative);
+        double distance = euclideanDistance.compute(originalCleaned, newAhpResult);
         return distance == 0.0d ? Double.MAX_VALUE : 1/distance;
+    }
+
+    private double[][] clean(double[][] individualOriginal, int index) {
+
+        int sonsSize = individualOriginal.length;
+        int alternativesSize = individualOriginal[0].length - 1;
+        double[][] result = new double[sonsSize][alternativesSize];
+
+        for (int i = 0; i < sonsSize; i++) {
+            double sum = 0.0d;
+            int correctIndex = 0;
+            for (int j = 0; j <= alternativesSize; j++) {
+
+                if (j != index) {
+                    sum += individualOriginal[i][j];
+                    result[i][correctIndex] = individualOriginal[i][j];
+                    correctIndex++;
+                }
+            }
+
+            for (int j = 0; j < alternativesSize; j++) {
+                result[i][j] = result[i][j] / sum;
+            }
+
+        }
+
+        return result;
+    }
+
+    private double[] clean(double[] individualOriginal, int index) {
+
+        double[] result = new double[individualOriginal.length-1];
+
+        double sum = 0.0d;
+        int correctIndex = 0;
+        for (int j = 0; j <= result.length; j++) {
+
+            if (j != index) {
+                sum += individualOriginal[j];
+                result[correctIndex] = individualOriginal[j];
+                correctIndex++;
+            }
+        }
+
+        for (int j = 0; j < result.length; j++) {
+            result[j] = result[j] / sum;
+        }
+
+        return result;
     }
 
     private double evaluateExt(IChromosome iChromosome) {
 
         double[][] newFullAhpResult = runCriteriaAHP(iChromosome, this.crossValidationAlternative);
+
+        double[][] individualOriginalCleaned = cacheIndividualOriginalCalculated.get(this.crossValidationAlternative);
 
         double sum = 0.0d;
 
@@ -43,7 +117,8 @@ public class EuclideanFitnessFunction extends AHPFitnessFunction {
         double[] distance = new double[sonsSize];
 
         for (int i = 0; i < sonsSize; i++) {
-            /*double*/distance[i] = distance(this.individualOriginal[i], newFullAhpResult[i], this.crossValidationAlternative);
+            /*double*/
+            distance[i] = euclideanDistance.compute(individualOriginalCleaned[i], newFullAhpResult[i]);
             sum += distance[i];
         }
 
@@ -54,31 +129,16 @@ public class EuclideanFitnessFunction extends AHPFitnessFunction {
     }
 
 
-    public static double distance(double[] p1, double[] p2,int crossValidationAlternative) {
-        double sum = 0.0D;
-
-        int correctIndex = 0;
-        for(int i = 0; i < p2.length; ++i) {
-
-            if (i != crossValidationAlternative) {
-                double dp = p1[i] - p2[correctIndex++];
-                sum += dp * dp;
-            }
-        }
-
-        return FastMath.sqrt(sum);
-    }
-
-    public static double distance(double[] p1) {
-
-        double sum = 0.0d;
-
-        for(int i = 0; i < p1.length; ++i) {
-            double dp = p1[i] - 0.01d;
-            sum += dp * dp;
-        }
-
-        double sqrt = FastMath.sqrt(sum);
-        return sqrt == 0.0d ? Double.MAX_VALUE : 1 / sqrt;
-    }
+//    public static double distance(double[] p1) {
+//
+//        double sum = 0.0d;
+//
+//        for(int i = 0; i < p1.length; ++i) {
+//            double dp = p1[i] - 0.01d;
+//            sum += dp * dp;
+//        }
+//
+//        double sqrt = FastMath.sqrt(sum);
+//        return sqrt == 0.0d ? Double.MAX_VALUE : 1 / sqrt;
+//    }
 }

@@ -37,7 +37,8 @@ public class Executor {
 
             Vector<Alternative> alternatives = reader.readAlternatives(tempAlt);
 
-            double[] originalRank = reader.readOriginalRank(brAlt, alternatives);
+            double[] originalData = new double[alternatives.size()];
+            double[] originalRank = reader.readOriginalRank(brAlt, alternatives, originalData);
             System.out.println(Arrays.toString(originalRank));
 
             FileReader file = new FileReader(new File(featuresFile));
@@ -48,13 +49,20 @@ public class Executor {
 
             String[] tempCrit = brCriteria.readLine().split(",");
 
-            printer = new Printer(reader.readIndividualRanks(alternatives.size(), brCriteria, tempCrit.length));
+            double[][] originalIndividual = new double[tempCrit.length][alternatives.size()];
+            double[][] individualRanks = reader.readIndividualRanks(alternatives.size(), brCriteria, tempCrit.length, originalIndividual);
+            printer = new Printer(individualRanks);
 
+/*
+ * IGNORAR POR ENQUANTO
+ *
+ */
 //            double[][] originalIndividualData = printer.individualRanks();
-
 //            originalRank = calculateAvg(originalIndividualData);
-//            ahpConfigurator.createConfiguration(chromosomeSize, originalRank, originalIndividualData);
-            ahpConfigurator.createConfiguration(chromosomeSize, originalRank);
+/**************************/
+
+//            ahpConfigurator.createConfiguration(chromosomeSize, originalRank, originalIndividual);
+            ahpConfigurator.createConfiguration(chromosomeSize, originalRank, originalData);
 
             Map<String, String> mapeamento = new HashMap();
             Map<String, String> valoresFeatures = new HashMap();

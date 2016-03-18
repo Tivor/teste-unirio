@@ -36,7 +36,7 @@ public class AHPConfigurator {
 
     }
 
-    public void createConfiguration(int chromosomeSize, double[] originalData)  {
+    public void createConfiguration(int chromosomeSize, double[] originalRank, double[] originalData)  {
         Configuration conf = new AHPConfiguration(chromosomeSize, "ahp", "AHP", originalData);
         this.configuration = conf;
         this.originalRank = originalData;
