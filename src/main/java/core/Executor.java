@@ -128,7 +128,8 @@ public class Executor {
         ahpConfigurator.getFitnessFunction().setH(h);
 
         Genotype population = ahpConfigurator.createPopulation();
-        int[][] matrixRepresenta = ahpFiller.populateAHP(brAlt, crossValidationAlternatives, alternatives, brCriteria, criteria, criteriaTest, testCreated, true, population, i, mapeamento, valoresFeatures, featuresSize);
+        boolean gaWeight = false;
+        int[][] matrixRepresenta = ahpFiller.populateAHP(brAlt, crossValidationAlternatives, alternatives, brCriteria, criteria, criteriaTest, testCreated, gaWeight, population, i, mapeamento, valoresFeatures, featuresSize);
 
         h.getGoal().setFeatValues(matrixRepresenta);
         hierarchyTest.getGoal().setFeatValues(matrixRepresenta);

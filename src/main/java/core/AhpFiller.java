@@ -46,12 +46,15 @@ public class AhpFiller {
             if (gaWeight) {
                 setGaWeights(weights, initialGenotype, geneIndex);
                 geneIndex += length;
+            } else {
+                setFixedWeights(weights, geneIndex);
+                geneIndex += length;
             }
 
 
             for (int i = 0; i < length; i++) {
                 Criterium criteriumTest = testCreated ? null : criteriaTest.get(critIndex);
-                matrizRepresenta[matrizRepresentaFeat++] = createFeaturesWithAlternativesWeights(brAlt, alternatives, allAlternatives, criteria.get(critIndex), criteriumTest, featuresStr[i], features, featuresTest, testCreated, weights, gaWeight, i, crossValidationAlternative, valoresFeatures, matrizRepresentaFeat);
+                matrizRepresenta[matrizRepresentaFeat++] = createFeaturesWithAlternativesWeights(brAlt, alternatives, allAlternatives, criteria.get(critIndex), criteriumTest, featuresStr[i], features, featuresTest, testCreated, crossValidationAlternative, valoresFeatures, matrizRepresentaFeat);
             }
 
             criterium.createPCM(features, weights);
@@ -76,13 +79,23 @@ public class AhpFiller {
         }
     }
 
-    public int[] createFeaturesWithAlternativesWeights(BufferedReader brAlt, Vector<Alternative> alternatives,  Vector<Alternative> allAlternatives, Criterium criterium, Criterium criteriumTest, String featureStr, Vector<Criterium> features, Vector<Criterium> featuresTest, boolean testCreated, double[] weights, boolean gaWeight, int i, int crossValidationAlternative, Map<String, String> valoresFeatures, int pos) throws IOException {
+    public void setFixedWeights(double[] weights, int geneIndex) {
 
-        if (!gaWeight) {
-            String[] featureAndWeight = featureStr.split("@");
-            featureStr = featureAndWeight[0];
-            weights[i] = Double.parseDouble(featureAndWeight[1]);
+        double[] fixedWeights = {0.2, 0.6, 1.4, 2.4, 1.2};
+
+        for (int i = 0; i < weights.length; i++) {
+            weights[i] = fixedWeights[geneIndex + i];
+
         }
+    }
+
+    public int[] createFeaturesWithAlternativesWeights(BufferedReader brAlt, Vector<Alternative> alternatives,  Vector<Alternative> allAlternatives, Criterium criterium, Criterium criteriumTest, String featureStr, Vector<Criterium> features, Vector<Criterium> featuresTest, boolean testCreated, int crossValidationAlternative, Map<String, String> valoresFeatures, int pos) throws IOException {
+
+//        if (!gaWeight) {
+//            String[] featureAndWeight = featureStr.split("@");
+//            featureStr = featureAndWeight[0];
+//            weights[i] = Double.parseDouble(featureAndWeight[1]);
+//        }
 
         Criterium feature = new Criterium(featureStr, true, criterium, pos-1);
         features.add(feature);
