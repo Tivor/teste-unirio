@@ -217,7 +217,7 @@ public class Criterium extends Activity implements Serializable, Cloneable {
 
         double sum = 0.0;
         Criterium son = getSons().get(c);
-        sum += son.JstarFull(index) * p.getWeight(c);
+        sum += son.JstarFull(index) * 1/*p.getWeight(c)*/;
         return sum;
     }
 
@@ -230,7 +230,7 @@ public class Criterium extends Activity implements Serializable, Cloneable {
     public double Jstar(int index, int c) {
         if (isLowestLevel()) return J(index);
         Criterium son = getSons().get(c);
-        return son.Jstar(index) * p.getWeight(c);
+        return son.Jstar(index) * 1/*p.getWeight(c)*/;
     }
 
     /**

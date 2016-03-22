@@ -79,25 +79,25 @@ public abstract class AHPFitnessFunction extends FitnessFunction {
 
         for (int k = 0; k < sonsSize; k++) {
 
-            double interSum = 0.0d;
+//            double interSum = 0.0d;
             int correctIndex = 0;
             for (int j = 0; j <= alternativesSize; j++) {
 
                 if (j != crossValidationAlternative) {
                     double pi = h.Pi(j, k);
                     newFullAhpResult[k][correctIndex++] = pi;
-                    interSum += pi;
+//                    interSum += pi;
                 }
 
             }
 
-            correctIndex = 0;
-            for (int j = 0; j <= alternativesSize; j++) {
-                if (j != crossValidationAlternative) {
-                    newFullAhpResult[k][correctIndex] = newFullAhpResult[k][correctIndex] / interSum;
-                    correctIndex++;
-                }
-            }
+//            correctIndex = 0;
+//            for (int j = 0; j <= alternativesSize; j++) {
+//                if (j != crossValidationAlternative) {
+//                    newFullAhpResult[k][correctIndex] = newFullAhpResult[k][correctIndex] / interSum;
+//                    correctIndex++;
+//                }
+//            }
 
         }
 

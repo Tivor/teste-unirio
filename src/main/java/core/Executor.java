@@ -128,7 +128,7 @@ public class Executor {
         ahpConfigurator.getFitnessFunction().setH(h);
 
         Genotype population = ahpConfigurator.createPopulation();
-        boolean gaWeight = false;
+        boolean gaWeight = true;
         int[][] matrixRepresenta = ahpFiller.populateAHP(brAlt, crossValidationAlternatives, alternatives, brCriteria, criteria, criteriaTest, testCreated, gaWeight, population, i, mapeamento, valoresFeatures, featuresSize);
 
         h.getGoal().setFeatValues(matrixRepresenta);
@@ -152,16 +152,19 @@ public class Executor {
 
             int alternativesSize = hierarchyTest.getAlternativesSize();
             double[] newAhpResult = new double[alternativesSize];
-            double interSum = 0.0d;
+//            double interSum = 0.0d;
+//            System.out.println("++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+//            System.out.println(hierarchyTest.print());
+//            System.out.println("++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
             for (int j = 0; j < alternativesSize; j++) {
                 double pi = hierarchyTest.PiFull(j, k);
                 newAhpResult[j] = pi;
-                interSum += pi;
+//                interSum += pi;
             }
 
-            for (int j = 0; j < alternativesSize; j++) {
-                newAhpResult[j] = newAhpResult[j] / interSum;
-            }
+//            for (int j = 0; j < alternativesSize; j++) {
+//                newAhpResult[j] = newAhpResult[j] / interSum;
+//            }
 
             printer.printIndividualResult(k, newAhpResult);
 
