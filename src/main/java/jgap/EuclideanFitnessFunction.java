@@ -35,7 +35,7 @@ public class EuclideanFitnessFunction extends AHPFitnessFunction {
     public EuclideanFitnessFunction(double[][] originalIndividualData) {
         super(originalIndividualData);
 
-        for (int i = 0; i < h.getAlternativesSize(); i++) {
+        for (int i = 0; i < originalIndividualData[0].length; i++) {
             cacheIndividualOriginalCalculated.add(clean(this.individualOriginal, i));
         }
 

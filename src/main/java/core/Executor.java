@@ -18,7 +18,7 @@ import java.util.Vector;
 
 public class Executor {
 
-    private static final int MAX_ALLOWED_EVOLUTIONS = 9000;
+    private static final int MAX_ALLOWED_EVOLUTIONS = 5000;
 
     private AHPConfigurator ahpConfigurator = new AHPConfigurator();
     private Reader reader = new Reader();
@@ -61,8 +61,8 @@ public class Executor {
 //            originalRank = calculateAvg(originalIndividualData);
 /**************************/
 
-//            ahpConfigurator.createConfiguration(chromosomeSize, originalRank, originalIndividual);
-            ahpConfigurator.createConfiguration(chromosomeSize, originalRank, originalData);
+            ahpConfigurator.createConfiguration(chromosomeSize, originalRank, originalIndividual);
+//            ahpConfigurator.createConfiguration(chromosomeSize, originalRank, originalData);
 
             Map<String, String> mapeamento = new HashMap();
             Map<String, String> valoresFeatures = new HashMap();
