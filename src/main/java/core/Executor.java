@@ -61,8 +61,8 @@ public class Executor {
 //            originalRank = calculateAvg(originalIndividualData);
 /**************************/
 
-            ahpConfigurator.createConfiguration(chromosomeSize, originalRank, originalIndividual);
-//            ahpConfigurator.createConfiguration(chromosomeSize, originalRank, originalData);
+//            ahpConfigurator.createConfiguration(chromosomeSize, originalRank, originalIndividual);
+            ahpConfigurator.createConfiguration(chromosomeSize, originalRank, originalData);
 
             Map<String, String> mapeamento = new HashMap();
             Map<String, String> valoresFeatures = new HashMap();
@@ -143,7 +143,7 @@ public class Executor {
 
         printer.printCompleteResult(ahpConfigurator, bestAhpResultComplete);
 
-        calculateIndividualResult(hierarchyTest);
+//        calculateIndividualResult(hierarchyTest);
 
     }
 

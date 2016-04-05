@@ -4,9 +4,10 @@ import jahp.adt.Criterium;
 import jahp.adt.Hierarchy;
 import jgap.AHPConfigurator;
 import metric.PrecisionAtK;
+import metric.SpearmanCorrelation;
+import model.NormalizedDiscountedCumulativeGain;
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.math3.ml.distance.EuclideanDistance;
-import org.apache.commons.math3.stat.correlation.SpearmansCorrelation;
 import org.jgap.Genotype;
 import org.jgap.IChromosome;
 
@@ -73,16 +74,18 @@ public class Printer {
     public void printCompleteResult(AHPConfigurator ahpConfigurator, double[] bestAhpResultComplete) {
 //        System.out.println(">>>BEST GA RESULT: " + ArrayUtils.toString(bestAhpResultComplete));
         System.out.println("EUCLIDEAN: " + new EuclideanDistance().compute(bestAhpResultComplete, ahpConfigurator.getOriginalRank()));
-        System.out.println("SPEARMANS: " + new SpearmansCorrelation().correlation(bestAhpResultComplete, ahpConfigurator.getOriginalRank()));
+        System.out.println("SPEARMANS: " + new SpearmanCorrelation().correlation(bestAhpResultComplete, ahpConfigurator.getOriginalRank()));
         System.out.println("P@k: " + new PrecisionAtK().calculate(bestAhpResultComplete, ahpConfigurator.getOriginalRank()));
+        System.out.println("nDCG: " + new NormalizedDiscountedCumulativeGain().evaluate(bestAhpResultComplete, ahpConfigurator.getOriginalRank()));
         System.out.println("%%%%%%%%%%%%%%%%%%%%%%%%%%%");
     }
 
     public void printIndividualResult(int k, double[] newAhpResult) {
         System.out.println(">>>RESULT [" + k + "]: " + ArrayUtils.toString(newAhpResult));
         System.out.println(">>>EUCLIDEAN [" + k + "]: " + new EuclideanDistance().compute(newAhpResult, individualRanks[k]));
-        System.out.println(">>>SPEARMANS [" + k + "]: " + new SpearmansCorrelation().correlation(newAhpResult, individualRanks[k]));
+        System.out.println(">>>SPEARMANS [" + k + "]: " + new SpearmanCorrelation().correlation(newAhpResult, individualRanks[k]));
         System.out.println("P@k: " + new PrecisionAtK().calculate(newAhpResult, individualRanks[k]));
+        System.out.println("nDCG: " + new NormalizedDiscountedCumulativeGain().evaluate(newAhpResult, individualRanks[k]));
         System.out.println("===========================");
     }
 

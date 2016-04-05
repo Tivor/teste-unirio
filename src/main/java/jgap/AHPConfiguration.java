@@ -124,7 +124,7 @@ public class AHPConfiguration extends Configuration implements ICloneable {
 
         for (int i = 0; i < chromosomeSize; i++) {
 //                sampleGenes[i] = new DoubleGene(this, 0, Double.MAX_VALUE);
-            sampleGenes[i] = new DoubleGene(this, 0.1d, Double.valueOf(100d));
+            sampleGenes[i] = new DoubleGene(this, 0.1d, Double.valueOf(10d));
         }
 
         IChromosome sampleChromosome = new Chromosome(this, sampleGenes);
@@ -135,7 +135,7 @@ public class AHPConfiguration extends Configuration implements ICloneable {
         // finding the answer), but the longer it will take to evolve
         // the population (which could be seen as bad).
         // ------------------------------------------------------------
-        setPopulationSize(100);
+        setPopulationSize(50);
     }
 
     /**

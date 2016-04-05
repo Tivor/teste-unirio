@@ -25,7 +25,7 @@ public class Ndcg {
         for (int i = 0; i < bestAhpResult.length; i++) sum += bestAhpResult[i];
         System.out.println(sum);
 
-        System.out.println(gain.evaluate(bestAhpResult, originalRank, indexes));
+        System.out.println(gain.evaluate(bestAhpResult, originalRank));
 
         for (int i = 0; i < h.getGoal().getSonsSize(); i++) {
 
@@ -34,7 +34,7 @@ public class Ndcg {
                 newAhpResult[j] = h.Pi(j, i);
             }
 
-            System.out.println(gain.evaluate(newAhpResult, individualRanks[i], null));
+            System.out.println(gain.evaluate(newAhpResult, individualRanks[i]));
 
         }
     }
