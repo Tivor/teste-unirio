@@ -16,42 +16,55 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Vector;
 
-public class Executor {
+public class Executor implements Runnable {
 
-    private static final int MAX_ALLOWED_EVOLUTIONS = 5000;
+    private static final int MAX_ALLOWED_EVOLUTIONS = 200000;
 
     private AHPConfigurator ahpConfigurator = new AHPConfigurator();
     private Reader reader = new Reader();
     private Printer printer;
     private AhpFiller ahpFiller = new AhpFiller();
 
+    private String featuresFile;
+    private String alternativesFile;
 
-    public boolean execute(String featuresFile, String alternativesFile) throws IOException, InvalidConfigurationException {
-        File fileTest = new File(alternativesFile);
+    public Executor(String featuresFile, String alternativesFile) {
+        this.featuresFile = featuresFile;
+        this.alternativesFile = alternativesFile;
+    }
 
-        if (fileTest.exists()) {
+    public void run() {
+        try {
 
-            FileReader fileAlt = new FileReader(fileTest);
+            FileReader fileAlt = new FileReader(new File(alternativesFile));
             BufferedReader brAlt = new BufferedReader(fileAlt);
+            String alternativeName = brAlt.readLine();
             String tempAlt = brAlt.readLine();
 
             Vector<Alternative> alternatives = reader.readAlternatives(tempAlt);
+            String outParams = String.valueOf(alternatives.size());
 
             double[] originalData = new double[alternatives.size()];
             double[] originalRank = reader.readOriginalRank(brAlt, alternatives, originalData);
-            System.out.println(Arrays.toString(originalRank));
+//            System.out.println(Arrays.toString(originalRank));
 
             FileReader file = new FileReader(new File(featuresFile));
             BufferedReader brCriteria = new BufferedReader(file);
 
             String featuresStr = brCriteria.readLine();
             int chromosomeSize = featuresStr.split(",").length;
+            outParams += "," + String.valueOf(chromosomeSize);
 
             String[] tempCrit = brCriteria.readLine().split(",");
 
-            double[][] originalIndividual = new double[tempCrit.length][alternatives.size()];
-            double[][] individualRanks = reader.readIndividualRanks(alternatives.size(), brCriteria, tempCrit.length, originalIndividual);
-            printer = new Printer(individualRanks);
+            int critLength = tempCrit.length;
+            outParams += "," + String.valueOf(critLength) + "\n";
+
+            double[][] originalIndividual = new double[critLength][alternatives.size()];
+            double[][] individualRanks = reader.readIndividualRanks(alternatives.size(), brCriteria, critLength, originalIndividual);
+            printer = new Printer(alternativeName + ".out", individualRanks);
+            printer.out(alternativeName + "\n");
+            printer.out(outParams);
 
 /*
  * IGNORAR POR ENQUANTO
@@ -62,7 +75,7 @@ public class Executor {
 /**************************/
 
 //            ahpConfigurator.createConfiguration(chromosomeSize, originalRank, originalIndividual);
-            ahpConfigurator.createConfiguration(chromosomeSize, originalRank, originalData);
+            ahpConfigurator.createConfiguration(chromosomeSize, originalRank, originalData, alternativeName);
 
             Map<String, String> mapeamento = new HashMap();
             Map<String, String> valoresFeatures = new HashMap();
@@ -79,11 +92,9 @@ public class Executor {
                 testCreated = true;
 
             }
-
-            return false;
-
-        } else {
-            return true;
+        } catch (Exception e){
+            e.printStackTrace();
+            System.exit(-1);
         }
     }
 

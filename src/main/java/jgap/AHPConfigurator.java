@@ -24,8 +24,8 @@ public class AHPConfigurator {
         return configuration;
     }
 
-    public void createConfiguration(int chromosomeSize, double[] originalData, double[][] originalIndividualData)  {
-        Configuration conf = new AHPConfiguration(chromosomeSize, "ahp", "AHP", originalIndividualData);
+    public void createConfiguration(int chromosomeSize, double[] originalData, double[][] originalIndividualData, String id)  {
+        Configuration conf = new AHPConfiguration(chromosomeSize, id, id.toUpperCase(), originalIndividualData);
         this.configuration = conf;
         this.originalRank = originalData;
         // Create random initial population of Chromosomes.
@@ -36,8 +36,8 @@ public class AHPConfigurator {
 
     }
 
-    public void createConfiguration(int chromosomeSize, double[] originalRank, double[] originalData)  {
-        Configuration conf = new AHPConfiguration(chromosomeSize, "ahp", "AHP", originalData);
+    public void createConfiguration(int chromosomeSize, double[] originalRank, double[] originalData, String id)  {
+        Configuration conf = new AHPConfiguration(chromosomeSize, id, id.toUpperCase(), originalData);
         this.configuration = conf;
         this.originalRank = originalData;
         // Create random initial population of Chromosomes.

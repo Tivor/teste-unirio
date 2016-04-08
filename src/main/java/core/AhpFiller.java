@@ -74,7 +74,7 @@ public class AhpFiller {
         IChromosome chromosome = initialGenotype.getPopulation().getChromosome(RANDOM_CROMO);
 
         for (int i = 0; i < weights.length; i++) {
-            weights[i] = ((Double) chromosome.getGene(geneIndex + i).getAllele()).doubleValue();
+            weights[i] = ((Integer) chromosome.getGene(geneIndex + i).getAllele()).doubleValue();
 
         }
     }

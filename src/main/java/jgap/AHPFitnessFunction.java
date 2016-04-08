@@ -61,7 +61,7 @@ public abstract class AHPFitnessFunction extends FitnessFunction {
             double[] weights = new double[featureSize];
 
             for (int i = 0; i < weights.length; i++) {
-                weights[i] = ((Double) a_subject.getGene(geneIndex + i).getAllele()).doubleValue();
+                weights[i] = ((Integer) a_subject.getGene(geneIndex + i).getAllele()).doubleValue();
             }
 
             geneIndex += featureSize;

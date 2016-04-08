@@ -11,6 +11,11 @@ import org.apache.commons.math3.ml.distance.EuclideanDistance;
 import org.jgap.Genotype;
 import org.jgap.IChromosome;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
 import java.util.Arrays;
 
 /**
@@ -19,8 +24,19 @@ import java.util.Arrays;
 public class Printer {
 
     private double[][] individualRanks;
+    private Path path;
 
-    public Printer(double[][] individualRanks) {
+    public void out(String text) {
+        try {
+            Files.write(path, text.getBytes(), StandardOpenOption.CREATE, StandardOpenOption.APPEND);
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.exit(-9);
+        }
+    }
+
+    public Printer(String fileName, double[][] individualRanks) {
+        path = Paths.get("output/" + fileName);
         this.individualRanks = individualRanks;
     }
 
@@ -61,7 +77,7 @@ public class Printer {
     }
 
     private double getWeight(IChromosome a_subject, int geneIndex, int i) {
-        return ((Double) a_subject.getGene(geneIndex + i).getAllele()).doubleValue();
+        return ((Integer) a_subject.getGene(geneIndex + i).getAllele()).doubleValue();
     }
 
     private double getFixedWeight(int geneIndex, int i) {
@@ -73,11 +89,18 @@ public class Printer {
 
     public void printCompleteResult(AHPConfigurator ahpConfigurator, double[] bestAhpResultComplete) {
 //        System.out.println(">>>BEST GA RESULT: " + ArrayUtils.toString(bestAhpResultComplete));
-        System.out.println("EUCLIDEAN: " + new EuclideanDistance().compute(bestAhpResultComplete, ahpConfigurator.getOriginalRank()));
-        System.out.println("SPEARMANS: " + new SpearmanCorrelation().correlation(bestAhpResultComplete, ahpConfigurator.getOriginalRank()));
-        System.out.println("P@k: " + new PrecisionAtK().calculate(bestAhpResultComplete, ahpConfigurator.getOriginalRank()));
-        System.out.println("nDCG: " + new NormalizedDiscountedCumulativeGain().evaluate(bestAhpResultComplete, ahpConfigurator.getOriginalRank()));
-        System.out.println("%%%%%%%%%%%%%%%%%%%%%%%%%%%");
+        double euclidean = new EuclideanDistance().compute(bestAhpResultComplete, ahpConfigurator.getOriginalRank());
+//        System.out.println("EUCLIDEAN: " + euclidean);
+        double correlation = new SpearmanCorrelation().correlation(bestAhpResultComplete, ahpConfigurator.getOriginalRank());
+//        System.out.println("SPEARMANS: " + correlation);
+        double precision = new PrecisionAtK().calculate(bestAhpResultComplete, ahpConfigurator.getOriginalRank());
+//        System.out.println("P@k: " + precision);
+        double nDcg = new NormalizedDiscountedCumulativeGain().evaluate(bestAhpResultComplete, ahpConfigurator.getOriginalRank());
+//        System.out.println("nDCG: " + nDcg);
+//        System.out.println("%%%%%%%%%%%%%%%%%%%%%%%%%%%");
+
+        out(String.valueOf(euclidean) + "," + String.valueOf(correlation) + "," + String.valueOf(precision) + "," + String.valueOf(nDcg) + "\n");
+
     }
 
     public void printIndividualResult(int k, double[] newAhpResult) {
