@@ -6,7 +6,7 @@ import jgap.AHPConfigurator;
 import metric.PrecisionAtK;
 import metric.SpearmanCorrelation;
 import model.NormalizedDiscountedCumulativeGain;
-import org.apache.commons.lang.ArrayUtils;
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.math3.ml.distance.EuclideanDistance;
 import org.jgap.Genotype;
 import org.jgap.IChromosome;

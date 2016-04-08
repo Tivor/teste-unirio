@@ -99,7 +99,7 @@ public class AHPConfiguration extends Configuration implements ICloneable {
         setFitnessEvaluator(new DefaultFitnessEvaluator());
         setChromosomePool(new ChromosomePool());
         addGeneticOperator(new CrossoverOperator(this, 0.35d, false, false));
-        addGeneticOperator(new MutationOperator(this, 2));
+        addGeneticOperator(new MutationOperator(this, 20));
 
 
         // Care that the fittest individual of the current population is
@@ -124,7 +124,7 @@ public class AHPConfiguration extends Configuration implements ICloneable {
 
         for (int i = 0; i < chromosomeSize; i++) {
 //                sampleGenes[i] = new DoubleGene(this, 0, Double.MAX_VALUE);
-            sampleGenes[i] = new IntegerGene(this, 1, Integer.valueOf(100));
+            sampleGenes[i] = new IntegerGene(this, 1, Integer.valueOf(9));
         }
 
         IChromosome sampleChromosome = new Chromosome(this, sampleGenes);
@@ -135,7 +135,7 @@ public class AHPConfiguration extends Configuration implements ICloneable {
         // finding the answer), but the longer it will take to evolve
         // the population (which could be seen as bad).
         // ------------------------------------------------------------
-        setPopulationSize(100);
+        setPopulationSize(50);
     }
 
     /**

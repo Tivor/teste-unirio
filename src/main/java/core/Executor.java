@@ -18,7 +18,7 @@ import java.util.Vector;
 
 public class Executor implements Runnable {
 
-    private static final int MAX_ALLOWED_EVOLUTIONS = 200000;
+    private static final int MAX_ALLOWED_EVOLUTIONS = 20000;
 
     private AHPConfigurator ahpConfigurator = new AHPConfigurator();
     private Reader reader = new Reader();
@@ -74,7 +74,7 @@ public class Executor implements Runnable {
 //            originalRank = calculateAvg(originalIndividualData);
 /**************************/
 
-//            ahpConfigurator.createConfiguration(chromosomeSize, originalRank, originalIndividual);
+//            ahpConfigurator.createConfiguration(chromosomeSize, originalRank, originalIndividual, alternativeName);
             ahpConfigurator.createConfiguration(chromosomeSize, originalRank, originalData, alternativeName);
 
             Map<String, String> mapeamento = new HashMap();
