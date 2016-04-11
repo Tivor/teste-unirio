@@ -12,14 +12,24 @@ public class Main {
     static ExecutorService pool = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
 
     public static void main(String[] args) throws IOException, InvalidConfigurationException {
-        int fileIndex = 0;
-        do {
-            String featuresFile = "input/Features" + fileIndex + ".dat";
-            String alternativesFile = "input/Alternatives" + fileIndex + ".dat";
-            Executor executor = new Executor(featuresFile, alternativesFile);
-            pool.execute(executor);
-            fileIndex++;
-        } while (fileIndex <= 3);
+
+        for (int j = 1; j >= 1; j--) {
+
+            for (int i = 0; i < 10; i++) {
+
+                int fileIndex = 4;
+
+                do {
+                    String featuresFile = "input/Features" + fileIndex + ".dat";
+                    String alternativesFile = "input/Alternatives" + fileIndex + ".dat";
+                    Executor executor = new Executor(featuresFile, alternativesFile, j * 1000, false, i + "_" + j);
+                    pool.execute(executor);
+                    fileIndex++;
+                } while (fileIndex <= 4);
+
+            }
+        }
+
         pool.shutdown();
     }
 }

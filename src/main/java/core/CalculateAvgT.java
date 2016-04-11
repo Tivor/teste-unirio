@@ -11,7 +11,7 @@ import java.nio.file.StandardOpenOption;
 /**
  * Created by Igor on 06/04/2016.
  */
-public class CalculateAvg {
+public class CalculateAvgT {
 
     public static void main(String[] args) throws IOException {
 
