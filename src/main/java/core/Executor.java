@@ -11,14 +11,12 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Vector;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 public class Executor implements Runnable {
 
-    private static final int MAX_ALLOWED_EVOLUTIONS = 20000;
+    private static final String HEAD_LINE = "*-*-*-*-*-*-*-*-*-*";
 
     private AHPConfigurator ahpConfigurator = new AHPConfigurator();
     private Reader reader = new Reader();
@@ -28,9 +26,16 @@ public class Executor implements Runnable {
     private String featuresFile;
     private String alternativesFile;
 
-    public Executor(String featuresFile, String alternativesFile) {
+    private int maxEvolutions = 0;
+    private boolean useIndividualRank = false;
+    private String uniqId;
+
+    public Executor(String featuresFile, String alternativesFile, int maxEvolutions, boolean useIndividualRank, String uniqId) {
         this.featuresFile = featuresFile;
         this.alternativesFile = alternativesFile;
+        this.maxEvolutions = maxEvolutions;
+        this.useIndividualRank = useIndividualRank;
+        this.uniqId = uniqId;
     }
 
     public void run() {
@@ -63,7 +68,10 @@ public class Executor implements Runnable {
             double[][] originalIndividual = new double[critLength][alternatives.size()];
             double[][] individualRanks = reader.readIndividualRanks(alternatives.size(), brCriteria, critLength, originalIndividual);
             printer = new Printer(alternativeName + ".out", individualRanks);
-            printer.out(alternativeName + "\n");
+            Calendar data = Calendar.getInstance();
+            String dataStr = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss").format(data.getTime());
+            String header = HEAD_LINE + dataStr + HEAD_LINE + (this.useIndividualRank ? "Using Criteria Ranks" : "") + " - Num. Evolutions:" + this.maxEvolutions + HEAD_LINE +  "\n";
+            printer.out(header + alternativeName + "-" + this.maxEvolutions + "-" + this.useIndividualRank + "\n");
             printer.out(outParams);
 
 /*
@@ -74,8 +82,12 @@ public class Executor implements Runnable {
 //            originalRank = calculateAvg(originalIndividualData);
 /**************************/
 
-//            ahpConfigurator.createConfiguration(chromosomeSize, originalRank, originalIndividual, alternativeName);
-            ahpConfigurator.createConfiguration(chromosomeSize, originalRank, originalData, alternativeName);
+            String id = alternativeName + this.maxEvolutions + "_" + uniqId;
+            if (this.useIndividualRank) {
+                ahpConfigurator.createConfiguration(chromosomeSize, originalRank, originalIndividual, id);
+            } else {
+                ahpConfigurator.createConfiguration(chromosomeSize, originalRank, originalData, id);
+            }
 
             Map<String, String> mapeamento = new HashMap();
             Map<String, String> valoresFeatures = new HashMap();
@@ -147,7 +159,7 @@ public class Executor implements Runnable {
 
 //        IEvolutionMonitor monitor = new FitnessValueMonitor(0.01d);
 //        ((AHPGenotype) population).evolve(monitor, MAX_ALLOWED_EVOLUTIONS);
-        population.evolve(MAX_ALLOWED_EVOLUTIONS);
+        population.evolve(maxEvolutions);
 
 //        System.out.println(h.print());
         double[] bestAhpResultComplete = printer.printFittestResult(hierarchyTest, population);

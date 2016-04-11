@@ -6,7 +6,7 @@ import jgap.AHPConfigurator;
 import metric.PrecisionAtK;
 import metric.SpearmanCorrelation;
 import model.NormalizedDiscountedCumulativeGain;
-import org.apache.commons.lang3.ArrayUtils;
+import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.math3.ml.distance.EuclideanDistance;
 import org.jgap.Genotype;
 import org.jgap.IChromosome;
@@ -36,7 +36,7 @@ public class Printer {
     }
 
     public Printer(String fileName, double[][] individualRanks) {
-        path = Paths.get("output/" + fileName);
+        path = Paths.get("output/" + fileName + "_" + Thread.currentThread().getId());
         this.individualRanks = individualRanks;
     }
 
