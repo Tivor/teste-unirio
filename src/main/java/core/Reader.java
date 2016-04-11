@@ -42,6 +42,7 @@ public class Reader {
 
         String[] originalDataStr = tempAlt.split(",");
 
+
         double sum = 0.0d;
         for (int i = 0; i < alternatives.size(); i++) {
             double parseDouble = Double.parseDouble(originalDataStr[i]);
