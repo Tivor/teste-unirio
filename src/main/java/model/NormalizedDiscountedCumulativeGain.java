@@ -27,13 +27,10 @@ public class NormalizedDiscountedCumulativeGain {
 
     public double evaluate(double[] documentJudgments, double[] idealJudgments) {
 
-        double[] x = documentJudgments;
-        double[] y = idealJudgments;
-
         NaturalRanking rankingAlgorithm = new NaturalRanking(TiesStrategy.SEQUENTIAL);
 
-        double[] rankX = rankingAlgorithm.rank(x);
-        double[] rankY = rankingAlgorithm.rank(y);
+        double[] rankX = rankingAlgorithm.rank(documentJudgments);
+        double[] rankY = rankingAlgorithm.rank(idealJudgments);
 
         // compute dcg:
         double dcg = computeDCG(rankX);
