@@ -11,7 +11,7 @@ import java.util.concurrent.Executors;
 public class Main {
     public static final int EVOLUTION_RATIO = 5;
     public static final int REPETICOES = 1;
-    public static final int PRIMEIRO_INPUT = 15;
+    public static final int PRIMEIRO_INPUT = 1;
     static ExecutorService pool = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
 
     public static void main(String[] args) throws IOException, InvalidConfigurationException {
@@ -28,7 +28,7 @@ public class Main {
                     Executor executor = new Executor(featuresFile, alternativesFile, j * 1000, false, i + "_" + j);
                     pool.execute(executor);
                     fileIndex++;
-                } while (fileIndex <= 5);
+                } while (fileIndex <= 16);
 
             }
         }
