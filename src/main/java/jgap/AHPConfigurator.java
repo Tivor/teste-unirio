@@ -24,10 +24,10 @@ public class AHPConfigurator {
         return configuration;
     }
 
-    public void createConfiguration(int chromosomeSize, double[] originalData, double[][] originalIndividualData, String id)  {
+    public void createConfiguration(int chromosomeSize, double[] originalRank, double[][] originalIndividualData, String id)  {
         Configuration conf = new AHPConfiguration(chromosomeSize, id, id.toUpperCase(), originalIndividualData);
         this.configuration = conf;
-        this.originalRank = originalData;
+        this.originalRank = originalRank;
         // Create random initial population of Chromosomes.
         // Here we try to read in a previous run via XMLManager.readFile(..)
         // for demonstration purpose only!
@@ -39,7 +39,7 @@ public class AHPConfigurator {
     public void createConfiguration(int chromosomeSize, double[] originalRank, double[] originalData, String id)  {
         Configuration conf = new AHPConfiguration(chromosomeSize, id, id.toUpperCase(), originalData);
         this.configuration = conf;
-        this.originalRank = originalData;
+        this.originalRank = originalRank;
         // Create random initial population of Chromosomes.
         // Here we try to read in a previous run via XMLManager.readFile(..)
         // for demonstration purpose only!

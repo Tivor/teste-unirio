@@ -4,6 +4,7 @@ import jahp.adt.Alternative;
 import jahp.adt.Criterium;
 import jahp.adt.Hierarchy;
 import jgap.AHPConfigurator;
+import org.apache.commons.math3.stat.descriptive.moment.StandardDeviation;
 import org.jgap.Genotype;
 import org.jgap.InvalidConfigurationException;
 
@@ -63,7 +64,10 @@ public class Executor implements Runnable {
             String[] tempCrit = brCriteria.readLine().split(",");
 
             int critLength = tempCrit.length;
-            outParams += "," + String.valueOf(critLength) + "\n";
+            outParams += "," + String.valueOf(critLength) + ",";
+
+            Double evaluate = new StandardDeviation().evaluate(originalRank);
+            outParams += evaluate + "\n";
 
             double[][] originalIndividual = new double[critLength][alternatives.size()];
             double[][] individualRanks = reader.readIndividualRanks(alternatives.size(), brCriteria, critLength, originalIndividual);
