@@ -3,6 +3,7 @@ package core;
 import jahp.adt.Criterium;
 import jahp.adt.Hierarchy;
 import jgap.AHPConfigurator;
+import jsc.datastructures.PairedData;
 import metric.PrecisionAtK;
 import metric.SpearmanCorrelation;
 import model.NormalizedDiscountedCumulativeGain;
@@ -91,7 +92,7 @@ public class Printer {
 //        System.out.println(">>>BEST GA RESULT: " + ArrayUtils.toString(bestAhpResultComplete));
         double euclidean = new EuclideanDistance().compute(bestAhpResultComplete, ahpConfigurator.getOriginalRank());
 //        System.out.println("EUCLIDEAN: " + euclidean);
-        double correlation = new SpearmanCorrelation().correlation(bestAhpResultComplete, ahpConfigurator.getOriginalRank());
+//        double correlation = new SpearmanCorrelation().correlation(bestAhpResultComplete, ahpConfigurator.getOriginalRank());
 //        System.out.println("SPEARMANS: " + correlation);
         double precision = new PrecisionAtK().calculate(bestAhpResultComplete, ahpConfigurator.getOriginalRank());
 //        System.out.println("P@k: " + precision);
@@ -99,7 +100,13 @@ public class Printer {
 //        System.out.println("nDCG: " + nDcg);
 //        System.out.println("%%%%%%%%%%%%%%%%%%%%%%%%%%%");
 
-        out(String.valueOf(euclidean) + "," + String.valueOf(correlation) + "," + String.valueOf(precision) + "," + String.valueOf(nDcg) + "\n");
+        PairedData pd = new PairedData(bestAhpResultComplete, ahpConfigurator.getOriginalRank());
+        jsc.correlation.SpearmanCorrelation spearmanCorrelation = new jsc.correlation.SpearmanCorrelation(pd);
+        double correlation = spearmanCorrelation.getR();
+        double pvalue = spearmanCorrelation.getSP();
+
+//        out(String.valueOf(euclidean) + "," + String.valueOf(correlation) + "," + String.valueOf(precision) + "," + String.valueOf(nDcg) + "\n");
+        out(String.valueOf(euclidean) + "," + String.valueOf(correlation) + "," + String.valueOf(precision) + "," + String.valueOf(pvalue) + "\n");
 
     }
 
