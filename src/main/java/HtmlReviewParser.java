@@ -12,62 +12,118 @@ import java.util.Set;
  */
 public class HtmlReviewParser {
 
-    public static void main(String... args) throws IOException {
+    //-1 inverte, ZERO ignora, 1 = igual, 2 = true/false
+    private static final int[] controle = {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, -1, -1, -1, -1, -1, -1, -1, 1, 2, 2, 2, 2, 2, 2, 2, 2};
 
-        String url = "http://www.toptenreviews.com/computers/gaming/best-graphics-cards/";
+    private static final String url = "http://www.toptenreviews.com/computers/gaming/best-graphics-cards/";
+
+    public static void main(String... args) throws IOException {
 
         Document document = Jsoup.connect(url).get();
 
-
-
         //Produtos
-        printTen(document, "div[class=prodItemRow title]", 2, 0);
+        printTen(document, "div[class=prodItemRow title]", 2, 0, false, null);
 
         //Overall ratings
-        printTen(document, "div[class=score]", 1, 0);
+        printTen(document, "div[class=score]", 1, 0, false, null);
 
         //Criteria
-        printTen(document, "li[class=carousel_column] > a", 1, 1);
+        printTen(document, "li[class=carousel_column] > a", 1, 1, false, null);
 
         Elements elems = document.select("div[id=full_feature_section] > div[class=main_row center mainMtx]");
 
+        String all = "";
+        int[] posFeatures = {0};
+        int[] posValues = {0};
         for (Element e : elems) {
-
-            printTen(e, "div[class=mtxRow] > div[class=mtx_info] > span[class=rowLabel]", 1, 0);
-
-
-
+            //Features
+            all += printTen(e, "div[class=mtxRow] > div[class=mtx_info] > span[class=rowLabel]", 1, 0, false, posFeatures) + ",";
+            //Valores
+            printTen(e, "div[class=mtxRow] > div[class=carousel clip fixedwidth flex]", 1, 0, true, posValues);
         }
-
-
-
-//            String cellDetail = BASE_WEB_SITE + cellPhone.attr("href");
-//            Document document = Jsoup.connect(cellDetail).get();
-//
-//            Elements elements = document.select("div [class=iconos clearfix] > div[class=item]");
-//
-//
-//            String featureKey = element.select("i").attr("class");
-//
-//            String span = element.select("span").text();
-//            allFeatures.add(span);
-//
-//            String strong = element.select("strong").text();
-
-
+        String substring = all.substring(0, all.length() - 1);
+        System.out.println(substring);
     }
 
-    private static void printTen(Element document, String query, int razao, int init) {
+    private static String printTen(Element document, String query, int razao, int init, boolean group, int[] pos) {
 
-        Elements alternatives = document.select(query);
+        Elements elements = document.select(query);
 
         String strOut = "";
-        for (int i = init; i < alternatives.size()/razao; i++) {
-            Element e = alternatives.get(i);
-            strOut += e.text() + ",";
+        for (int i = init; i < elements.size() / razao; i++) {
+            if (pos == null || (!group && controle[pos[0]] != 0) || group) {
+                Element e = elements.get(i);
+                if (group) {
+                    Elements spans = e.select("span");
+                    for (Element span : spans) {
+                        strOut += span.hasText() ? span.text() : "0";
+                        strOut += "@@@";
+                    }
+
+                    strOut = strOut.trim() + ",";
+                } else {
+                    strOut += e.text() + ",";
+                }
+            }
+            if (pos != null && !group) pos[0]++;
         }
-        strOut = strOut.substring(0, strOut.length()-1);
-        System.out.println(strOut);
+        strOut = strOut.substring(0, strOut.length() - 1);
+
+        if (group) {
+            String[] broken = strOut.split(",");
+            for (String value : broken) {
+                value = value.replaceAll("@@@", ",");
+
+                if (pos != null) {
+                    switch (controle[pos[0]]) {
+                        case -1: {
+                            String[] values = value.split(",");
+                            String valorTratado = "";
+
+                            for (String val : values) {
+                                if ("N/A".equals(val)) {
+                                    valorTratado += "0,";
+                                } else {
+                                    valorTratado += (1 / Double.valueOf(val).doubleValue()) + ",";
+                                }
+                            }
+                            value = valorTratado.substring(0, valorTratado.length()-1);
+                            break;
+                        }
+                        case 0: {
+                            value = "";
+                            break;
+                        }
+                        case 2: {
+                            //True/False
+                            String[] values = value.split(",");
+                            String valorTratado = "";
+                            for (String val : values) {
+                                if ("\uE60B".equals(val)) {
+                                    valorTratado += "1,";
+                                } else {
+                                    valorTratado += "0,";
+                                }
+                            }
+                            value = valorTratado.substring(0, valorTratado.length()-1);
+                            break;
+                        }
+                        default: {
+                            break;
+                        }
+                    }
+
+                }
+                System.out.println(value);
+                pos[0]++;
+            }
+        } else {
+            System.out.println(strOut);
+        }
+
+        return strOut;
+
+
     }
 
 
