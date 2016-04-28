@@ -1,0 +1,10 @@
+Category Average (fps),2160p Average (fps),Battlefield 4 (fps),Metro: Last Light (fps),Bioshock Infinite (fps),Far Cry 3 (fps),Dirt3 (fps),Thief (fps),Tomb Raider (fps),Unigine Heaven (fps),3DMark Fire Strike,CUDA Cores or Stream Processors,Texture Fillrate (GT/s),Pixel Fillrate (GP/s),Core Clock (MHz),Memory Clock (MHz),Memory Bus (bits),Memory Bandwidth (GBps),Max Memory Capacity (GB),SLI or Crossfire (cards supported),Power Consumption Idle (watts),Power Consumption Gaming (watts),Power Consumption Maximum (watts),Noise Idle (dBA),Noise Maximum (dBA),Temperature Idle (°F),Temperature Max (°F),Max Display Quantity,3D Capable,4K Capable,PhysX Capable,DirectX 12,DirectX v11,Mantle,OpenGL (v4 or higher),OpenCL
+Performance,GPU,Noise and Power,Rendering Technologies
+10.00,9.63,9.55,9.30,8.92,8.90,8.85,8.77,8.63,8.68
+9.65,9.35,9.72,9.40,9.13,9.18,9.05,9.07,8.88,8.82
+9.07,9.28,8.50,9.03,9.18,8.95,9.03,8.88,9.38,9.20
+9.53,9.53,9.38,9.53,9.53,8.75,9.53,8.75,9.53,9.53
+Category Average (fps),2160p Average (fps),Battlefield 4 (fps),Metro: Last Light (fps),Bioshock Infinite (fps),Far Cry 3 (fps),Dirt3 (fps),Thief (fps),Tomb Raider (fps),Unigine Heaven (fps),3DMark Fire Strike
+CUDA Cores or Stream Processors,Texture Fillrate (GT/s),Pixel Fillrate (GP/s),Core Clock (MHz),Memory Clock (MHz),Memory Bus (bits),Memory Bandwidth (GBps),Max Memory Capacity (GB),SLI or Crossfire (cards supported)
+Power Consumption Idle (watts),Power Consumption Gaming (watts),Power Consumption Maximum (watts),Noise Idle (dBA),Noise Maximum (dBA),Temperature Idle (°F),Temperature Max (°F)
+Max Display Quantity,3D Capable,4K Capable,PhysX Capable,DirectX 12,DirectX v11,Mantle,OpenGL (v4 or higher),OpenCL
