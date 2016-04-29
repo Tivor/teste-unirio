@@ -38,6 +38,9 @@ public class HtmlReviewParser {
             aPlusScaleMap.put("C+", "3");
             aPlusScaleMap.put("C", "2");
             aPlusScaleMap.put("C-", "1");
+            aPlusScaleMap.put("D+", "0.7");
+            aPlusScaleMap.put("D", "0.4");
+            aPlusScaleMap.put("D-", "0.2");
         }
 
 
@@ -60,8 +63,11 @@ public class HtmlReviewParser {
 //        private static final int[] controle = {5,0,1,1,1,7,-4,1,1,2,1,1,1,1,1,0,0,0,0,1,2,2,2,2,2,2};
 //        private static final String url = "http://tv.toptenreviews.com/flat-panel/lcd/";
 
-        private static final int[] controle = {0,0,0,8,5,5,6,-1,-5,1,1,8,0,0,0,1,0,0,9,9,9,1,1,1,1,2,8,1,2,2,2};
-        private static final String url = "http://www.toptenreviews.com/computers/laptops/best-laptop-computers/";
+//        private static final int[] controle = {0,0,0,8,5,5,6,-1,-5,1,1,8,0,0,0,1,0,0,9,9,9,1,1,1,1,2,8,1,2,2,2};
+//        private static final String url = "http://www.toptenreviews.com/computers/laptops/best-laptop-computers/";
+
+    private static final int[] controle = {8,8,0,1,0,1,1,0, 8,8,6,-1,-5,2, 5,1,2,1,1, 1,1,2,1,2, 8,1,2,2,2};
+    private static final String url = "http://www.toptenreviews.com/computers/laptops/best-ultrabooks/";
         public static final String VALUE_SEPARATOR = "@@@";
 
     //ZERO ignora,
@@ -75,7 +81,7 @@ public class HtmlReviewParser {
     // 7 - dividir,
     // 8 - A+ - scale
     // 9 - GB
-    private static int num = 24;
+    private static int num = 25;
     private static Path pathAlternatives = Paths.get("input/Alternatives" + num + ".dat");
     private static Path pathFeatures = Paths.get("input/Features" + num + ".dat");
 
@@ -336,6 +342,12 @@ public class HtmlReviewParser {
                 replaceAll("Not Listed", "0").
                 replaceAll("Not specified", "0").
                 replaceAll("\\(13-inch\\)", "").
+                replaceAll("\\(incl. 1x USB-C\\)", "").
+                replaceAll("\\(charging port\\)", "").
+                replaceAll("via Dongle", "0.5").
+
+
+
 //                replaceAll("x", "").
         replaceAll(" Year", "").
                 replaceAll("GHz", "").
