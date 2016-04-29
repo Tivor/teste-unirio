@@ -4,15 +4,44 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import java.io.IOException;
-import java.util.List;
-import java.util.Set;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by Igor on 26/04/2016.
  */
 public class HtmlReviewParser {
 
-    //-1 inverte, ZERO ignora, 1 = igual, 2 = true/false, 3 = modulo(subtracao), 4- max, 5 - multiplicar, 6 - time
+      private static Map<String, String> gigasMap = new HashMap();
+      static {
+          gigasMap.put("128GB", "0.128");
+          gigasMap.put("120GB", "0.12");
+          gigasMap.put("250GB", "0.25");
+          gigasMap.put("256GB", "0.256");
+          gigasMap.put("512GB", "0.512");
+          gigasMap.put("500GB", "0.5");
+          gigasMap.put("1TB", "1");
+      }
+
+        private static Map<String, String> aPlusScaleMap = new HashMap();
+        static {
+            aPlusScaleMap.put("A+", "9");
+            aPlusScaleMap.put("A", "8");
+            aPlusScaleMap.put("A-", "7");
+            aPlusScaleMap.put("B+", "6");
+            aPlusScaleMap.put("B", "5");
+            aPlusScaleMap.put("B-", "4");
+            aPlusScaleMap.put("C+", "3");
+            aPlusScaleMap.put("C", "2");
+            aPlusScaleMap.put("C-", "1");
+        }
+
+
+
 //    private static final int[] controle = {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, -1, -1, -1, -1, -1, -1, -1, 1, 2, 2, 2, 2, 2, 2, 2, 2};
 //    private static final String url = "http://www.toptenreviews.com/computers/gaming/best-graphics-cards/";
 
@@ -25,38 +54,71 @@ public class HtmlReviewParser {
 //    private static final int[] controle = {0,1,1,0,1,0,4,4,4,5,1,4,6,5,-1,1,1,2,2,2,1,2,2,2,2};
 //    private static final String url = "http://www.toptenreviews.com/computers/gaming/best-gaming-laptops/";
 
-    private static final int[] controle = {0,0,4,1,1,1,2,0,1,0,0,0,2,2,4,4,1,4,5,1,1,2,2,2,1,2,2,2,2};
-    private static final String url = "http://www.toptenreviews.com/computers/gaming/best-gaming-pcs/";
+//    private static final int[] controle = {0,0,4,1,1,1,2,0,1,0,0,0,2,2,4,4,1,4,5,1,1,2,2,2,1,2,2,2,2};
+//    private static final String url = "http://www.toptenreviews.com/computers/gaming/best-gaming-pcs/";
+
+//        private static final int[] controle = {5,0,1,1,1,7,-4,1,1,2,1,1,1,1,1,0,0,0,0,1,2,2,2,2,2,2};
+//        private static final String url = "http://tv.toptenreviews.com/flat-panel/lcd/";
+
+        private static final int[] controle = {0,0,0,8,5,5,6,-1,-5,1,1,8,0,0,0,1,0,0,9,9,9,1,1,1,1,2,8,1,2,2,2};
+        private static final String url = "http://www.toptenreviews.com/computers/laptops/best-laptop-computers/";
+        public static final String VALUE_SEPARATOR = "@@@";
+
+    //ZERO ignora,
+    // -1 inverte,
+    // 1 = igual,
+    // 2 = true/false,
+    // 3 = modulo(subtracao),
+    // 4- max, -4 -> min,
+    // 5 - multiplicar, -5 -> invert(multiplica),
+    // 6 - time,
+    // 7 - dividir,
+    // 8 - A+ - scale
+    // 9 - GB
+    private static int num = 24;
+    private static Path pathAlternatives = Paths.get("input/Alternatives" + num + ".dat");
+    private static Path pathFeatures = Paths.get("input/Features" + num + ".dat");
+
+
 
     public static void main(String... args) throws IOException {
 
         Document document = Jsoup.connect(url).get();
 
         //Produtos
-        printTen(document, "div[class=prodItemRow title]", 2, 0, false, null);
+        String alternatives = printTen(document, "div[class=prodItemRow title]", 2, 0, false, null);
+        Files.write(pathAlternatives, (alternatives+"\n").getBytes(), StandardOpenOption.CREATE, StandardOpenOption.APPEND);
 
         //Overall ratings
-        printTen(document, "div[class=score]", 1, 0, false, null);
-
-        //Criteria
-        printTen(document, "li[class=carousel_column] > a", 1, 1, false, null);
+        String ratings = printTen(document, "div[class=score]", 1, 0, false, null);
+        Files.write(pathAlternatives, (ratings+"\n").getBytes(), StandardOpenOption.CREATE, StandardOpenOption.APPEND);
 
         Elements elems = document.select("div[id=full_feature_section] > div[class=main_row center mainMtx]");
 
         String all = "";
         int[] posFeatures = {0};
         int[] posValues = {0};
+        String auxFeatures = "";
         for (Element e : elems) {
             //Features
-            all += printTen(e, "div[class=mtxRow] > div[class=mtx_info] > span[class=rowLabel]", 1, 0, false, posFeatures) + ",";
+            String group = printTen(e, "div[class=mtxRow] > div[class=mtx_info] > span[class=rowLabel]", 1, 0, false, posFeatures);
+            auxFeatures += (group.length() > 0) ? group + "\n" : "";
+
+            all += group + ",";
             //Valores
             printTen(e, "div[class=mtxRow] > div[class=carousel clip fixedwidth flex]", 1, 0, true, posValues);
         }
-        String substring = all.substring(0, all.length() - 1);
-        System.out.println(substring);
+        String allFeatures = all.substring(0, all.length() - 1);
+        Files.write(pathFeatures, (allFeatures+"\n").getBytes(), StandardOpenOption.CREATE, StandardOpenOption.APPEND);
+
+        //Criteria
+        String criteria = printTen(document, "li[class=carousel_column] > a", 1, 1, false, null);
+        Files.write(pathFeatures, (criteria+"\n").getBytes(), StandardOpenOption.CREATE, StandardOpenOption.APPEND);
+
+        Files.write(pathFeatures, auxFeatures.getBytes(), StandardOpenOption.CREATE, StandardOpenOption.APPEND);
     }
 
-    private static String printTen(Element document, String query, int razao, int init, boolean group, int[] pos) {
+    private static String printTen(Element document, String query, int razao, int init, boolean group, int[] pos) throws IOException {
 
         Elements elements = document.select(query);
 
@@ -68,10 +130,10 @@ public class HtmlReviewParser {
                     Elements spans = e.select("span");
                     for (Element span : spans) {
                         strOut += span.hasText() ? clean(span.text()) : "0";
-                        strOut += "@@@";
+                        strOut += VALUE_SEPARATOR;
                     }
 
-                    strOut = strOut.trim() + ",";
+                    strOut = strOut.trim() + "£";
                 } else {
                     strOut += e.text() + ",";
                 }
@@ -82,25 +144,13 @@ public class HtmlReviewParser {
 
         if (group) {
 
-            if (strOut.replaceAll(","," ").trim().length() > 0) {
+            if (strOut.replaceAll("£"," ").trim().length() > 0) {
 
-                String[] broken = strOut.split(",");
+                String[] broken = strOut.split("£");
                 for (String value : broken) {
-                    value = value.replaceAll("@@@", ",");
-
                     switch (controle[pos[0]]) {
                         case -1: {
-                            String[] values = value.split(",");
-                            String valorTratado = "";
-
-                            for (String val : values) {
-                                if ("N/A".equals(val)) {
-                                    valorTratado += "0,";
-                                } else {
-                                    valorTratado += (1 / Double.valueOf(val).doubleValue()) + ",";
-                                }
-                            }
-                            value = valorTratado.substring(0, valorTratado.length() - 1);
+                            value = razaoInversa(value, VALUE_SEPARATOR);
                             break;
                         }
                         case 0: {
@@ -108,73 +158,50 @@ public class HtmlReviewParser {
                             break;
                         }
                         case 3: {
-                            String[] values = value.split(",");
-                            String valorTratado = "";
-
-                            for (String val : values) {
-                                double val0 = Double.valueOf(val.split(" - ")[0]);
-                                double val1 = Double.valueOf(val.split(" - ")[1]);
-
-                                valorTratado += Math.abs(val0 - val1)  + ",";
-                            }
-                            value = valorTratado.substring(0, valorTratado.length() - 1);
+                            value = subtrai(value);
+                            break;
+                        }
+                        case -4: {
+                            value = getMax(value, false);
                             break;
                         }
                         case 4: {
-                            String[] values = value.split(",");
-                            String valorTratado = "";
-
-                            for (String val : values) {
-
-                                String[] split;
-                                if (val.contains("-")) {
-                                    split = val.split("-");
-                                } else {
-                                    split = val.split("/");
-                                }
-
-                                valorTratado += split[split.length-1].trim() + ",";
-                            }
-                            value = valorTratado.substring(0, valorTratado.length() - 1);
+                            value = getMax(value, true);
                             break;
                         }
                         case 5: {
-                            String[] values = value.split(",");
-                            String valorTratado = "";
-
-                            for (String val : values) {
-                                String[] split = val.split(" x ");
-                                double val0 = Double.valueOf(split[0]);
-                                double val1 = Double.valueOf(split[1]);
-                                double val2 = 1;
-
-                                if (split.length == 3) val2 = Double.valueOf(split[2]);
-
-                                valorTratado += (val0 * val1 * val2)  + ",";
-                            }
-                            value = valorTratado.substring(0, valorTratado.length() - 1);
+                            value = multiplica(value);
+                            break;
+                        }
+                        case -5: {
+                            value = razaoInversa(multiplica(value), ",");
                             break;
                         }
                         case 6: {
-                            String[] values = value.split(",");
-                            String valorTratado = "";
-
-                            for (String val : values) {
-                                String[] split = val.split(":");
-                                double val0 = Double.valueOf(split[0]);
-                                double val1 = Double.valueOf(split[1]);
-
-                                valorTratado += ((val0 * 60) + val1) + ",";
-                            }
-                            value = valorTratado.substring(0, valorTratado.length() - 1);
+                            value = minutes(value);
+                            break;
+                        }
+                        case 7: {
+                            value = divide(value);
+                            break;
+                        }
+                        case 8: {
+                            value = map(value, aPlusScaleMap);
+                            break;
+                        }
+                        case 9: {
+                            value = map(value, gigasMap);
                             break;
                         }
                         default: {
-                            value = value.substring(0, value.length() - 1);
+                            value = value.substring(0, value.length() - 3);
                             break;
                         }
                     }
+                    value = value.replaceAll(VALUE_SEPARATOR, ",");
                     System.out.println(value);
+                    value = (value.length() > 0) ? value+"\n" : "";
+                    Files.write(pathAlternatives, value.getBytes(), StandardOpenOption.CREATE, StandardOpenOption.APPEND);
                     pos[0]++;
                 }
             }
@@ -187,11 +214,130 @@ public class HtmlReviewParser {
 
     }
 
+    private static String minutes(String value) {
+        String[] values = value.split(VALUE_SEPARATOR);
+        String valorTratado = "";
+
+        for (String val : values) {
+            String[] split = val.split(":");
+            double val0 = Double.valueOf(split[0]);
+            double val1 = Double.valueOf(split[1]);
+
+            valorTratado += ((val0 * 60) + val1) + ",";
+        }
+        value = valorTratado.substring(0, valorTratado.length() - 1);
+        return value;
+    }
+
+    private static String multiplica(String value) {
+        String[] values = value.split(VALUE_SEPARATOR);
+        String valorTratado = "";
+
+        for (String val : values) {
+            String[] split = val.split("x");
+            double val0 = Double.valueOf(split[0].replaceAll(" ", "").trim());
+            double val1 = Double.valueOf(split[1].replaceAll(" ", "").trim());
+            double val2 = 1;
+
+            if (split.length == 3) val2 = Double.valueOf(split[2].replaceAll(" ", "").trim());
+
+            valorTratado += (val0 * val1 * val2)  + ",";
+        }
+        value = valorTratado.substring(0, valorTratado.length() - 1);
+        return value;
+    }
+
+    private static String divide(String value) {
+        String[] values = value.split(VALUE_SEPARATOR);
+        String valorTratado = "";
+
+        for (String val : values) {
+
+            if ("0".equals(val)) {
+                valorTratado += val + ",";
+            } else {
+
+                String[] split = val.split(":");
+                double val0 = Double.valueOf(split[0].trim());
+                double val1 = Double.valueOf(split[1].trim());
+
+                valorTratado += (val0 / val1) + ",";
+            }
+        }
+        value = valorTratado.substring(0, valorTratado.length() - 1);
+        return value;
+    }
+
+    private static String subtrai(String value) {
+        String[] values = value.split(VALUE_SEPARATOR);
+        String valorTratado = "";
+
+        for (String val : values) {
+            double val0 = Double.valueOf(val.split(" - ")[0]);
+            double val1 = Double.valueOf(val.split(" - ")[1]);
+
+            valorTratado += Math.abs(val0 - val1)  + ",";
+        }
+        value = valorTratado.substring(0, valorTratado.length() - 1);
+        return value;
+    }
+
+    private static String razaoInversa(String value, String regex) {
+        String[] values = value.split(regex);
+        String valorTratado = "";
+
+        for (String val : values) {
+            valorTratado += (1 / Double.valueOf(val).doubleValue()) + ",";
+        }
+        value = valorTratado.substring(0, valorTratado.length() - 1);
+        return value;
+    }
+
+    private static String map(String value, Map map) {
+        String[] values = value.split(VALUE_SEPARATOR);
+        String valorTratado = "";
+
+        for (String val : values) {
+            if (map.containsKey(val)) {
+                valorTratado += map.get(val) + ",";
+            } else {
+                valorTratado += val + ",";
+            }
+        }
+        value = valorTratado.substring(0, valorTratado.length() - 1);
+        return value;
+    }
+
+    private static String getMax(String value, boolean asc) {
+        String[] values = value.split(VALUE_SEPARATOR);
+        String valorTratado = "";
+
+        for (String val : values) {
+
+            String[] split;
+            if (val.contains("-")) {
+                split = val.split("-");
+            } else if (val.contains("/")) {
+                split = val.split("/");
+            } else {
+                split = val.split(",");
+            }
+
+            int i = asc ? split.length - 1 : 0;
+            valorTratado += split[i].trim() + ",";
+        }
+        value = valorTratado.substring(0, valorTratado.length() - 1);
+        return value;
+    }
+
     private static String clean(String text) {
         return text.
+                replaceAll("N/A", "0").
                 replaceAll("Not Listed", "0").
+                replaceAll("Not specified", "0").
+                replaceAll("\\(13-inch\\)", "").
 //                replaceAll("x", "").
-                replaceAll(" Year", "").
+        replaceAll(" Year", "").
                 replaceAll("GHz", "").
                 replaceAll("p", "").
                 replaceAll("None", "0").
