@@ -1,7 +1,7 @@
-import org.jsoup.Jsoup;
+/*import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
+import org.jsoup.select.Elements;*/
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -16,7 +16,7 @@ import java.util.Map;
  */
 public class HtmlReviewParser {
 
-      private static Map<String, String> gigasMap = new HashMap();
+      /*private static Map<String, String> gigasMap = new HashMap();
       static {
           gigasMap.put("128GB", "0.128");
           gigasMap.put("120GB", "0.12");
@@ -66,8 +66,28 @@ public class HtmlReviewParser {
 //        private static final int[] controle = {0,0,0,8,5,5,6,-1,-5,1,1,8,0,0,0,1,0,0,9,9,9,1,1,1,1,2,8,1,2,2,2};
 //        private static final String url = "http://www.toptenreviews.com/computers/laptops/best-laptop-computers/";
 
-    private static final int[] controle = {8,8,0,1,0,1,1,0, 8,8,6,-1,-5,2, 5,1,2,1,1, 1,1,2,1,2, 8,1,2,2,2};
-    private static final String url = "http://www.toptenreviews.com/computers/laptops/best-ultrabooks/";
+//    private static final int[] controle = {8,8,0,1,0,1,1,0, 8,8,6,-1,-5,2, 5,1,2,1,1, 1,1,2,1,2, 8,1,2,2,2};
+//    private static final String url = "http://www.toptenreviews.com/computers/laptops/best-ultrabooks/";
+
+//    private static final int[] controle = {8,1,-1,-5,1,2,2,      0,2,2,2,   8,8,5,6,   1,2,2,2,2,2};
+//    private static final String url = "http://tablets-review.toptenreviews.com/kids-tablets/";
+
+//    private static final int[] controle = {8,5,1,1,1,2,   8,-1,1,2,-5,  2,2,2,2,  1,2,2,2,2};
+//    private static final String url = "http://ebook-reader-review.toptenreviews.com/";
+//
+//    private static final int[] controle = {0,0,2,2,2,  4,5,1,  1,-5,-1,1,1,4,0,2,2,2,   1,2};
+//    private static final String url = "http://best-kindle-comparison-review.toptenreviews.com/";
+
+//    private static final int[] controle = {8,8,1,  1,1,2,2,2,2,2,2,2,2,   8,2,2,2,   8,1,0,-5,-1,2,   1,1,1,1,2,   8,1,2,2,2,   0,8,8};
+//    private static final String url = "http://gps-tracker-review.toptenreviews.com/";
+
+//    private static final int[] controle = {2,2,2,2,2,2,2,2,   1,2,2,2,2,2,2,2,2,2,2,  5,1,1,2,2,2,-1,-1,-1,-1,  1,1,2,2,2};
+//    private static final String url = "http://gps.toptenreviews.com/navigation/";
+
+    private static final int[] controle = {1,0,1,-1,1,2,2,  4,0,-1,0,1,2,2,        1,2,2,2,2,  1,2,2,2,2,2};
+    private static final String url = "http://www.toptenreviews.com/headphones/bluetooth-headphones-review/";
+
+    private static int num = 31;
         public static final String VALUE_SEPARATOR = "@@@";
 
     //ZERO ignora,
@@ -81,7 +101,7 @@ public class HtmlReviewParser {
     // 7 - dividir,
     // 8 - A+ - scale
     // 9 - GB
-    private static int num = 25;
+
     private static Path pathAlternatives = Paths.get("input/Alternatives" + num + ".dat");
     private static Path pathFeatures = Paths.get("input/Features" + num + ".dat");
 
@@ -350,11 +370,12 @@ public class HtmlReviewParser {
 
 //                replaceAll("x", "").
         replaceAll(" Year", "").
+                replaceAll("%", "").
                 replaceAll("GHz", "").
-                replaceAll("p", "").
+                replaceAll("p", "").replaceAll("\\*", "").
                 replaceAll("None", "0").
                 replace('\uE60B', '1');
     }
-
+*/
 
 }
