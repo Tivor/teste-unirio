@@ -9,9 +9,9 @@ import java.util.concurrent.Executors;
  * Created by Poliana on 19/12/2015.
  */
 public class Main {
-    public static final int EVOLUTION_RATIO = 10;
+    public static final int EVOLUTION_RATIO = 1;
     public static final int REPETICOES = 1;
-    public static final int PRIMEIRO_INPUT = 23;
+    public static final int PRIMEIRO_INPUT = 51;
     public static final int END = PRIMEIRO_INPUT;
     static ExecutorService pool = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
 

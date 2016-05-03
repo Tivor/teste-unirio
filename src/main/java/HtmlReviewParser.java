@@ -1,14 +1,17 @@
-/*import org.jsoup.Jsoup;
+import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;*/
+import org.jsoup.select.Elements;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 /**
@@ -16,7 +19,13 @@ import java.util.Map;
  */
 public class HtmlReviewParser {
 
-      /*private static Map<String, String> gigasMap = new HashMap();
+
+    private static DecimalFormat df = new DecimalFormat("0", DecimalFormatSymbols.getInstance(Locale.ENGLISH));
+    static {
+        df.setMaximumFractionDigits(10);
+    }
+
+      private static Map<String, String> gigasMap = new HashMap();
       static {
           gigasMap.put("128GB", "0.128");
           gigasMap.put("120GB", "0.12");
@@ -43,7 +52,7 @@ public class HtmlReviewParser {
             aPlusScaleMap.put("D-", "0.2");
         }
 
-
+    public static final String VALUE_SEPARATOR = "@@@";
 
 //    private static final int[] controle = {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, -1, -1, -1, -1, -1, -1, -1, 1, 2, 2, 2, 2, 2, 2, 2, 2};
 //    private static final String url = "http://www.toptenreviews.com/computers/gaming/best-graphics-cards/";
@@ -84,18 +93,78 @@ public class HtmlReviewParser {
 //    private static final int[] controle = {2,2,2,2,2,2,2,2,   1,2,2,2,2,2,2,2,2,2,2,  5,1,1,2,2,2,-1,-1,-1,-1,  1,1,2,2,2};
 //    private static final String url = "http://gps.toptenreviews.com/navigation/";
 
-    private static final int[] controle = {1,0,1,-1,1,2,2,  4,0,-1,0,1,2,2,        1,2,2,2,2,  1,2,2,2,2,2};
-    private static final String url = "http://www.toptenreviews.com/headphones/bluetooth-headphones-review/";
+//    private static final int[] controle = {1,0,1,-1,1,2,2,  4,0,-1,0,1,2,2,        1,2,2,2,2,  1,2,2,2,2,2};
+//    private static final String url = "http://www.toptenreviews.com/headphones/bluetooth-headphones-review/";
 
-    private static int num = 31;
-        public static final String VALUE_SEPARATOR = "@@@";
+//    private static final int[] controle = {1, 0, 0, -4, 4, 4, 4,   4, 0,2,2,2,2,   1, 0, -4, 2,2,2,2,4,2,2, 1,2,2,2,2,2};
+//    private static final String url = "http://www.toptenreviews.com/headphones/noise-cancelling-headphones-review/";
 
-    //ZERO ignora,
+//    private static final int[] controle = {8,8,1,0,-1,0, 8,1,8,0,1,  1,1,-1,1,1,  1,2,2,2,2,2,2,1, 1,2,2,2,2};
+//    private static final String url = "http://www.toptenreviews.com/headphones/wireless-earbuds-review/";
+
+//    private static final int[] controle = {0,-1, 1,-1,1,2,0,1,2,2,2,  2,0,1,2,  1, 2,2,2,2};
+//    private static final String url = "http://www.toptenreviews.com/headphones/wireless-headphones-review/";
+
+//    private static final int[] controle = {0,1,1,5,5,1,2,2,   5,1,1,2,1,2,1,1,  2,2,2,2,2,1,0,0,0,0,0,  1,1,2,2,2,2};
+//    private static final String url = "http://www.toptenreviews.com/computers/printers/best-all-in-one-printers";
+
+//    private static final int[] controle = {1,1,1,1,1,1,5,5,   2,2,2,2,2,2,2,2,2,2,2,2, 1,1,-1,-1,-1,-1,5,-1,2,2,  1,2,2,2,2,2,2,2};
+//    private static final String url = "http://www.toptenreviews.com/computers/printers/best-wireless-all-in-one-inkjet-printers/";
+
+//    private static final int[] controle = {0,0, 1,1,1,-1,1,-5,1,2,2,2,2,2,2, 2,2,2,2,2,1,-1,-1,-1,-1,  -1,-1,-1,2,  1,2,2,2,2, 0,0,0,0,0,0,0,0,0,0};
+//    private static final String url = "http://www.toptenreviews.com/computers/printers/best-wireless-laser-printers/";
+
+//    private static final int[] controle = {1,4,1,1,4,-4,2,2,   2,2,2,2,-1,0,1,   1,-14,-1,-1,-1,0,0,2,2,0,  0,2,1,2,2,2, 1,2,2,2,2,2,2,-4,  0,0,0,0,0,0};
+//    private static final String url = "http://www.toptenreviews.com/computers/3d-printers/best-3d-printers/";
+
+//    private static final int[] controle = {1,1,5,0,1,1,-4,1,1,  2,2,2,2,2,2,2,2,2,0,0, 1,1,1,1,1, 0,0,0,  1,1,2,2,2,2,2};
+//    private static final String url = "http://tv.toptenreviews.com/big-screen/";
+
+//    private static final int[] controle = {1,1,1,-4,5,5,  0,0,0,0,1,0,2,2,2,2,2,2,2,2,1,1,  2,2,2,2,2,  1,2,2,2};
+//    private static final String url = "http://budget-micro-projectors-review.toptenreviews.com/";
+
+//    private static final int[] controle = {9,1,1,1,2,2,2,2,2,2,2,2,2,2,2,0,0,0,0, 2,2,2,2,2,  2,2,2,2,2,2,2,2,2,2,2,2,2,2,  1,2,2,2,2,2,  0,0,0,0,0,0,0,0,0,0,0};
+//    private static final String url = "http://dvr-review.toptenreviews.com/";
+
+//    private static final int[] controle = {2,2,2,2,2,  1,1,1,1,2,  1,1,2,2,2,-5, 1,2,2,2,2};
+//    private static final String url = "http://hdmi-switcher-review.toptenreviews.com/";
+
+//    private static final int[] controle = {2,2,2,1,  1,  2,2,2,-1,-1,-1,-1,  1,2,2,2,1};
+//    private static final String url = "http://hdtv-antenna-review.toptenreviews.com/";
+
+//    private static final int[] controle = {2,2,2,2,1,0, 2,2,2,-4,0,5,3,3,  2,2,2,2,2,2,2,2,2,2,0,0,0,0,  2,2,2,2,2};
+//    private static final String url = "http://home-theater-projectors-review.toptenreviews.com/";
+
+//    private static final int[] controle = {1,2,0,2,1,-1,2,2,0,0,0,2,  0,-1,5,1,-4,1,1,  2,2,2,2,2,2,2,2,  1,2,2,2,2};
+//    private static final String url = "http://kitchen-tv-review.toptenreviews.com/";
+
+//    private static final int[] controle = {8,1,1,1,0,2,2,1,1,1,  8,0,2,2,2,1,  8,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,  0,1,1,2,2,2,2,  0,0,0,0,0,0,0,0,0,0,  8,1,2,2,2,2};
+//    private static final String url = "http://tv.toptenreviews.com/led-tv/";
+
+//    private static final int[] controle = {0,1,4,1,5,5,-4,  2,2,2,2, 1,1,1,2,9,1,0,0,0,0};
+//    private static final String url = "http://mini-projector-review.toptenreviews.com/";
+
+//    private static final int[] controle = {5,1,0,0,1,  4,0,0,0,0,0,1,-1,0,2,2,2,2,2,2,2,1,2,1,2,2,2,  1,1,1,1,1,1,1,  1,2,2,2,2,2};
+//    private static final String url = "http://tv.toptenreviews.com/flat-panel/plasma/";
+
+//    private static final int[] controle = {1,2,2,2,2,2,2,2,2,2,2,2,0,  1,1,5,0,1,1,-4,1,1, 1,1,1,1,1,  0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,  1,1,2,2,2,2,2};
+//    private static final String url = "http://internet-tvs-review.toptenreviews.com/";
+
+//    private static final int[] controle = {1,3,1,1,1,  2,2,2,2,  2,2,2,  1,2,2,2};
+//    private static final String url = "http://tv-wall-mounts-review.toptenreviews.com/";
+
+    private static final int[] controle = {1,1,1,1,5,0,1,  1,2,2,2,2,2,2,2,2,2,2,2,2,  1,1,1,1,2,2,   1,2,2,2,2};
+    private static final String url = "http://3d-tv-review.toptenreviews.com/";
+
+    private static int num = 51;
+
+//ZERO ignora,
     // -1 inverte,
     // 1 = igual,
     // 2 = true/false,
     // 3 = modulo(subtracao),
     // 4- max, -4 -> min,
+    // 14 (inverso do maximo), -14 (inverso do minimo)
     // 5 - multiplicar, -5 -> invert(multiplica),
     // 6 - time,
     // 7 - dividir,
@@ -191,6 +260,10 @@ public class HtmlReviewParser {
                             value = getMax(value, false);
                             break;
                         }
+                        case -14: {
+                            value = razaoInversa(getMax(value, false), ",");
+                            break;
+                        }
                         case 4: {
                             value = getMax(value, true);
                             break;
@@ -261,13 +334,25 @@ public class HtmlReviewParser {
 
         for (String val : values) {
             String[] split = val.split("x");
+
             double val0 = Double.valueOf(split[0].replaceAll(" ", "").trim());
-            double val1 = Double.valueOf(split[1].replaceAll(" ", "").trim());
-            double val2 = 1;
 
-            if (split.length == 3) val2 = Double.valueOf(split[2].replaceAll(" ", "").trim());
+            if (val0 == 0) {
 
-            valorTratado += (val0 * val1 * val2)  + ",";
+                valorTratado += "0,";
+
+            } else {
+
+                double val1 = (split.length == 2) ? Double.valueOf(split[1].replaceAll(" ", "").trim()) : val0;
+
+                double val2 = (split.length == 3) ? Double.valueOf(split[2].replaceAll(" ", "").trim()) : 1;
+
+                valorTratado += df.format(val0 * val1 * val2) + ",";
+
+            }
+
+
+
         }
         value = valorTratado.substring(0, valorTratado.length() - 1);
         return value;
@@ -299,8 +384,8 @@ public class HtmlReviewParser {
         String valorTratado = "";
 
         for (String val : values) {
-            double val0 = Double.valueOf(val.split(" - ")[0]);
-            double val1 = Double.valueOf(val.split(" - ")[1]);
+            double val0 = Double.valueOf(val.split("-")[0].trim());
+            double val1 = Double.valueOf(val.split("-")[1].trim());
 
             valorTratado += Math.abs(val0 - val1)  + ",";
         }
@@ -313,7 +398,17 @@ public class HtmlReviewParser {
         String valorTratado = "";
 
         for (String val : values) {
-            valorTratado += (1 / Double.valueOf(val).doubleValue()) + ",";
+            val = val.replaceAll(",", "");
+
+            double v = Double.valueOf(val.trim()).doubleValue();
+
+            if (v == 0) {
+                valorTratado += "0,";
+            } else {
+                valorTratado += df.format(1 / v) + ",";
+            }
+
+
         }
         value = valorTratado.substring(0, valorTratado.length() - 1);
         return value;
@@ -345,8 +440,10 @@ public class HtmlReviewParser {
                 split = val.split("-");
             } else if (val.contains("/")) {
                 split = val.split("/");
-            } else {
+            } else if (val.contains(",")) {
                 split = val.split(",");
+            } else {
+                split = val.split(":");
             }
 
             int i = asc ? split.length - 1 : 0;
@@ -358,24 +455,22 @@ public class HtmlReviewParser {
 
     private static String clean(String text) {
         return text.
-                replaceAll("N/A", "0").
+                replaceAll("N/A", "0").replaceAll("n/a", "0").
                 replaceAll("Not Listed", "0").
-                replaceAll("Not specified", "0").
-                replaceAll("\\(13-inch\\)", "").
-                replaceAll("\\(incl. 1x USB-C\\)", "").
+                replaceAll("Not specified", "0").replaceAll("Not Specified", "0").
+                replaceAll("\\(13-inch\\)", "").replaceAll("\\(1 For Roku\\)", "").
+
+        replaceAll("\\(incl. 1x USB-C\\)", "").
                 replaceAll("\\(charging port\\)", "").
-                replaceAll("via Dongle", "0.5").
-
-
+                replaceAll("via Dongle", "0.5").replaceAll(" in\\.", "").
 
 //                replaceAll("x", "").
-        replaceAll(" Year", "").
-                replaceAll("%", "").
-                replaceAll("GHz", "").
+        replaceAll(" Year", "").replaceAll(" oz\\.", "").replaceAll("oz", "").replaceAll("lbs", "").replaceAll("lb", "").replaceAll("ft\\.", "").replaceAll("ohms", "").replaceAll("Distributor", "0").
+                replaceAll("%", "").replaceAll("X", "x").replaceAll("\\$", "").
+                replaceAll("GHz", "").replaceAll("W", "").replaceAll(" ms", "").
                 replaceAll("p", "").replaceAll("\\*", "").
                 replaceAll("None", "0").
                 replace('\uE60B', '1');
     }
-*/
 
 }
