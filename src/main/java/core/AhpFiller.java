@@ -158,7 +158,11 @@ public class AhpFiller {
                 }
             } else {
                 if (j != crossValidationAlternative) {
-                    alternativesClean.remove(correctIndex);
+//                    try {
+                        alternativesClean.remove(correctIndex);
+//                    }catch (ArrayIndexOutOfBoundsException e){
+//                        System.out.println("fuck");
+//                    }
                 }
 
                 allAlternativesClean.remove(correctIndexAll);

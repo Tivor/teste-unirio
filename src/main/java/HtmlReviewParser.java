@@ -153,10 +153,64 @@ public class HtmlReviewParser {
 //    private static final int[] controle = {1,3,1,1,1,  2,2,2,2,  2,2,2,  1,2,2,2};
 //    private static final String url = "http://tv-wall-mounts-review.toptenreviews.com/";
 
-    private static final int[] controle = {1,1,1,1,5,0,1,  1,2,2,2,2,2,2,2,2,2,2,2,2,  1,1,1,1,2,2,   1,2,2,2,2};
-    private static final String url = "http://3d-tv-review.toptenreviews.com/";
+//    private static final int[] controle = {1,1,1,1,5,0,1,  1,2,2,2,2,2,2,2,2,2,2,2,2,  1,1,1,1,2,2,   1,2,2,2,2};
+//    private static final String url = "http://3d-tv-review.toptenreviews.com/";
 
-    private static int num = 51;
+//    private static final int[] controle = {0,1,1,1,-1,-5,  1,1,1,1,1,2,2,2,1,1,  1,1,1,1,1,2,  1,1,1,1,4,2,  2,2,2,2,2,2,2,2,2,2,2,  0,0,0,0};
+//    private static final String url = "http://android-phone-review.toptenreviews.com/";
+
+//    private static final int[] controle = {1,1,2,2,2, 1,-1,1,2,2,  1,2,2,2,2,2,2,2,  1,1,1,2,  1,2,2,2,2,2,2};
+//    private static final String url = "http://bluetooth-headset-review.toptenreviews.com/";
+
+//    private static final int[] controle = {1,-1,1,2,2,2,2,  1,1,1,2,2,2,2,2,  1,1,1,2,2,2,  0,0,0,0, 1,2,2,2,2,2,2};
+//    private static final String url = "http://cell-phone-booster-review.toptenreviews.com/";
+
+//    private static final int[] controle = {1,1,1,2,2,-1,1,2,2,2,1,2,2,2,2,2,2,2,2,  2,2,2,2,2,2,2,2,2,  2,2,2,2,2,2,  1,1,1,2,  2,2,2, 0,0};
+//    private static final String url = "http://emergency-cell-phone-review.toptenreviews.com/";
+
+//    private static final int[] controle = {0,0,2,2,2,2,1, 2,2,2,2,  2,2,2,2,2,2};
+//    private static final String url = "http://iphone-lens-kits-review.toptenreviews.com/";
+
+//    private static final int[] controle = {0,0,  1,1,1,2,2,2,2,  1,1,2,2,2,2,2,2,2,  1,2,2,2,2,2,  1,1,1,1};
+//    private static final String url = "http://iphone-screen-protector-review.toptenreviews.com/";
+
+//    private static final int[] controle = {0,1,1,2,2,  1,2,2,2,2,2,9,  0,1,-1,-1,-1,-1};
+//    private static final String url = "http://cell-phones.toptenreviews.com/pay-as-you-go/";
+
+//    private static final int[] controle = {-1,-1,2,1,2,  1,1,-1,1,0,  1,-1,1,2,-5,0,  4,2,2,2,2};
+//    private static final String url = "http://solar-phone-charger-review.toptenreviews.com/";
+
+//    private static final int[] controle = {1,1,1,1,1,-1,1,0,1,1,3,1,2,2,  1,1,1,-1,-5,1,1,2,2,2,2,  1,1,1,2,2,2,2,2,2,  1,2,2,2,2,2};
+//    private static final String url = "http://digital-cameras.toptenreviews.com/compact/";
+
+//    private static final int[] controle = {1,2,2,2,  1,1,1,1,2,2,2,2,   1,1,1,2,2,2,2,2,  1,2,2,2,2};
+//    private static final String url = "http://digital-cameras-for-children-review.toptenreviews.com/";
+
+//    private static final int[] controle = {1,1,1,1,1,1,2,  1,1,1,1,1,1,  -1,-5,1,2,2,2,2,2,  1,2,2,2,2,2};
+//    private static final String url = "http://entry-level-dslr-camera-review.toptenreviews.com/";
+
+//    private static final int[] controle = {1,1,1,1,  1,1,-1,-1,  2,2,2,2,  -5,1,2,2,  1,1,2,2};
+//    private static final String url = "http://game-camera-review.toptenreviews.com/";
+
+//    private static final int[] controle = {5,1,1,0,  1,1,1,2,  2,2,2,2,2,2,2,2,  1,-1,2,2,2,2,1,1,  4,2,2,2,2};
+//    private static final String url = "http://infrared-cameras-review.toptenreviews.com/";
+
+//    private static final int[] controle = {4,1,1,1,1,2,  1,4,1,1,1,14,14,2,  1,2,2,2,2,2,-5,-1,2,2,  1,2,2,2,2};
+//    private static final String url = "http://point-and-shoot-camera-review.toptenreviews.com/";
+
+//    private static final int[] controle = {0,1,1,1,1,1,1,1,  1,1,1,1,1,1,4,2,  -1,-5,1,1,2,2,2,2,2,2,2,  2,2,2,2,2,  1,2,2,2,2,2};
+//    private static final String url = "http://digital-cameras.toptenreviews.com/professional-dslr/";
+
+//    private static final int[] controle = {1,1,2,1,2,2,2,2,  8,8,1,-1,1,1,1,1,1,2,2,2,  1,2,2,2,2,2,2,2,2,2,2,2,  1,1,0,0,  1,-1,-1,-1,-1,  1,2,2,2,2,2};
+//    private static final String url = "http://waterproof-camera-review.toptenreviews.com/";
+
+//    private static final int[] controle = {-1,2,2,2,  2,2,2,2,  1,-1,-5,2,2,2,2,  1,2,2,2,2};
+//    private static final String url = "http://3d-blu-ray-player-review.toptenreviews.com/";
+
+    private static final int[] controle = {8,8,8,1,5,1,1,1,  1,1,2,2,2,2,2,2,2,  1,1,1,1,-1,-1,-1,-1,  1,2,2,2};
+    private static final String url = "http://dvd-players.toptenreviews.com/portable/";
+
+    private static int num = 69;
 
 //ZERO ignora,
     // -1 inverte,
@@ -262,6 +316,10 @@ public class HtmlReviewParser {
                         }
                         case -14: {
                             value = razaoInversa(getMax(value, false), ",");
+                            break;
+                        }
+                        case 14: {
+                            value = razaoInversa(getMax(value, true), ",");
                             break;
                         }
                         case 4: {
@@ -456,16 +514,16 @@ public class HtmlReviewParser {
     private static String clean(String text) {
         return text.
                 replaceAll("N/A", "0").replaceAll("n/a", "0").
-                replaceAll("Not Listed", "0").
+                replaceAll("Not Listed", "0").replaceAll("None", "0").
                 replaceAll("Not specified", "0").replaceAll("Not Specified", "0").
                 replaceAll("\\(13-inch\\)", "").replaceAll("\\(1 For Roku\\)", "").
 
-        replaceAll("\\(incl. 1x USB-C\\)", "").
+        replaceAll("\\(incl. 1x USB-C\\)", "").replaceAll("f\\/","").
                 replaceAll("\\(charging port\\)", "").
                 replaceAll("via Dongle", "0.5").replaceAll(" in\\.", "").
 
 //                replaceAll("x", "").
-        replaceAll(" Year", "").replaceAll(" oz\\.", "").replaceAll("oz", "").replaceAll("lbs", "").replaceAll("lb", "").replaceAll("ft\\.", "").replaceAll("ohms", "").replaceAll("Distributor", "0").
+        replaceAll(" Year", "").replaceAll(" in", "").replaceAll(" in\\.", "").replaceAll(" oz\\.", "").replaceAll("oz", "").replaceAll("lbs", "").replaceAll("lb", "").replaceAll("ft\\.", "").replaceAll("ohms", "").replaceAll("Distributor", "0").
                 replaceAll("%", "").replaceAll("X", "x").replaceAll("\\$", "").
                 replaceAll("GHz", "").replaceAll("W", "").replaceAll(" ms", "").
                 replaceAll("p", "").replaceAll("\\*", "").
