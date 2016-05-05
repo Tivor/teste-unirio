@@ -207,10 +207,43 @@ public class HtmlReviewParser {
 //    private static final int[] controle = {-1,2,2,2,  2,2,2,2,  1,-1,-5,2,2,2,2,  1,2,2,2,2};
 //    private static final String url = "http://3d-blu-ray-player-review.toptenreviews.com/";
 
-    private static final int[] controle = {8,8,8,1,5,1,1,1,  1,1,2,2,2,2,2,2,2,  1,1,1,1,-1,-1,-1,-1,  1,2,2,2};
-    private static final String url = "http://dvd-players.toptenreviews.com/portable/";
+//    private static final int[] controle = {8,8,8,1,5,1,1,1,  1,1,2,2,2,2,2,2,2,  1,1,1,1,-1,-1,-1,-1,  1,2,2,2};
+//    private static final String url = "http://dvd-players.toptenreviews.com/portable/";
 
-    private static int num = 69;
+//    private static final int[] controle = {0,0,0,0,   0,1,0,1,0,1,2,2,2,2,2,2,2,2,  0,1,0,0,0,0,1,0,2,2,2,2,  1,2,2,2,2,2,2,2,2,2,2,  2,2,2,2,2,2,  1,2,2,2,2,2,2,  0,0,0,0,  0,0,0,0,0};
+//    private static final String url = "http://video-game-consoles-review.toptenreviews.com/";
+
+//    private static final int[] controle = {1,1,2,2,2,2,2,2,2,  1,1,1,2,2,2,2,2,  2,2,2,2,2,2,2,  1,2,2,2,2,   0,0,0,0,0};
+//    private static final String url = "http://gaming-steering-wheel-review.toptenreviews.com/";
+
+//    private static final int[] controle = {1,1,1,1,0,1,0,0,0,0,2,2,2,2,2,  0,0,1,1,2,2,2,2,  2,2,2,2,2,2,2,  2,2,2,2,2,  0,0,0};
+//    private static final String url = "http://handheld-game-console-review.toptenreviews.com/";
+
+//    private static final int[] controle = {-1,1,1,-1,1,1,-1,1,  -1,1,1,1,2,2,2,  2,2,2,2,2,2,   1,2,2,2,2,2};
+//    private static final String url = "http://www.toptenreviews.com/computers/gaming/best-pc-gaming-headsets/";
+
+//    private static final int[] controle = {1,0,2,2,2,2,2,2,2,2,2,  2,2,2,2,2,2,  1,2,2,2,2,2,  0,0,0,0,0,0,0,0};
+//    private static final String url = "http://www.toptenreviews.com/computers/peripherals/best-vhs-to-dvd-converters/";
+
+//    private static final int[] controle = {1,1,2,2,2,2,2,  0,2,2,2,  1,1,1,2,2,2,2,2,2,2,2,2,  1,2,2,2,  1,2,2,2};
+//    private static final String url = "http://alarm-clocks-review.toptenreviews.com/";
+
+//    private static final int[] controle = {2,2,2,2,2,2,2,  2,2,2,2,2,  2,2,2,2,2,  1,2,2};
+//    private static final String url = "http://baby-sound-machine-review.toptenreviews.com/";
+
+//    private static final int[] controle = {1,1,1,5,1,2,2,2,1,  1,1,1,1,1,2,2,2,2,2,  2,2,2,1,  1,2,2};
+//    private static final String url = "http://baby-video-monitor-review.toptenreviews.com/";
+
+//    private static final int[] controle = {1,1,1,1,1,1,2,2,2,  2,2,2,2,2,2,2,  1,1,1,1,2,  1,2,2,2,2,2};
+//    private static final String url = "http://cordless-phones-review.toptenreviews.com/";
+
+//    private static final int[] controle = {1,1,1,2,2,2,2,2,2,2,2,2,2,2,   1,2,2,2,2,2,-1,  2,2,2,2,2,2,2,2,2,2,2,2,  1,2,2,2,2,2};
+//    private static final String url = "http://die-cutting-machines-review.toptenreviews.com/";
+
+    private static final int[] controle = {1,1,2,2,0,1,-1,-1,-3,2,  1,0,0,2,2,2,2,  1,2,2,2,2,2,2,  0,0,0,0,0,0};
+    private static final String url = "http://digital-pen-review.toptenreviews.com/";
+
+    private static int num = 80;
 
 //ZERO ignora,
     // -1 inverte,
@@ -308,6 +341,10 @@ public class HtmlReviewParser {
                         }
                         case 3: {
                             value = subtrai(value);
+                            break;
+                        }
+                        case -3: {
+                            value = razaoInversa(subtrai(value), ",");
                             break;
                         }
                         case -4: {
@@ -443,7 +480,8 @@ public class HtmlReviewParser {
 
         for (String val : values) {
             double val0 = Double.valueOf(val.split("-")[0].trim());
-            double val1 = Double.valueOf(val.split("-")[1].trim());
+//            double val1 = Double.valueOf(val.split("-")[1].trim());
+            double val1 = 5.79d;
 
             valorTratado += Math.abs(val0 - val1)  + ",";
         }
