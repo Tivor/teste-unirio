@@ -273,10 +273,40 @@ public class HtmlReviewParser {
 //    private static final int[] controle = {8, 8, 8, 8, 0, 0, 1, 0, 5, 1, 0, -1, -1, 1, 0, 0, 2, 2, 2, 0, 1, 1, 1, 1, 0, 0, 0, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 2, 2, 2};
 //    private static final String url = "http://smart-watch-review.toptenreviews.com/";
 
-    private static final int[] controle = {1,2,2,0,0,2,2,2,2,2,2,2,2,1,2,  2,2,2,2,2,2,2,2,2,  2,2,2,0,0,0,0,0,2,2,2,  2,2,2,2,2,2,  0,0,0,0,0,0,0};
-    private static final String url = "http://universal-remote-review.toptenreviews.com/";
+//    private static final int[] controle = {1,2,2,0,0,2,2,2,2,2,2,2,2,1,2,  2,2,2,2,2,2,2,2,2,  2,2,2,0,0,0,0,0,2,2,2,  2,2,2,2,2,2,  0,0,0,0,0,0,0};
+//    private static final String url = "http://universal-remote-review.toptenreviews.com/";
 
-    private static int num = 90;
+//    private static final int[] controle = {8,0,2,2,2,2,2,2,  0,2,2,1,2,2,2,2,2,0,  0,2,2,2,  1,2,2,2, 0,0,0,0};
+//    private static final String url = "http://vinyl-converter-turntable-review.toptenreviews.com/";
+
+//    private static final int[] controle = {1,1,2,2,2,2,  2,2,2,2,2,2,2,  -1,0,2,2,2,2,2,2,2,  1,2,2,2,2};
+//    private static final String url = "http://walkie-talkie-review.toptenreviews.com/";
+
+//    private static final int[] controle = {1,2,2,2,  0,1,-5,    1,2,2,2};
+//    private static final String url = "http://wireless-charger-review.toptenreviews.com/";
+
+//    private static final int[] controle = {1,2,   1,1,5,1,0,2,2,2,2,2,2,2,2,2,2,2,2,2,  1,1,2,2,2,2,2,  1,1,2,2,2,2,2,2,  1,2,2,2};
+//    private static final String url = "http://wireless-digital-frames-review.toptenreviews.com/";
+
+//    private static final int[] controle = {2,2,2,2,2,2,2,  1,1,-1,1,2,2,2,2,2,2,2,  1,1,1,1,1,1,2,2,2,  1,2,2,2,2,  0,0,0,0};
+//    private static final String url = "http://av-receiver-review.toptenreviews.com/";
+
+//    private static final int[] controle = {1,1,1,2,2,  1,1,2,2,  2,2,2,2,2,2,2,2,0,  1,2,2,2,2,2,2};
+//    private static final String url = "http://bluetooth-speakers-review.toptenreviews.com/";
+
+//    private static final int[] controle = {1,1,-1,1,1,14,  1,0,-1,-1,-1,-1,0,  1,0,1,0,1, 1,2,2,2,2,2};
+//    private static final String url = "http://bookshelf-speakers-review.toptenreviews.com/";
+
+//    private static final int[] controle = {1,1,1,1,1,2,2,2,2,  2,2,2,2,2,2,2,2,2,2,  2,2,2,2,2,2,2,2,  2,2,2,2,2,2,  1,2,2,2,2,2,2};
+//    private static final String url = "http://car-audio-review.toptenreviews.com/";
+
+//    private static final int[] controle = {-1,1,0,1,  1,1,-1,1,-1,1,2,  -1,-1,-1,-1,  1,2,2,2};
+//    private static final String url = "http://center-speaker-review.toptenreviews.com/";
+
+    private static final int[] controle = {1,-1,1,2,2,2,2,  1,1,1,1,1,2,2,2,  1,2,2,2,2,  0,0,0,0,   1,2,2,2,2};
+    private static final String url = "http://crank-radio-review.toptenreviews.com/";
+
+    private static int num = 100;
 
 //ZERO ignora,
     // -1 inverte,
@@ -599,7 +629,7 @@ public class HtmlReviewParser {
                 replaceAll("Not specified", "0").replaceAll("Not Specified", "0").
                 replaceAll("\\(13-inch\\)", "").replaceAll("\\(1 For Roku\\)", "").
 
-                replaceAll("\\(incl. 1x USB-C\\)", "").replaceAll("f\\/", "").
+                replaceAll("\\(incl. 1x USB-C\\)", "").replaceAll("f\\/", "").replaceAll("\\(package of two\\)","").
                 replaceAll("\\(charging port\\)", "").
                 replaceAll("via Dongle", "0.5").replaceAll(" in\\.", "").
 
