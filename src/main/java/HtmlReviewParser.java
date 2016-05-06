@@ -21,36 +21,39 @@ public class HtmlReviewParser {
 
 
     private static DecimalFormat df = new DecimalFormat("0", DecimalFormatSymbols.getInstance(Locale.ENGLISH));
+
     static {
         df.setMaximumFractionDigits(10);
     }
 
-      private static Map<String, String> gigasMap = new HashMap();
-      static {
-          gigasMap.put("128GB", "0.128");
-          gigasMap.put("120GB", "0.12");
-          gigasMap.put("250GB", "0.25");
-          gigasMap.put("256GB", "0.256");
-          gigasMap.put("512GB", "0.512");
-          gigasMap.put("500GB", "0.5");
-          gigasMap.put("1TB", "1");
-      }
+    private static Map<String, String> gigasMap = new HashMap();
 
-        private static Map<String, String> aPlusScaleMap = new HashMap();
-        static {
-            aPlusScaleMap.put("A+", "9");
-            aPlusScaleMap.put("A", "8");
-            aPlusScaleMap.put("A-", "7");
-            aPlusScaleMap.put("B+", "6");
-            aPlusScaleMap.put("B", "5");
-            aPlusScaleMap.put("B-", "4");
-            aPlusScaleMap.put("C+", "3");
-            aPlusScaleMap.put("C", "2");
-            aPlusScaleMap.put("C-", "1");
-            aPlusScaleMap.put("D+", "0.7");
-            aPlusScaleMap.put("D", "0.4");
-            aPlusScaleMap.put("D-", "0.2");
-        }
+    static {
+        gigasMap.put("128GB", "0.128");
+        gigasMap.put("120GB", "0.12");
+        gigasMap.put("250GB", "0.25");
+        gigasMap.put("256GB", "0.256");
+        gigasMap.put("512GB", "0.512");
+        gigasMap.put("500GB", "0.5");
+        gigasMap.put("1TB", "1");
+    }
+
+    private static Map<String, String> aPlusScaleMap = new HashMap();
+
+    static {
+        aPlusScaleMap.put("A+", "9");
+        aPlusScaleMap.put("A", "8");
+        aPlusScaleMap.put("A-", "7");
+        aPlusScaleMap.put("B+", "6");
+        aPlusScaleMap.put("B", "5");
+        aPlusScaleMap.put("B-", "4");
+        aPlusScaleMap.put("C+", "3");
+        aPlusScaleMap.put("C", "2");
+        aPlusScaleMap.put("C-", "1");
+        aPlusScaleMap.put("D+", "0.7");
+        aPlusScaleMap.put("D", "0.4");
+        aPlusScaleMap.put("D-", "0.2");
+    }
 
     public static final String VALUE_SEPARATOR = "@@@";
 
@@ -240,10 +243,40 @@ public class HtmlReviewParser {
 //    private static final int[] controle = {1,1,1,2,2,2,2,2,2,2,2,2,2,2,   1,2,2,2,2,2,-1,  2,2,2,2,2,2,2,2,2,2,2,2,  1,2,2,2,2,2};
 //    private static final String url = "http://die-cutting-machines-review.toptenreviews.com/";
 
-    private static final int[] controle = {1,1,2,2,0,1,-1,-1,-3,2,  1,0,0,2,2,2,2,  1,2,2,2,2,2,2,  0,0,0,0,0,0};
-    private static final String url = "http://digital-pen-review.toptenreviews.com/";
+//    private static final int[] controle = {1,1,2,2,0,1,-1,-1,-3,2,  1,0,0,2,2,2,2,  1,2,2,2,2,2,2,  0,0,0,0,0,0};
+//    private static final String url = "http://digital-pen-review.toptenreviews.com/";
 
-    private static int num = 80;
+//    private static final int[] controle = {0,0,  1,1,5,1,0,2,2,2,2,2,2,  1,1,2,2,   1,1,2,2,2,2,   1,2,2,2};
+//    private static final String url = "http://digital-photo-frame-review.toptenreviews.com/";
+
+//    private static final int[] controle = {1,1,2,2,2,2,   2,2,2,2,2,2,2,2,2,2,2,2,  -1,-5,2,2,2,  2,2,2,2,2,2,2,2,  1,2,2,2,2};
+//    private static final String url = "http://electronic-translator-review.toptenreviews.com/";
+
+//    private static final int[] controle = {1,1,-1,1,1,2,2,2,  1,-5,-1,1,1,0,  2,2,2,2,2,  1,2,2,2,2};
+//    private static final String url = "http://external-battery-pack-review.toptenreviews.com/";
+
+//    private static final int[] controle = {1,0,2,2,2,2,2,2,2,2,2,2,  1,2,2,2,2,2,  1,2,2,2,2,2,2,   0,0,0,0,0,0,0,0,0,0,0,0,0,0};
+//    private static final String url = "http://home-automation-systems-review.toptenreviews.com/";
+
+//    private static final int[] controle = {0,0,0,  1,2,2,2,2,2,2,2,2,  0,2,2,  1,2,2,2,2,2,2,2,2,2,1,  1,2,2,2,2,2,2,2,  1,0,2,2,2,2,2,2,2};
+//    private static final String url = "http://home-security-systems-review.toptenreviews.com/";
+
+//    private static final int[] controle = {2,2,2,2,2,  2,2,2,2,2,2,2,2,  1,1,1,2,0,-1,5,1,0,0,0,1,1};
+//    private static final String url = "http://nanny-cam-review.toptenreviews.com/";
+
+//    private static final int[] controle = {0,0,-1,1,2,2,2,1, 1,1,1,1,1,2,2,  1,-1,0,1,2,2,2,2,2,0,  1,2,2,2,2,2,2};
+//    private static final String url = "http://metal-detector-review.toptenreviews.com/";
+
+//    private static final int[] controle = {0,1,1,1,2,2, 1,2,0,2,2,2,  2,0,1,1,0,  0,2,2,2,0,  1,1,2,2,2};
+//    private static final String url = "http://smart-locks-review.toptenreviews.com/";
+
+//    private static final int[] controle = {8, 8, 8, 8, 0, 0, 1, 0, 5, 1, 0, -1, -1, 1, 0, 0, 2, 2, 2, 0, 1, 1, 1, 1, 0, 0, 0, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 2, 2, 2};
+//    private static final String url = "http://smart-watch-review.toptenreviews.com/";
+
+    private static final int[] controle = {1,2,2,0,0,2,2,2,2,2,2,2,2,1,2,  2,2,2,2,2,2,2,2,2,  2,2,2,0,0,0,0,0,2,2,2,  2,2,2,2,2,2,  0,0,0,0,0,0,0};
+    private static final String url = "http://universal-remote-review.toptenreviews.com/";
+
+    private static int num = 90;
 
 //ZERO ignora,
     // -1 inverte,
@@ -262,18 +295,21 @@ public class HtmlReviewParser {
     private static Path pathFeatures = Paths.get("input/Features" + num + ".dat");
 
 
-
     public static void main(String... args) throws IOException {
 
         Document document = Jsoup.connect(url).get();
 
+        String text = document.select("h1[class=main_title]").text();
+        String name = text.substring(0, text.length() - 8);
+        Files.write(pathAlternatives, (name + "\n").getBytes(), StandardOpenOption.CREATE, StandardOpenOption.APPEND);
+
         //Produtos
         String alternatives = printTen(document, "div[class=prodItemRow title]", 2, 0, false, null);
-        Files.write(pathAlternatives, (alternatives+"\n").getBytes(), StandardOpenOption.CREATE, StandardOpenOption.APPEND);
+        Files.write(pathAlternatives, (alternatives + "\n").getBytes(), StandardOpenOption.CREATE, StandardOpenOption.APPEND);
 
         //Overall ratings
         String ratings = printTen(document, "div[class=score]", 1, 0, false, null);
-        Files.write(pathAlternatives, (ratings+"\n").getBytes(), StandardOpenOption.CREATE, StandardOpenOption.APPEND);
+        Files.write(pathAlternatives, (ratings + "\n").getBytes(), StandardOpenOption.CREATE, StandardOpenOption.APPEND);
 
         Elements elems = document.select("div[id=full_feature_section] > div[class=main_row center mainMtx]");
 
@@ -291,11 +327,11 @@ public class HtmlReviewParser {
             printTen(e, "div[class=mtxRow] > div[class=carousel clip fixedwidth flex]", 1, 0, true, posValues);
         }
         String allFeatures = all.substring(0, all.length() - 1);
-        Files.write(pathFeatures, (allFeatures+"\n").getBytes(), StandardOpenOption.CREATE, StandardOpenOption.APPEND);
+        Files.write(pathFeatures, (allFeatures + "\n").getBytes(), StandardOpenOption.CREATE, StandardOpenOption.APPEND);
 
         //Criteria
         String criteria = printTen(document, "li[class=carousel_column] > a", 1, 1, false, null);
-        Files.write(pathFeatures, (criteria+"\n").getBytes(), StandardOpenOption.CREATE, StandardOpenOption.APPEND);
+        Files.write(pathFeatures, (criteria + "\n").getBytes(), StandardOpenOption.CREATE, StandardOpenOption.APPEND);
 
         Files.write(pathFeatures, auxFeatures.getBytes(), StandardOpenOption.CREATE, StandardOpenOption.APPEND);
     }
@@ -326,7 +362,7 @@ public class HtmlReviewParser {
 
         if (group) {
 
-            if (strOut.replaceAll("£"," ").trim().length() > 0) {
+            if (strOut.replaceAll("£", " ").trim().length() > 0) {
 
                 String[] broken = strOut.split("£");
                 for (String value : broken) {
@@ -394,7 +430,7 @@ public class HtmlReviewParser {
                     }
                     value = value.replaceAll(VALUE_SEPARATOR, ",");
                     System.out.println(value);
-                    value = (value.length() > 0) ? value+"\n" : "";
+                    value = (value.length() > 0) ? value + "\n" : "";
                     Files.write(pathAlternatives, value.getBytes(), StandardOpenOption.CREATE, StandardOpenOption.APPEND);
                     pos[0]++;
                 }
@@ -430,22 +466,25 @@ public class HtmlReviewParser {
         for (String val : values) {
             String[] split = val.split("x");
 
-            double val0 = Double.valueOf(split[0].replaceAll(" ", "").trim());
+//            try {
+                double val0 = Double.valueOf(split[0].replaceAll(" ", "").trim());
 
-            if (val0 == 0) {
+                if (val0 == 0) {
 
-                valorTratado += "0,";
+                    valorTratado += "0,";
 
-            } else {
+                } else {
 
-                double val1 = (split.length == 2) ? Double.valueOf(split[1].replaceAll(" ", "").trim()) : val0;
 
-                double val2 = (split.length == 3) ? Double.valueOf(split[2].replaceAll(" ", "").trim()) : 1;
+                    double val1 = (split.length == 2) ? Double.valueOf(split[1].replaceAll(" ", "").trim()) : val0;
 
-                valorTratado += df.format(val0 * val1 * val2) + ",";
+                    double val2 = (split.length == 3) ? Double.valueOf(split[2].replaceAll(" ", "").trim()) : 1;
 
-            }
-
+                    valorTratado += df.format(val0 * val1 * val2) + ",";
+                }
+//            } catch (Exception e) {
+//                valorTratado += "0,";
+//            }
 
 
         }
@@ -483,7 +522,7 @@ public class HtmlReviewParser {
 //            double val1 = Double.valueOf(val.split("-")[1].trim());
             double val1 = 5.79d;
 
-            valorTratado += Math.abs(val0 - val1)  + ",";
+            valorTratado += Math.abs(val0 - val1) + ",";
         }
         value = valorTratado.substring(0, valorTratado.length() - 1);
         return value;
@@ -496,6 +535,7 @@ public class HtmlReviewParser {
         for (String val : values) {
             val = val.replaceAll(",", "");
 
+//            try {
             double v = Double.valueOf(val.trim()).doubleValue();
 
             if (v == 0) {
@@ -503,6 +543,9 @@ public class HtmlReviewParser {
             } else {
                 valorTratado += df.format(1 / v) + ",";
             }
+//            }catch(Exception e){
+//                valorTratado += "0,";
+//            }
 
 
         }
@@ -556,7 +599,7 @@ public class HtmlReviewParser {
                 replaceAll("Not specified", "0").replaceAll("Not Specified", "0").
                 replaceAll("\\(13-inch\\)", "").replaceAll("\\(1 For Roku\\)", "").
 
-        replaceAll("\\(incl. 1x USB-C\\)", "").replaceAll("f\\/","").
+                replaceAll("\\(incl. 1x USB-C\\)", "").replaceAll("f\\/", "").
                 replaceAll("\\(charging port\\)", "").
                 replaceAll("via Dongle", "0.5").replaceAll(" in\\.", "").
 
