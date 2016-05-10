@@ -303,10 +303,33 @@ public class HtmlReviewParser {
 //    private static final int[] controle = {-1,1,0,1,  1,1,-1,1,-1,1,2,  -1,-1,-1,-1,  1,2,2,2};
 //    private static final String url = "http://center-speaker-review.toptenreviews.com/";
 
-    private static final int[] controle = {1,-1,1,2,2,2,2,  1,1,1,1,1,2,2,2,  1,2,2,2,2,  0,0,0,0,   1,2,2,2,2};
-    private static final String url = "http://crank-radio-review.toptenreviews.com/";
+//    private static final int[] controle = {1,-1,1,2,2,2,2,  1,1,1,1,1,2,2,2,  1,2,2,2,2,  0,0,0,0,   1,2,2,2,2};
+//    private static final String url = "http://crank-radio-review.toptenreviews.com/";
 
-    private static int num = 100;
+//    private static final int[] controle = {8,8,8,8,0,1,  1,1,-1,1,0,1,  1,0,1,1,1,0,0,0,0,  1,2,2,2,  0,0,0};
+//    private static final String url = "http://floor-standing-speakers.toptenreviews.com/";
+
+//    private static final int[] controle = {8,8,-1,1,3,  1,1,  1,-5,-1,0,0,0,2,2,   1,1,2,2,2};
+//    private static final String url = "http://home-subwoofers-review.toptenreviews.com/";
+
+//    private static final int[] controle = {1,1,1,1,1,  1,1,1,1,1,1,1,2,2,2,2,2,2,2,2,2,2,2,  1,2,2,2,2,  0,0,0,0,0,0,0,0};
+//    private static final String url = "http://home-audio.toptenreviews.com/home-theater-in-a-box/";
+
+//    private static final int[] controle = {8,8,8,8,1,  0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,  1,2,2,2};
+//    private static final String url = "http://home-audio.toptenreviews.com/home-theater-speakers/";
+
+//    private static final int[] controle = {1,1,2,1,1,  1,1,2,  1,1,1,1,-5,-1,  1,2,2,2,2,2,  1,2,2,2,2};
+//    private static final String url = "http://portable-speakers-review.toptenreviews.com/";
+//    private static final int[] controle = {8,8,8,8,1,1,2,   2,1,1,1,2,2,2,2,2,2,  8,1,1,0,2,  1,2,2,2,  0,0,0,0,0,0,0};
+//    private static final String url = "http://sound-bar-review.toptenreviews.com/";
+
+//    private static final int[] controle = {8,1,1,1,1,  8,8,2,2,2,2,2,2,2,   -5,-1,0,0,  1,2,2,2,2};
+//    private static final String url = "http://wireless-speakers-review.toptenreviews.com/";
+
+    private static final int[] controle = {8,8,3,1,   2,2,2,2,2,  2,2,2,2,2,0,0,-5,   1,2,2,2,2, 2,2,2,2,2,2,2,2,2,1};
+    private static final String url = "http://sound-machine-review.toptenreviews.com/";
+
+    private static int num = 108;
 
 //ZERO ignora,
     // -1 inverte,
