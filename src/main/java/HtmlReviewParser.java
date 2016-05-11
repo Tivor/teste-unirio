@@ -19,43 +19,7 @@ import java.util.Map;
  */
 public class HtmlReviewParser {
 
-
-    private static DecimalFormat df = new DecimalFormat("0", DecimalFormatSymbols.getInstance(Locale.ENGLISH));
-
-    static {
-        df.setMaximumFractionDigits(10);
-    }
-
-    private static Map<String, String> gigasMap = new HashMap();
-
-    static {
-        gigasMap.put("128GB", "0.128");
-        gigasMap.put("120GB", "0.12");
-        gigasMap.put("250GB", "0.25");
-        gigasMap.put("256GB", "0.256");
-        gigasMap.put("512GB", "0.512");
-        gigasMap.put("500GB", "0.5");
-        gigasMap.put("1TB", "1");
-    }
-
-    private static Map<String, String> aPlusScaleMap = new HashMap();
-
-    static {
-        aPlusScaleMap.put("A+", "9");
-        aPlusScaleMap.put("A", "8");
-        aPlusScaleMap.put("A-", "7");
-        aPlusScaleMap.put("B+", "6");
-        aPlusScaleMap.put("B", "5");
-        aPlusScaleMap.put("B-", "4");
-        aPlusScaleMap.put("C+", "3");
-        aPlusScaleMap.put("C", "2");
-        aPlusScaleMap.put("C-", "1");
-        aPlusScaleMap.put("D+", "0.7");
-        aPlusScaleMap.put("D", "0.4");
-        aPlusScaleMap.put("D-", "0.2");
-    }
-
-    public static final String VALUE_SEPARATOR = "@@@";
+    /*
 
 //    private static final int[] controle = {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, -1, -1, -1, -1, -1, -1, -1, 1, 2, 2, 2, 2, 2, 2, 2, 2};
 //    private static final String url = "http://www.toptenreviews.com/computers/gaming/best-graphics-cards/";
@@ -326,10 +290,49 @@ public class HtmlReviewParser {
 //    private static final int[] controle = {8,1,1,1,1,  8,8,2,2,2,2,2,2,2,   -5,-1,0,0,  1,2,2,2,2};
 //    private static final String url = "http://wireless-speakers-review.toptenreviews.com/";
 
-    private static final int[] controle = {8,8,3,1,   2,2,2,2,2,  2,2,2,2,2,0,0,-5,   1,2,2,2,2, 2,2,2,2,2,2,2,2,2,1};
-    private static final String url = "http://sound-machine-review.toptenreviews.com/";
+//    private static final int[] controle = {8,8,3,1,   2,2,2,2,2,  2,2,2,2,2,0,0,-5,   1,2,2,2,2, 2,2,2,2,2,2,2,2,2,1};
+//    private static final String url = "http://sound-machine-review.toptenreviews.com/";
 
-    private static int num = 108;
+//    private static final int[] controle = {1,1,1,2,  1,1,1,-1,0,-1,1,1,2,2,2,2,  1,2,2,2,2,2,2,2,    1,2,2,2};
+//    private static final String url = "http://carpet-cleaners-review.toptenreviews.com/";
+
+//    private static final int[] controle = {1,2,2,2,2,2,2,2,  -1,2,2,2,2,  2,2,-14,-14,-14,  1,1,2,2,2};
+//    private static final String url = "http://central-air-conditioning-units-review.toptenreviews.com/";
+
+    private static final int[] controle = {1,-1,-1,-1,-1,-1,  0,1,2,2,2,2,2,2,2,2,2,2,2,2,2,2,  2,2,2,2,2,2,2,2,  2,2,2,2,2,2,  0,0,0,0,0};
+    private static final String url = "http://chain-saws-review.toptenreviews.com/";
+
+    private static final int[] controle = {8,1,0,0,1,-1,2,2,2,2,  8,-1,1,0,2,2,2,2,2,  2,2,2,2};
+    private static final String url = "http://binoculars.toptenreviews.com/binoculars-review/";
+
+    private static final int[] controle = {0,1,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,  2,2,2,2,2,2,2,2,2,2,2,2,  2,2,  2,2,2,2};
+    private static final String url = "http://chemistry-sets-review.toptenreviews.com/";
+
+    private static final int[] controle = {1,1,1,1,1,1,2,2,2,1,1,2,  1,2,2,2,2,2,2,  1,2,2,2,2,2,  1,2,2,2,2};
+    private static final String url = "http://microscopes.toptenreviews.com/kids-microscope-review/";
+
+    private static final int[] controle = {0,0,  1,1,2,1,1,1,1,  1,1,-1,2,2,2,2,2,  1,0,1,2,2,2,2,  1,2,2,2,2};
+    private static final String url = "http://telescopes.toptenreviews.com/telescopes-for-beginners-review/";
+
+    private static final int[] controle = {8,1,1,1,1,0,2,  2,2,2,2,  1,0,2,2,2,2,  2,2,2,2,2,2,2,2,  1,1,2,2,  2,2,2,1};
+    private static final String url = "http://train-sets.toptenreviews.com/";
+
+    private static final int[] controle = {0,1,1,1,0,2,1,1,-4,1,2,2,2,  0,0,0,0,1,2,2,2,2,2,  0,-1,0,2,2,2,2,2,  1,2,2,2,2};
+    private static final String url = "http://rc-drones-review.toptenreviews.com/";
+
+    private static final int[] controle = {8,8,8,-1,6,1,2,2,2,   2,2,2,2,2,2,2,1,  1,0,2,2,0,  0,0,0,0,0,0,0,0};
+    private static final String url = "http://remote-control-airplanes-review.toptenreviews.com/";
+
+    private static final int[] controle = {1,1,1,1,1,1,1,2,   0,0,0,2,0,2,2,2,2,   0,1,2,1,1,1,1,2,1,  1,2,2,2,2,2,2,2,2};
+    private static final String url = "http://radio-controlled-toys.toptenreviews.com/remote-control-boat-stores/";
+
+    private static final int[] controle = {1,1,1,0,2,2,   1,0,4,2,2,2,5,1,   1,0,0,0,2,2,  1,2,2,2,2,2,2};
+    private static final String url = "http://radio-controlled-toys.toptenreviews.com/remote-control-car-stores/";
+*/
+    private static final int[] controle = {8,8,0,0,1,-1,1,2,2,0,  0,2,2,2,2,   0,1,0,2,2,2,  8,0,0,0,0,0,0};
+    private static final String url = "http://remote-control-helicopters-review.toptenreviews.com/";
+
+    private static int num = 121;
 
 //ZERO ignora,
     // -1 inverte,
@@ -347,6 +350,42 @@ public class HtmlReviewParser {
     private static Path pathAlternatives = Paths.get("input/Alternatives" + num + ".dat");
     private static Path pathFeatures = Paths.get("input/Features" + num + ".dat");
 
+    private static DecimalFormat df = new DecimalFormat("0", DecimalFormatSymbols.getInstance(Locale.ENGLISH));
+
+    static {
+        df.setMaximumFractionDigits(10);
+    }
+
+    private static Map<String, String> gigasMap = new HashMap();
+
+    static {
+        gigasMap.put("128GB", "0.128");
+        gigasMap.put("120GB", "0.12");
+        gigasMap.put("250GB", "0.25");
+        gigasMap.put("256GB", "0.256");
+        gigasMap.put("512GB", "0.512");
+        gigasMap.put("500GB", "0.5");
+        gigasMap.put("1TB", "1");
+    }
+
+    private static Map<String, String> aPlusScaleMap = new HashMap();
+
+    static {
+        aPlusScaleMap.put("A+", "9");
+        aPlusScaleMap.put("A", "8");
+        aPlusScaleMap.put("A-", "7");
+        aPlusScaleMap.put("B+", "6");
+        aPlusScaleMap.put("B", "5");
+        aPlusScaleMap.put("B-", "4");
+        aPlusScaleMap.put("C+", "3");
+        aPlusScaleMap.put("C", "2");
+        aPlusScaleMap.put("C-", "1");
+        aPlusScaleMap.put("D+", "0.7");
+        aPlusScaleMap.put("D", "0.4");
+        aPlusScaleMap.put("D-", "0.2");
+    }
+
+    public static final String VALUE_SEPARATOR = "@@@";
 
     public static void main(String... args) throws IOException {
 
@@ -628,14 +667,18 @@ public class HtmlReviewParser {
         for (String val : values) {
 
             String[] split;
+
+//            split = val.split(" ");
             if (val.contains("-")) {
                 split = val.split("-");
             } else if (val.contains("/")) {
                 split = val.split("/");
             } else if (val.contains(",")) {
                 split = val.split(",");
-            } else {
+            } else if (val.contains(":")) {
                 split = val.split(":");
+            } else {
+                split = val.split(" ");
             }
 
             int i = asc ? split.length - 1 : 0;
@@ -647,7 +690,7 @@ public class HtmlReviewParser {
 
     private static String clean(String text) {
         return text.
-                replaceAll("N/A", "0").replaceAll("n/a", "0").
+                replaceAll("N/A", "0").replaceAll("n/a", "0").replaceAll(" sec", "").replaceAll(" dB", "").
                 replaceAll("Not Listed", "0").replaceAll("None", "0").
                 replaceAll("Not specified", "0").replaceAll("Not Specified", "0").
                 replaceAll("\\(13-inch\\)", "").replaceAll("\\(1 For Roku\\)", "").
