@@ -328,11 +328,45 @@ public class HtmlReviewParser {
 
     private static final int[] controle = {1,1,1,0,2,2,   1,0,4,2,2,2,5,1,   1,0,0,0,2,2,  1,2,2,2,2,2,2};
     private static final String url = "http://radio-controlled-toys.toptenreviews.com/remote-control-car-stores/";
-*/
+
     private static final int[] controle = {8,8,0,0,1,-1,1,2,2,0,  0,2,2,2,2,   0,1,0,2,2,2,  8,0,0,0,0,0,0};
     private static final String url = "http://remote-control-helicopters-review.toptenreviews.com/";
 
-    private static int num = 121;
+    private static final int[] controle = {2,2,2,2,2,2,2,1,0,1,  1,2,2,2,2,2,2,2,  2,2,2,2,2,  1,1,2,2,2,  0,0,0,0,0};
+    private static final String url = "http://baby-car-seats-review.toptenreviews.com/";
+
+    private static final int[] controle = {1,1,1,2,2,2,2,  2,2,2,2,2,2,2,2,2,  1,1,2,2,  0,0,0,0,  1,2,2,2,2,2,2};
+    private static final String url = "http://bluetooth-car-kit-review.toptenreviews.com/";
+
+    private static final int[] controle = {1,1,1,1,1,1,1,2,2,1,2,2,2,2,2,2,2,0,  2,2,2,2,1};
+    private static final String url = "http://car-alarm-review.toptenreviews.com/";
+
+    private static final int[] controle = {1,2,2,2,2,2,2,2,2,1,1,  4,4,1,1,  2,2,2,2,2,2,2,2,2,  2,2,2,2,2,  -1,1,2,2,2,-1,-1,-1};
+    private static final String url = "http://car-battery-charger-review.toptenreviews.com/";
+
+    private static final int[] controle = {2,2,1,2,1,2,2,2,2,2,1,1,1,0,2,2,2,2,2,2,  1,-1,-1,-1,-1,  2,2,2,1,2};
+    private static final String url = "http://car-inverter-review.toptenreviews.com/";
+
+    private static final int[] controle = {8,8,8,8,1,  8,1,1,1,1,   2,2,2,2,2,2,  2,2,2,2,2,2,2,2,  1,2,2,2,2};
+    private static final String url = "http://car-speakers-review.toptenreviews.com/";
+
+    private static final int[] controle = {1,-1,1,  1,1,1,0,  1,-1,-1,-1,2,  0,0,0,0,  1,2,2,2,2};
+    private static final String url = "http://car-subwoofer-review.toptenreviews.com/";
+
+    private static final int[] controle = {1,2,2,2,2,2,2,2,  2,2,2,2,2,  1,1,2,2,2,2,  1,2,2,2};
+    private static final String url = "http://in-dash-navigation-review.toptenreviews.com/";
+
+    private static final int[] controle = {1,1,2,2,2,2,  2,2,2,2,2,2,2,2,2,  2,2,2,2,2,2,2,2,  0,0,0,   1,2,2,2,2,2};
+    private static final String url = "http://radar-detectors-review.toptenreviews.com/";
+
+    private static final int[] controle = {1,2,2,2,2,  1,1,2,2,2,  5,1,2,2,  1,2,2,2};
+    private static final String url = "http://rear-view-cameras-review.toptenreviews.com/";
+*/
+
+    private static final int[] controle = {1,1,1,-1,1,   1,1,1,  1,1,2,2,2,2,2,2,  0,0,2,2,2,2,2,  1,2,2,2,2,2};
+    private static final String url = "http://marine-speakers-review.toptenreviews.com/";
+
+    private static int num = 132;
 
 //ZERO ignora,
     // -1 inverte,
@@ -690,8 +724,8 @@ public class HtmlReviewParser {
 
     private static String clean(String text) {
         return text.
-                replaceAll("N/A", "0").replaceAll("n/a", "0").replaceAll(" sec", "").replaceAll(" dB", "").
-                replaceAll("Not Listed", "0").replaceAll("None", "0").
+                replaceAll("Not Available", "0").replaceAll("N/A", "0").replaceAll("n/a", "0").replaceAll(" sec", "").replaceAll(" dB", "").
+                replaceAll("Not Listed", "0").replaceAll("None", "0").replaceAll("Not Recommended", "0").
                 replaceAll("Not specified", "0").replaceAll("Not Specified", "0").
                 replaceAll("\\(13-inch\\)", "").replaceAll("\\(1 For Roku\\)", "").
 

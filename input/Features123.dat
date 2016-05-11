@@ -1,0 +1,10 @@
+Call Quality,Microphone Type,Speakers,Noise Reduction,Echo Cancellations,Advanced Multipoint,Dedicated Mute,Text to Speech,Speech to Text,Vocalized GPS (A2DP),Stream Audio (A2DP),Voice Commands (HFP),Vocalized Caller ID (PBAP),Voice Dialing (PBAP)(HFP),Remotely Control Mobile Device (AVRCP),Motion Sensor Controls,Talk Time (Hours),Standby Time (Weeks),Automatic On,Automatic Off,,Warranty,Phone,Email,Chat,Apps,FAQs,Downloads & Manuals
+Speakerphone Performance,Hands-Free Performance,Battery Performance,Help & Support
+10.00,9.38,8.75,8.75,8.13,8.13,6.25,5.00,5.63,6.25
+10.00,10.00,8.75,8.75,8.75,8.75,7.50,7.50,5.63,5.63
+8.13,8.13,9.38,8.75,7.50,5.63,9.75,8.75,9.38,7.50
+10.00,9.38,10.00,9.38,10.00,10.00,10.00,9.38,9.38,9.38
+Call Quality,Microphone Type,Speakers,Noise Reduction,Echo Cancellations,Advanced Multipoint,Dedicated Mute
+Text to Speech,Speech to Text,Vocalized GPS (A2DP),Stream Audio (A2DP),Voice Commands (HFP),Vocalized Caller ID (PBAP),Voice Dialing (PBAP)(HFP),Remotely Control Mobile Device (AVRCP),Motion Sensor Controls
+Talk Time (Hours),Standby Time (Weeks),Automatic On,Automatic Off
+Warranty,Phone,Email,Chat,Apps,FAQs,Downloads & Manuals
