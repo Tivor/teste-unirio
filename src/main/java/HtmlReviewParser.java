@@ -415,12 +415,42 @@ public class HtmlReviewParser {
 
     private static final int[] controle = {1,1,1,2,2,  0,1,-1,-1,2,2,2,2,2,  1,2,2};
     private static final String url = "http://electric-head-shaver-review.toptenreviews.com/";
-*/
 
     private static final int[] controle = {4,-1,1,0,1,-1,2,2,  1,1,1,1,1,  0,2,2,2,2,  -1,1,1,1,2,  1,2,2,2,2,2};
     private static final String url = "http://electric-lawn-mowers-review.toptenreviews.com/";
 
-    private static int num = 150;
+    private static final int[] controle = {1,1,2,2,1,   0,-1,-1,2,2,2,2,2,2,   2,2,2,  -1,-1,-1,   1,2,2,2,2};
+    private static final String url = "http://electric-razors-review.toptenreviews.com/";
+
+    private static final int[] controle = {-1,2,2,2,2,2,2,  1,1,1,1,1,2,  1,0,1,1,  1,2,2,2};
+    private static final String url = "http://electric-string-trimmer-review.toptenreviews.com/";
+
+    private static final int[] controle = {0,   1,1,1,-1,1,   1,2,2,2,2,2,2,2,2,2,2,  1,2,2,2,2};
+    private static final String url = "http://electric-toothbrushes-review.toptenreviews.com/";
+
+    private static final int[] controle = {1,1,1,  1,1,2,2,2,  -1,1,2,2,2,2,2,2,2,2,     1,2,2,2,2,   0,0,0};
+    private static final String url = "http://double-ovens-review.toptenreviews.com/";
+
+    private static final int[] controle = {1,1,1,1,1,1,1,   2,2,2,2,2,  0,0,0,0,0,0,  1,1,2,2,2,2};
+    private static final String url = "http://electric-wheelchairs-review.toptenreviews.com/";
+
+    private static final int[] controle = {1,1,-1,1,1,1,0,1,2,2,2,2,2,    1,2,2,2,2,2,2,2,2,  1,1,2,2,2,2,2,2,  2,2,2,2,2,2,2,  1,1,1,2,2,2,2,  0,0,0,0};
+    private static final String url = "http://elliptical-machines-review.toptenreviews.com/";
+
+    private static final int[] controle = {0,1,1,1,1,1,2,2,2,2,  1,1,1,-1,2,2,2,2,2,2,2,2,2,  -1,2,2,  1,2,2,   0,0,0,0,0,  1,2,2};
+    private static final String url = "http://espresso-machine-review.toptenreviews.com/";
+
+    private static final int[] controle = {0,1,1,2,2,  2,2,2,2,2,2,2,2,  0,0,0,0,0,0,0,  1,1,1,2,2,2,2};
+    private static final String url = "http://exercise-bike-review.toptenreviews.com/";
+
+    private static final int[] controle = {1,1,1,1,1,0,  2,2,2,2,2,2,1,   8,1,1,1,1,   1,1,0,1,-1,1,  1,2,2,2,2};
+    private static final String url = "http://fitness-trackers-review.toptenreviews.com/";
+*/
+
+    private static final int[] controle = {1,1,1,1,1,1,  1,1,1,-1,2,  1,1,1,1,   1,1,2,2,2};
+    private static final String url = "http://food-processors-review.toptenreviews.com/";
+
+    private static int num = 160;
 
 //ZERO ignora,
     // -1 inverte,

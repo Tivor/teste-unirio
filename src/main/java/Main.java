@@ -11,7 +11,7 @@ import java.util.concurrent.Executors;
 public class Main {
     public static final int EVOLUTION_RATIO = 1;
     public static final int REPETICOES = 1;
-    public static final int PRIMEIRO_INPUT = 150;
+    public static final int PRIMEIRO_INPUT = 160;
     public static final int END = PRIMEIRO_INPUT;
     static ExecutorService pool = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
 
