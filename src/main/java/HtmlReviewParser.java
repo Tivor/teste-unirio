@@ -445,12 +445,33 @@ public class HtmlReviewParser {
 
     private static final int[] controle = {1,1,1,1,1,0,  2,2,2,2,2,2,1,   8,1,1,1,1,   1,1,0,1,-1,1,  1,2,2,2,2};
     private static final String url = "http://fitness-trackers-review.toptenreviews.com/";
-*/
 
     private static final int[] controle = {1,1,1,1,1,1,  1,1,1,-1,2,  1,1,1,1,   1,1,2,2,2};
     private static final String url = "http://food-processors-review.toptenreviews.com/";
 
-    private static int num = 160;
+    private static final int[] controle = {0,0,0,0,0,0,   2,2,2,2,2,2,   1,2,2,2,2,2,  1,2,2,2,2,2,2,  1,2,2,2,2};
+    private static final String url = "http://pos-systems-review.toptenreviews.com/android/";
+
+    private static final int[] controle = {0,0,0,0,0,  2,2,2,2,2,2,2,2,   2,2,2,2,2,2,2,  2,2,2,2,2,2,2,2,  1,1,2,2,2,2,2,2,2,  2,2,2,2,2,2  };
+    private static final String url = "http://pos-systems-review.toptenreviews.com/ipad/";
+
+    private static final int[] controle = {0,0,0,0,0,0,0,0,0,0,0,0,  2,2,2,2,2,2,2,2,2,2,2,2,2,2,  1,1,1,  2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,  2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,  2,2,2,2,2};
+    private static final String url = "http://pos-systems-review.toptenreviews.com/ipad-restaurant/";
+
+    private static final int[] controle = {0,0,0,  0,0,0,0,0,   2,2,2,2,2,  1,1,  2,2,2,2,2,2,2,2,2,2,  2,2,2,2,2,2,2,2,2,  2,2,2,2};
+    private static final String url = "http://pos-systems-review.toptenreviews.com/online-pos/";
+
+    private static final int[] controle = {0,  2,2,2,2,2,2,2,2,2,  2,2,2,2,2,2,2,2,  2,2,2,2,2,  2,2,2,2,2,2,2};
+    private static final String url = "http://pos-systems-review.toptenreviews.com/hardware-software/";
+
+    private static final int[] controle = {0,0,0,0,0,0,0,  2,2,2,2,2,2,2,2,2,2,2,2,  1,1,1,  2,2,2,2,2,2,2,2,2,2,2,2,  2,2,2,2,2,2,2,2,2,2,   2,2,2,2,2,2,2,2,  2,2,2,2,2,2,2,2,2,2,2,2,2,  2,2,2,2,2,2,2,2};
+    private static final String url = "http://pos-systems-review.toptenreviews.com/restaurant/";
+*/
+
+    private static final int[] controle = {0,0,  0,0,0,0,0,0,  1,1,1,1,  2,2,2,2,2,2,2,  2,2,2,2,2,2,  2,2,2,2,2,  2,2,2,2,2  };
+    private static final String url = "http://pos-systems-review.toptenreviews.com/retail/";
+
+    private static int num = 166;
 
 //ZERO ignora,
     // -1 inverte,
