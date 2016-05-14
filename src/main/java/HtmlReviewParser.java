@@ -466,12 +466,67 @@ public class HtmlReviewParser {
 
     private static final int[] controle = {0,0,0,0,0,0,0,  2,2,2,2,2,2,2,2,2,2,2,2,  1,1,1,  2,2,2,2,2,2,2,2,2,2,2,2,  2,2,2,2,2,2,2,2,2,2,   2,2,2,2,2,2,2,2,  2,2,2,2,2,2,2,2,2,2,2,2,2,  2,2,2,2,2,2,2,2};
     private static final String url = "http://pos-systems-review.toptenreviews.com/restaurant/";
-*/
 
     private static final int[] controle = {0,0,  0,0,0,0,0,0,  1,1,1,1,  2,2,2,2,2,2,2,  2,2,2,2,2,2,  2,2,2,2,2,  2,2,2,2,2  };
     private static final String url = "http://pos-systems-review.toptenreviews.com/retail/";
 
-    private static int num = 166;
+    private static final int[] controle = {1,1,-1,1,2,2,  1,1,1,1,0,0,-1,2,2,   2,2,2,2,2,2,   1,2,2,2,2};
+    private static final String url = "http://food-scales-review.toptenreviews.com/";
+
+    private static final int[] controle = {1,1,1,1,1,  1,1,-1,1,1,2,2,2,2,2,2,2,  1,2,2,  1,2,2,   0,0,0};
+    private static final String url = "http://food-steamers-review.toptenreviews.com/";
+
+    private static final int[] controle = {1,1,1,  1,-1,-1,-1,2,  0,0,0,0,0,  1,1,0,0,2,2,  1,1,2,2,  1,1,0,  0,1,1,  1,2,2,  1,1,1,0,2,2,2,2};
+    private static final String url = "http://french-door-refrigerator-review.toptenreviews.com/";
+
+    private static final int[] controle = {-1,-1,-1,-1,-1,-1,2,  1,2,2,2,2,2,2,  1,1,2,2,2,2,2,2,2,  1,1,1,1,-1,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,  0,0,0,0,0,0,  1,1,1,2,2,2};
+    private static final String url = "http://front-load-washer-review.toptenreviews.com/";
+
+    private static final int[] controle = {0,1,1,0,1,0,2,2,   2,2,2,2,2,2,  1,1,2,2,1,1,1,   1,1,1,2,2,2,2};
+    private static final String url = "http://garage-door-openers-review.toptenreviews.com/";
+
+    private static final int[] controle = {1,1,2,2,  0,2,2,2,2,  2,2,2,2,2,2,  1,2,2,2};
+    private static final String url = "http://gas-cooktop-review.toptenreviews.com/";
+
+    private static final int[] controle = {1,1,1,   1,1,1,1,1,1,   1,1,1,2,2,  0,0,0};
+    private static final String url = "http://gas-furnaces-review.toptenreviews.com/";
+
+    private static final int[] controle = {1,-6,1,2,2,  1,1,1,1,   1,1,1,1,1,1,   0,1,1,2,2,2,2,   1,1,2,2,  0,0,0,0};
+    private static final String url = "http://gas-grills-review.toptenreviews.com/";
+
+     private static final int[] controle = {1,1,1,-1,1,1,1,   1,1,1,2,2,2,   -1,0,1,2,   1,2,2,2};
+    private static final String url = "http://gas-lawn-mower-review.toptenreviews.com/";
+
+    private static final int[] controle = {1,1,1,2,2,1,   1,1,1,1,1,2,2,2,  2,2,2,2,2,2,  1,1,2,2,2,  0,0,0,0,0 };
+    private static final String url = "http://gas-ranges-review.toptenreviews.com/";
+
+    private static final int[] controle = {1,1,1,1,1,2,2,2,1,   -6,-6,-1,-1,2,2,2,2,   -1,1,2,2,2,2,-1,-1,-1,  1,2,2,2};
+    private static final String url = "http://juicers-review.toptenreviews.com/";
+
+    private static final int[] controle = {1,1,1,2,  1,-1,1,0,2,2,   1,2,2,2,  1,2,2};
+    private static final String url = "http://hair-dryers-review.toptenreviews.com/";
+
+    private static final int[] controle = {8,8,8,   8,1,-1,1,-1,1,1,2,2,2,2,2,2,  8,-1,1,1,2,2,2,2,2,2,  1,2,2,2,2,2,2,2 };
+    private static final String url = "http://hair-straighteners-review.toptenreviews.com/";
+
+    private static final int[] controle = {-1,-1,1,1,1,  1,-1,-1,2,2,2,   -1,2,2,2,2,  1,2,2,2,2};
+    private static final String url = "http://handheld-vacuum-review.toptenreviews.com/";
+
+    private static final int[] controle = {1,1,1,1,2,2,2,2,  -1,1,-1,1,2,2,2,2,2,   0,1,-1,2,  1,2,2,2,  1,2,2,2};
+    private static final String url = "http://hardwood-floor-vacuum-cleaners-review.toptenreviews.com/";
+
+    private static final int[] controle = {2,2,2,2,2,2,2,2,   1,0,5,14,1,1,2,2,2,   2,1,0,1,1,2,2,2,    1,2,2,2,2};
+    private static final String url = "http://heart-rate-monitor-watches-review.toptenreviews.com/";
+
+    private static final int[] controle = {0,1,-1,1,1,1,   -1,-1,-1,-1,1,2,2,2,   2,2,2,2,2,2,2,  2,2,2,2,  1,1,2,2,2};
+    private static final String url = "http://home-gyms-review.toptenreviews.com/";
+*/
+
+    private static final int[] controle = {-6,-6,1,1,1,   1,2,2,2,2,  1,2,2,  0,0,0,0,0,0,0};
+    private static final String url = "http://hot-plates-review.toptenreviews.com/";
+
+
+    private static int num = 185;
 
 //ZERO ignora,
     // -1 inverte,
@@ -481,7 +536,7 @@ public class HtmlReviewParser {
     // 4- max, -4 -> min,
     // 14 (inverso do maximo), -14 (inverso do minimo)
     // 5 - multiplicar, -5 -> invert(multiplica),
-    // 6 - time,
+    // 6 - time, -6 (inverso do tempo)
     // 7 - dividir,
     // 8 - A+ - scale
     // 9 - GB
@@ -642,6 +697,10 @@ public class HtmlReviewParser {
                             value = minutes(value);
                             break;
                         }
+                        case -6: {
+                            value = razaoInversa(minutes(value), ",");
+                            break;
+                        }
                         case 7: {
                             value = divide(value);
                             break;
@@ -681,8 +740,9 @@ public class HtmlReviewParser {
 
         for (String val : values) {
             String[] split = val.split(":");
-            double val0 = Double.valueOf(split[0]);
-            double val1 = Double.valueOf(split[1]);
+            double val0 = (!"".equals(split[0])) ? Double.valueOf(split[0]) : 0d;
+
+            double val1 = split.length > 1 ? Double.valueOf(split[1]) : 0d;
 
             valorTratado += ((val0 * 60) + val1) + ",";
         }
@@ -695,7 +755,12 @@ public class HtmlReviewParser {
         String valorTratado = "";
 
         for (String val : values) {
-            String[] split = val.split("x");
+
+
+            String regex = val.contains("x") ? "x" : "-";
+
+
+            String[] split = val.split(regex);
 
 //            try {
                 double val0 = Double.valueOf(split[0].replaceAll(" ", "").trim());
@@ -749,9 +814,12 @@ public class HtmlReviewParser {
         String valorTratado = "";
 
         for (String val : values) {
-            double val0 = Double.valueOf(val.split("-")[0].trim());
-//            double val1 = Double.valueOf(val.split("-")[1].trim());
-            double val1 = 5.79d;
+
+
+            String regex = val.contains("-") ? "-" : "to";
+            String[] strings = val.split(regex);
+            double val0 = Double.valueOf(strings[0].trim());
+            double val1 = Double.valueOf(strings[1].trim());
 
             valorTratado += Math.abs(val0 - val1) + ",";
         }
@@ -764,7 +832,7 @@ public class HtmlReviewParser {
         String valorTratado = "";
 
         for (String val : values) {
-            val = val.replaceAll(",", "");
+            val = val.replaceAll(",", "").replaceAll("NA", "0");
 
 //            try {
             double v = Double.valueOf(val.trim()).doubleValue();
