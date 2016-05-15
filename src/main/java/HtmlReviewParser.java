@@ -601,12 +601,55 @@ public class HtmlReviewParser {
 
     private static final int[] controle = {-1,-1,-1, 1,1,1,1,-1,1,2,2,2,2,2,2,  1,-1,-1,0,0,-1,2,2,2,2,2,2,2,2,  2,2,2,2,2,   1,2,2,2};
     private static final String url = "http://robot-vacuum-review.toptenreviews.com/";
-*/
 
     private static final int[] controle = {1,2,2,2,2,2,  1,1,1,1,   8,-6,-6,-6,2,2,2,   1,2,2,2,-1,-1,-1,  1,2,2,2};
     private static final String url = "http://waffle-maker-review.toptenreviews.com/";
 
-    private static int num = 212;
+    private static final int[] controle = {0,-1,1,  1,1,1,2,2,2,2,2,   2,2,2,2,2,2,2,2,  2,2,-1,1,1,1,  1,1,2,2,2};
+    private static final String url = "http://wall-air-conditioners-review.toptenreviews.com/";
+
+    private static final int[] controle = {1,1,1,1,-1,2,  2,2,2,2,2,2,2,2,   2,2,2,2,2,  2,2,2,2,2,2,2,   1,1,1,2,2,  0,0,0};
+    private static final String url = "http://washer-dryer-combo-review.toptenreviews.com/";
+
+    private static final int[] controle = {1,2,2,2,2,2,2,   1,1,1,1,1,2,   2,2,2,1,-1,-1,-1,-1,   1,2,2,2};
+    private static final String url = "http://water-filter-systems-review.toptenreviews.com/";
+
+    private static final int[] controle = {1,1,1,1,1,  -1,1,1,-1,1,1,2,2,2,2,   1,1,1,2,   1,1,2,2,2,2};
+    private static final String url = "http://weed-whacker-review.toptenreviews.com/";
+
+    private static final int[] controle = {0,1,-1,0,-11,  1,1,1,2,2,2,2,2,  2,2,2,2,2,2,2,2,  2,2,-1,-1,-11,-11,-11,  1,1,2,2,2};
+    private static final String url = "http://window-air-conditioners-review.toptenreviews.com/";
+
+    private static final int[] controle = {0,  1,-1,2,2,2,2,2,2,2,2,2,2,2,2,   1,2,2,2,2,2,2,1,  -1,-1,-1,-1,  1,2,2};
+    private static final String url = "http://wine-cooler-review.toptenreviews.com/";
+
+    private static final int[] controle = {1,0,1,1,0,1,2,2,2,2,2,2,2,2,  1,-1,2,2,2,2,2,2,2,2,  1,2,2,2,2,2,2,2,2,  1,2,2,2,2};
+    private static final String url = "http://serger-sewing-machine-review.toptenreviews.com/";
+
+    private static final int[] controle = {1,1,1,1,1,1,0,0,2,2,2,2,  2,2,2,2,2,2,2,2,2,1,-1,-1,-1,-1,  1,2,2,2,2,2,2,2,  1,2,2,2};
+    private static final String url = "http://sewing-machine-review.toptenreviews.com/";
+
+    private static final int[] controle = {1,1,1,1,1,2,2,2,2,  -1,-11,11,1,-1,2,2,   1,2,2,2,2,2,  1,2,2,2,2,2,2,2};
+    private static final String url = "http://shop-vac-review.toptenreviews.com/";
+
+    private static final int[] controle = {1,1,1,  1,-1,-1,-1,2,  0,0,0,0,  1,1,1,1,2,2,2,2,2,2,2,  1,1,1,  1,0,2,2,2,2,2,2,2,2,  1,1,1,2,2,2};
+    private static final String url = "http://side-by-side-refrigerator-review.toptenreviews.com/";
+
+    private static final int[] controle = {0,0,0,0,  1,0,1,1,4,1,1,2,2,  1,1,1,1,1,1,2,2,2,2,2,2,  1,2,2,2,  1,1,2,2,2,2};
+    private static final String url = "http://slide-in-range-review.toptenreviews.com/";
+
+    private static final int[] controle = {1,-1,-1,-1,-1,-1,0,2,   2,2,2,2,2,2,2,2,2,2,  2,2,2,2,  1,2,2,  0,0,0,0,0,0,0};
+    private static final String url = "http://slow-cookers-review.toptenreviews.com/";
+
+    private static final int[] controle = {2,2,2,  2,2,1,  2,2,2,2,2,  1,2,2,2};
+    private static final String url = "http://smoke-detectors-review.toptenreviews.com/";
+
+*/
+
+    private static final int[] controle = {1,1,1,1,1,1,0,  -1,1,1,2,2,  1,2,2,2,  1,2,2,2,2,2,2};
+    private static final String url = "http://snow-blowers-review.toptenreviews.com/";
+
+    private static int num = 226;
 
 //ZERO ignora,
     // -1 inverte,
@@ -620,6 +663,7 @@ public class HtmlReviewParser {
     // 7 - dividir,
     // 8 - A+ - scale
     // 9 - GB
+    //11 - numero + fracao (x/y)
 
     private static Path pathAlternatives = Paths.get("input/Alternatives" + num + ".dat");
     private static Path pathFeatures = Paths.get("input/Features" + num + ".dat");
@@ -793,6 +837,14 @@ public class HtmlReviewParser {
                             value = map(value, gigasMap);
                             break;
                         }
+                        case 11: {
+                            value = multiplicaRazao(value);
+                            break;
+                        }
+                        case -11: {
+                            value = razaoInversa(multiplicaRazao(value), ",");
+                            break;
+                        }
                         default: {
                             value = value.substring(0, value.length() - 3);
                             break;
@@ -811,6 +863,28 @@ public class HtmlReviewParser {
 
         return strOut;
 
+
+    }
+
+    private static String multiplicaRazao(String value) {
+        String[] values = value.split(VALUE_SEPARATOR);
+        String valorTratado = "";
+
+        for (String val : values) {
+            String[] split = val.split(" ");
+            double val0 = Double.valueOf(split[0]);
+
+            double val1 = 0d;
+            if (split.length > 1) {
+                double dividendo = Double.valueOf(split[1].split("/")[0]);
+                double divisor = Double.valueOf(split[1].split("/")[1]);
+                val1 = dividendo / divisor;
+            }
+
+            valorTratado += (val0 + val1) + ",";
+        }
+        value = valorTratado.substring(0, valorTratado.length() - 1);
+        return value;
 
     }
 
