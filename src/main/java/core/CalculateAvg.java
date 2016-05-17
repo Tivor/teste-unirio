@@ -45,7 +45,7 @@ public class CalculateAvg {
 
     public static void main(String[] args) throws IOException {
 
-        File[] files = new File("output").listFiles();
+        File[] files = new File("backup_1_19").listFiles();
 
         Container c = new Container();
 
