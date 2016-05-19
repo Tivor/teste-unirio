@@ -9,10 +9,10 @@ import java.util.concurrent.Executors;
  * Created by Poliana on 19/12/2015.
  */
 public class Main {
-    public static final int EVOLUTION_RATIO = 10;
+    public static final int EVOLUTION_RATIO = 20;
     public static final int REPETICOES = 1;
-    public static final int PRIMEIRO_INPUT = 220;
-    public static final int END = 237;
+    public static final int PRIMEIRO_INPUT = 119;
+    public static final int END = 119;
     static ExecutorService pool = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
 
     public static void main(String[] args) throws IOException, InvalidConfigurationException {
