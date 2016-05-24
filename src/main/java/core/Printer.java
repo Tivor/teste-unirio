@@ -9,6 +9,7 @@ import metric.SpearmanCorrelation;
 import model.NormalizedDiscountedCumulativeGain;
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.math3.ml.distance.EuclideanDistance;
+import org.apache.commons.math3.stat.StatUtils;
 import org.jgap.Genotype;
 import org.jgap.IChromosome;
 
@@ -63,6 +64,7 @@ public class Printer {
 
             geneIndex += featureSize;
             criterium.updatePCM(weights);
+//            System.out.println("------------------->" + Arrays.toString(weights));
         }
 
 //        System.out.println(h.print());
@@ -89,6 +91,24 @@ public class Printer {
     }
 
     public void printCompleteResult(AHPConfigurator ahpConfigurator, double[] bestAhpResultComplete) {
+
+        double sumTest = StatUtils.sum(bestAhpResultComplete);
+        if (sumTest < 0.99999d || sumTest > 1d) {
+            System.err.println("------------------->" + Arrays.toString(bestAhpResultComplete));
+            System.err.println("bestAhpResultComplete>" + sumTest);
+            System.err.println("<----------------------------------------------------");
+//            System.exit(-599);
+        }
+
+        sumTest = StatUtils.sum(ahpConfigurator.getOriginalRank());
+        if (sumTest < 0.99999d || sumTest > 1d) {
+            System.err.println("------------------->" + Arrays.toString(ahpConfigurator.getOriginalRank()));
+            System.err.println("Sum>" + sumTest);
+            System.err.println("<----------------------------------------------------");
+//            System.exit(-699);
+        }
+
+
 //        System.out.println(">>>BEST GA RESULT: " + ArrayUtils.toString(bestAhpResultComplete));
         double euclidean = new EuclideanDistance().compute(bestAhpResultComplete, ahpConfigurator.getOriginalRank());
 //        System.out.println("EUCLIDEAN: " + euclidean);

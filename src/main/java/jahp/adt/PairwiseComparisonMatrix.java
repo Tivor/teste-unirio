@@ -6,8 +6,10 @@ package jahp.adt;
 
 import jahp.utils.Jama.EigenvalueDecomposition;
 import jahp.utils.Jama.Matrix;
+import org.apache.commons.math3.stat.StatUtils;
 
 import java.io.Serializable;
+import java.util.Arrays;
 
 //import com.sun.java.swing.*; //Used by JDK 1.2 Beta 4 and all
 //Swing releases before Swing 1.1 Beta 3.
@@ -266,6 +268,13 @@ public class PairwiseComparisonMatrix implements Serializable, Cloneable {
                 System.err.println("Error in setting W : ArrayIndexOutOfBoundsException" + e);
             }
         }
+
+        if (sum < 0.99999d) {
+            System.err.println("Sum------------------------------------------->" + sum);
+            System.err.println("<----------------------------------------------------");
+            System.exit(-100);
+        }
+
         for (int i = 0; i < getSize(); i++) {
 
             try {

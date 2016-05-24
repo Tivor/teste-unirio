@@ -11,8 +11,8 @@ import java.util.concurrent.Executors;
 public class Main {
     public static final int EVOLUTION_RATIO = 20;
     public static final int REPETICOES = 1;
-    public static final int PRIMEIRO_INPUT = 119;
-    public static final int END = 119;
+    public static final int PRIMEIRO_INPUT = 1;
+    public static final int END = 237;
     static ExecutorService pool = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
 
     public static void main(String[] args) throws IOException, InvalidConfigurationException {

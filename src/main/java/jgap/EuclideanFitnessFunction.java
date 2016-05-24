@@ -1,13 +1,11 @@
 package jgap;
 
 import org.apache.commons.math3.ml.distance.EuclideanDistance;
+import org.apache.commons.math3.stat.StatUtils;
 import org.apache.commons.math3.util.FastMath;
 import org.jgap.IChromosome;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by igor.custodio on 06/01/2016.
@@ -52,6 +50,15 @@ public class EuclideanFitnessFunction extends AHPFitnessFunction {
         double[] originalCleaned = cacheOriginalCalculated.get(this.crossValidationAlternative);
 
         double[] newAhpResult = runAHP(iChromosome);
+
+        double sumTest = StatUtils.sum(newAhpResult);
+        if (sumTest < 0.99999d || sumTest > 1.000001d) {
+            System.err.println("------------------->" + Arrays.toString(newAhpResult));
+            System.err.println("Sum>" + sumTest);
+            System.err.println("<----------------------------------------------------");
+            System.exit(-199);
+        }
+
         double distance = euclideanDistance.compute(originalCleaned, newAhpResult);
         return distance == 0.0d ? Double.MAX_VALUE : 1/distance;
     }
@@ -78,6 +85,14 @@ public class EuclideanFitnessFunction extends AHPFitnessFunction {
                 result[i][j] = result[i][j] / sum;
             }
 
+            double sumTest = StatUtils.sum(result[i]);
+            if (sumTest < 0.99999d || sumTest > 1.000001d) {
+                System.err.println("------------------->" + Arrays.toString(result[i]));
+                System.err.println("Sum>" + sumTest);
+                System.err.println("<----------------------------------------------------");
+                System.exit(-299);
+            }
+
         }
 
         return result;
@@ -100,6 +115,14 @@ public class EuclideanFitnessFunction extends AHPFitnessFunction {
 
         for (int j = 0; j < result.length; j++) {
             result[j] = result[j] / sum;
+        }
+
+        double sumTest = StatUtils.sum(result);
+        if (sumTest < 0.99999d || sumTest > 1.000001d) {
+            System.err.println("------------------->" + Arrays.toString(result));
+            System.err.println("Sum>" + sumTest);
+            System.err.println("<----------------------------------------------------");
+            System.exit(-399);
         }
 
         return result;

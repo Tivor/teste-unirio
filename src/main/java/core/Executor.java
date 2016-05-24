@@ -6,6 +6,7 @@ import jahp.adt.Hierarchy;
 import jgap.AHPConfigurator;
 import org.apache.commons.math3.stat.descriptive.moment.StandardDeviation;
 import org.jgap.Genotype;
+import org.jgap.IChromosome;
 import org.jgap.InvalidConfigurationException;
 
 import java.io.BufferedReader;
@@ -165,8 +166,11 @@ public class Executor implements Runnable {
 //        ((AHPGenotype) population).evolve(monitor, MAX_ALLOWED_EVOLUTIONS);
         population.evolve(maxEvolutions);
 
-//        System.out.println(h.print());
+        System.out.println("==================================================");
         double[] bestAhpResultComplete = printer.printFittestResult(hierarchyTest, population);
+
+//        runAHP(h, population.getFittestChromosome(), i);
+//        System.out.println("==================================================");
 
         printer.printCompleteResult(ahpConfigurator, bestAhpResultComplete);
 
@@ -196,6 +200,47 @@ public class Executor implements Runnable {
             printer.printIndividualResult(k, newAhpResult);
 
         }
+    }
+
+
+    //PARA TESTES E DEBUG APENAS, EXTRAIDO DA FUNCAO EUCLIDEANA
+    private double[] runAHP(Hierarchy h, IChromosome a_subject, int crossValidationAlternative) {
+        int alternativesSize = populateAHP(h, a_subject);
+
+        double[] newAhpResult = new double[alternativesSize];
+
+        int correctIndex = 0;
+        for (int j = 0; j <= alternativesSize; j++) {
+
+            if (j != crossValidationAlternative) {
+                double pi = h.Pi(j);
+                newAhpResult[correctIndex++] = pi;
+            }
+
+        }
+
+        System.out.println("------------------->" + Arrays.toString(newAhpResult));
+        return newAhpResult;
+
+    }
+
+    private int populateAHP(Hierarchy h, IChromosome a_subject) {
+        int geneIndex = 0;
+        for (Criterium criterium : h.getGoal().getSons()) {
+
+            int featureSize = criterium.getSonsSize();
+            double[] weights = new double[featureSize];
+
+            for (int i = 0; i < weights.length; i++) {
+                weights[i] = ((Integer) a_subject.getGene(geneIndex + i).getAllele()).doubleValue();
+            }
+
+            geneIndex += featureSize;
+            criterium.updatePCM(weights);
+            System.out.println("------------------->" + Arrays.toString(weights));
+        }
+        System.out.println(h.print());
+        return h.getAlternativesSize();
     }
 
 }

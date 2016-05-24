@@ -3,9 +3,11 @@ package core;
 import jahp.adt.Alternative;
 import jahp.adt.Criterium;
 import jahp.adt.Hierarchy;
+import org.apache.commons.math3.stat.StatUtils;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Vector;
 
 /**
@@ -53,6 +55,14 @@ public class Reader {
 
         for (int i = 0; i < alternatives.size(); i++) {
             originalDataCalculated[i] = originalDataCalculated[i] / sum;
+        }
+
+        double sumTest = StatUtils.sum(originalDataCalculated);
+        if (sumTest < 0.99999d || sumTest > 1.000001d) {
+            System.err.println("------------------->" + Arrays.toString(originalDataCalculated));
+            System.err.println("originalDataCalculated>" + sumTest);
+            System.err.println("<----------------------------------------------------");
+            System.exit(-799);
         }
 
         return originalDataCalculated;

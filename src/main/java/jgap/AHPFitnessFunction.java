@@ -2,8 +2,11 @@ package jgap;
 
 import jahp.adt.Criterium;
 import jahp.adt.Hierarchy;
+import org.apache.commons.math3.stat.StatUtils;
 import org.jgap.FitnessFunction;
 import org.jgap.IChromosome;
+
+import java.util.Arrays;
 
 /**
  * Created by Poliana on 29/12/2015.
@@ -45,6 +48,16 @@ public abstract class AHPFitnessFunction extends FitnessFunction {
             if (j != crossValidationAlternative) {
                 double pi = h.Pi(j);
                 newAhpResult[correctIndex++] = pi;
+            }
+
+        }
+
+        double sum = StatUtils.sum(newAhpResult);
+        correctIndex = 0;
+        for (int j = 0; j <= alternativesSize; j++) {
+
+            if (j != crossValidationAlternative) {
+                newAhpResult[correctIndex] = newAhpResult[correctIndex++] / sum;
             }
 
         }
