@@ -27,6 +27,7 @@ public class Printer {
 
     private double[][] individualRanks;
     private Path path;
+    private Path errPath;
 
     public void out(String text) {
         try {
@@ -37,8 +38,17 @@ public class Printer {
         }
     }
 
+    public void err(String text) {
+        try {
+            Files.write(errPath, text.getBytes(), StandardOpenOption.CREATE, StandardOpenOption.APPEND);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     public Printer(String fileName, double[][] individualRanks) {
         path = Paths.get("output/" + fileName + "_" + Thread.currentThread().getId());
+        errPath = Paths.get("err/" + fileName + "_" + Thread.currentThread().getId());
         this.individualRanks = individualRanks;
     }
 
@@ -74,8 +84,6 @@ public class Printer {
             newAhpResult[j] = h.PiFull(j);
         }
 
-        System.out.println(Arrays.toString(newAhpResult));
-
         return newAhpResult;
     }
 
@@ -93,40 +101,58 @@ public class Printer {
     public void printCompleteResult(AHPConfigurator ahpConfigurator, double[] bestAhpResultComplete) {
 
         double sumTest = StatUtils.sum(bestAhpResultComplete);
-        if (sumTest < 0.99999d || sumTest > 1d) {
-            System.err.println("------------------->" + Arrays.toString(bestAhpResultComplete));
-            System.err.println("bestAhpResultComplete>" + sumTest);
-            System.err.println("<----------------------------------------------------");
-//            System.exit(-599);
+        if (sumTest < 0.98d || sumTest > 1.1d) {
+            err("BEST RESULT: sumTest < 0.98d || sumTest > 1.1d");
+            err("bestAhpResultComplete SUM_TEST>" + sumTest);
+            err("------------------->" + Arrays.toString(bestAhpResultComplete));
         }
 
         sumTest = StatUtils.sum(ahpConfigurator.getOriginalRank());
-        if (sumTest < 0.99999d || sumTest > 1d) {
-            System.err.println("------------------->" + Arrays.toString(ahpConfigurator.getOriginalRank()));
-            System.err.println("Sum>" + sumTest);
-            System.err.println("<----------------------------------------------------");
-//            System.exit(-699);
+        if (sumTest < 0.99999d || sumTest > 1.1d) {
+            err("ORIGINAL: sumTest < 0.98d || sumTest > 1.1d");
+            err("bestAhpResultComplete SUM_TEST>" + sumTest);
+            err("------------------->" + Arrays.toString(ahpConfigurator.getOriginalRank()));
         }
 
-
 //        System.out.println(">>>BEST GA RESULT: " + ArrayUtils.toString(bestAhpResultComplete));
-        double euclidean = new EuclideanDistance().compute(bestAhpResultComplete, ahpConfigurator.getOriginalRank());
+
 //        System.out.println("EUCLIDEAN: " + euclidean);
-        double correlation = new SpearmanCorrelation().correlation(bestAhpResultComplete, ahpConfigurator.getOriginalRank());
+        double euclidean = new EuclideanDistance().compute(bestAhpResultComplete, ahpConfigurator.getOriginalRank());
+
 //        System.out.println("SPEARMANS: " + correlation);
-        double precision = new PrecisionAtK().calculate(bestAhpResultComplete, ahpConfigurator.getOriginalRank());
+//        double correlation = new SpearmanCorrelation().correlation(bestAhpResultComplete, ahpConfigurator.getOriginalRank());
+        PairedData pd = new PairedData(bestAhpResultComplete, ahpConfigurator.getOriginalRank());
+        jsc.correlation.SpearmanCorrelation spearmanCorrelation = new jsc.correlation.SpearmanCorrelation(pd);
+        double correlation = spearmanCorrelation.getR();
+        if (correlation > 1.0d) {
+            err("correlation > 1.0d");
+            err("--------------------------------------------" + correlation);
+            err("ORIGINAL--------->" + Arrays.toString(ahpConfigurator.getOriginalRank()));
+            err("BEST RESULT------>" + Arrays.toString(bestAhpResultComplete));
+        }
+
+        double pvalue = spearmanCorrelation.getSP();
+
 //        System.out.println("P@k: " + precision);
-        double nDcg = new NormalizedDiscountedCumulativeGain().evaluate(bestAhpResultComplete, ahpConfigurator.getOriginalRank());
+        double precision = new PrecisionAtK().calculate(bestAhpResultComplete, ahpConfigurator.getOriginalRank());
+        if (precision > 1.0d) {
+            err("precision > 1.0d");
+            err("--------------------------------------------" + precision);
+            err("ORIGINAL--------->" + Arrays.toString(ahpConfigurator.getOriginalRank()));
+            err("BEST RESULT------>" + Arrays.toString(bestAhpResultComplete));
+        }
+
 //        System.out.println("nDCG: " + nDcg);
-//        System.out.println("%%%%%%%%%%%%%%%%%%%%%%%%%%%");
+        double nDcg = new NormalizedDiscountedCumulativeGain().evaluate(bestAhpResultComplete, ahpConfigurator.getOriginalRank());
+        if (nDcg > 1.0d) {
+            err("nDcg > 1.0d");
+            err("--------------------------------------------" + nDcg);
+            err("ORIGINAL--------->" + Arrays.toString(ahpConfigurator.getOriginalRank()));
+            err("BEST RESULT------>" + Arrays.toString(bestAhpResultComplete));
+        }
+//        System.out.println("END PRINT");
 
-//        PairedData pd = new PairedData(bestAhpResultComplete, ahpConfigurator.getOriginalRank());
-//        jsc.correlation.SpearmanCorrelation spearmanCorrelation = new jsc.correlation.SpearmanCorrelation(pd);
-//        double correlation = spearmanCorrelation.getR();
-//        double pvalue = spearmanCorrelation.getSP();
-
-        out(String.valueOf(euclidean) + "," + String.valueOf(correlation) + "," + String.valueOf(precision) + "," + String.valueOf(nDcg) + "\n");
-//        out(String.valueOf(euclidean) + "," + String.valueOf(correlation) + "," + String.valueOf(precision) + "," + String.valueOf(pvalue) + "\n");
+        out(String.valueOf(euclidean) + "," + String.valueOf(correlation) + "," + String.valueOf(precision) + "," + String.valueOf(nDcg) + "," + String.valueOf(pvalue) + "\n");
 
     }
 

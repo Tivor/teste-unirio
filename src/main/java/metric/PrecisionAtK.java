@@ -22,17 +22,20 @@ public class PrecisionAtK {
 
         }
 
+
         Collections.sort(calculated);
 
         double sum = 0.0d;
         int half = idealRank.length / 2 + ((idealRank.length % 2 == 0) ? 0 : 1);
-        for (int k = 1; k <= half; k++) {
-            double v = precisionAt(k);
-            sum += v;
-//            System.out.println("P@"+ k + " =" + v);
-        }
 
-        return sum / half;
+//        for (int k = 1; k <= half; k++) {
+//            double v =
+                    return precisionAt(half);
+//            sum += v;
+//            System.out.println("P@"+ k + " =" + v);
+//        }
+
+//        return sum / half;
 
     }
 
