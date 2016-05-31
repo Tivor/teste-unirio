@@ -1,0 +1,83 @@
+\documentclass[12pt, oneside, a4paper]{abntex2}
+
+% ---
+% Pacotes básicos 
+% ---
+\usepackage{lmodern}			% Usa a fonte Latin Modern			
+\usepackage[T1]{fontenc}		% Selecao de codigos de fonte.
+\usepackage[utf8]{inputenc}		% Codificacao do documento (conversão automática dos acentos)
+\usepackage{lastpage}			% Usado pela Ficha catalográfica
+\usepackage{indentfirst}		% Indenta o primeiro parágrafo de cada seção.
+\usepackage{color}				% Controle das cores
+\usepackage{graphicx} 			% permite inserção de figuras
+\usepackage{microtype} 			% para melhorias de justificação
+\usepackage[alf]{abntex2cite}
+\usepackage[a4paper,left=3.0cm,right=3.0cm,top=2.5cm,bottom=2.5cm]{geometry} 
+\usepackage{setspace} 			% habilitando o espaço entre linhas
+\usepackage{titlesec}
+\usepackage[normalem]{ulem} 	% habilitando palavras sublinhadas
+\usepackage{amssymb, amsmath, pxfonts} % permite símbolos matemáticos
+\usepackage{mathrsfs} 			% permite uso de fontes para conjuntos
+\usepackage{framed}
+\usepackage{booktabs}
+\usepackage{comment}
+\usepackage[]{hyperref}
+\usepackage{xr}
+\usepackage[mathcal]{euler}
+\usepackage{array}
+\usepackage[brazil]{babel}
+% ---
+
+% ---
+% Configurações UNIRIO
+% ---
+\linespread{1.3} 				% espaço entre linhas de 1.5
+\setlength{\parskip}{10pt} 		% espaço entre parágrafos
+\setcounter{secnumdepth}{3} 	% habilita a variável \thesubsubsection
+\setcounter{tocdepth}{3} 		% Índice até subsubsection
+\titleformat{\chapter}[hang]{\fontsize{16}{16}\normalfont\bfseries\filleft\selectfont}{\thechapter.}{0pt}{\normalfont\bfseries}
+\titlespacing{\chapter}{0pt}{72pt}{60pt}
+\titleformat{\section}[hang]{\fontsize{12}{12}\normalfont\bfseries\selectfont}{\thesection}{0pt}{\normalfont\bfseries}
+\titlespacing{\section}{0pt}{24pt}{12pt}
+\titleformat{\subsection}[hang]{\fontsize{12}{12}\normalfont\bfseries\selectfont}{\thesubsection}{0pt}{\normalfont\bfseries}
+\titlespacing{\subsection}{0pt}{12pt}{6pt}
+\titleformat{\subsubsection}[hang]{\fontsize{12}{12}\normalfont\bfseries\selectfont}{\thesubsubsection}{0pt}{\normalfont\bfseries}
+\titlespacing{\subsubsection}{0pt}{6pt}{3pt}
+% ---
+
+\begin{document} 
+
+ \pagestyle{empty}
+        \include{capa/capa}
+        \include{capa/folhaDeRosto}
+        \include{capa/fichaCatalografica}
+ 
+ \pagestyle{empty}
+ %\pagestyle{plain}
+    %\pagenumbering{roman}
+        \include{pretexto/dedicatoria}
+        \include{pretexto/agradecimento}
+        \include{pretexto/resumo}
+        \include{pretexto/abstract}
+        \include{pretexto/indiceTexto}
+        \include{pretexto/indiceFiguras}
+        \include{pretexto/indiceTabelas}
+        %\include{pretexto/listaNomenclaturas}
+ 
+ \pagestyle{headings}
+    \pagenumbering{arabic}
+    \setcounter{page}{1}
+        \input{capitulos/capitulo01}
+        \input{capitulos/capitulo02}
+        \input{capitulos/capitulo03}
+        %\input{capitulos/003}        
+        %\input{capitulos/capitulo04}
+        %\input{capitulos/004}        
+        %\input{capitulos/capitulo05}
+        %\input{capitulos/capitulo06}   
+        
+ \addcontentsline{toc}{chapter}{Referencias}
+
+\bibliography{postexto/referencias}
+
+\end{document}
